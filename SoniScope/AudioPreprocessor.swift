@@ -14,7 +14,7 @@ import RosaKit
 class AudioPreprocessor {
     
     /// Loads an audio file, resamples to 22050Hz, extracts MFCC + Mel features
-    func extractFeatures(from url: URL) -> [[Double]]? {
+    func extractFeatures(from url: URL) -> [Double]? {
         do {
             let file = try AVAudioFile(forReading: url)
             let format = file.processingFormat
@@ -51,7 +51,7 @@ class AudioPreprocessor {
                 sampleRate: sampleRate,
                 melsCount: melsCount
             )
-            print(mfccs)
+//            print(mfccs)
 
             let mfccMean = mfccs.map { $0.mean() }
             let melMean = mel.map { $0.mean() }
@@ -59,8 +59,9 @@ class AudioPreprocessor {
             print(mfccMean)
             print(melMean)
             let combined = mfccMean + melMean  // Shape: [168]
-            let input = combined.map { [$0] }  // Shape: [[Double]] (168, 1)
+            let input = combined // .map { [$0] }  // Shape: [[Double]] (168, 1)
             
+            print(input.count)
             return input
             
         } catch {

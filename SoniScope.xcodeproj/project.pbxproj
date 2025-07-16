@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		C5FFFDE82E26E1D4000431FB /* RosaKit in Frameworks */ = {isa = PBXBuildFile; productRef = C5FFFDE72E26E1D4000431FB /* RosaKit */; };
-		C5FFFDEE2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5FFFDED2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav */; };
-		C5FFFDF52E273228000431FB /* soniscope.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = C5FFFDF42E273228000431FB /* soniscope.mlpackage */; };
+		C5FFFE1A2E275163000431FB /* 123_1b1_Al_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5FFFE192E275163000431FB /* 123_1b1_Al_sc_Meditron.wav */; };
+		C5FFFE1E2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5FFFE1D2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,8 +33,8 @@
 		C5FFFD962E25E008000431FB /* SoniScope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoniScope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDA32E25E00A000431FB /* SoniScopeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDAD2E25E00A000431FB /* SoniScopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C5FFFDED2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 111_1b2_Tc_sc_Meditron.wav; sourceTree = "<group>"; };
-		C5FFFDF42E273228000431FB /* soniscope.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = soniscope.mlpackage; sourceTree = "<group>"; };
+		C5FFFE192E275163000431FB /* 123_1b1_Al_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 123_1b1_Al_sc_Meditron.wav; sourceTree = "<group>"; };
+		C5FFFE1D2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 116_1b2_Pl_sc_Meditron.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -84,8 +84,8 @@
 		C5FFFD8D2E25E008000431FB = {
 			isa = PBXGroup;
 			children = (
-				C5FFFDF42E273228000431FB /* soniscope.mlpackage */,
-				C5FFFDED2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav */,
+				C5FFFE192E275163000431FB /* 123_1b1_Al_sc_Meditron.wav */,
+				C5FFFE1D2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav */,
 				C5FFFD982E25E008000431FB /* SoniScope */,
 				C5FFFDA62E25E00A000431FB /* SoniScopeTests */,
 				C5FFFDB02E25E00A000431FB /* SoniScopeUITests */,
@@ -227,7 +227,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5FFFDEE2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav in Resources */,
+				C5FFFE1E2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav in Resources */,
+				C5FFFE1A2E275163000431FB /* 123_1b1_Al_sc_Meditron.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -252,7 +253,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5FFFDF52E273228000431FB /* soniscope.mlpackage in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
