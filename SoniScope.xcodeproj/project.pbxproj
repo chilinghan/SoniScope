@@ -6,6 +6,12 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		C5FFFDE82E26E1D4000431FB /* RosaKit in Frameworks */ = {isa = PBXBuildFile; productRef = C5FFFDE72E26E1D4000431FB /* RosaKit */; };
+		C5FFFDEE2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5FFFDED2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav */; };
+		C5FFFDF52E273228000431FB /* soniscope.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = C5FFFDF42E273228000431FB /* soniscope.mlpackage */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		C5FFFDA42E25E00A000431FB /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +33,8 @@
 		C5FFFD962E25E008000431FB /* SoniScope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoniScope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDA32E25E00A000431FB /* SoniScopeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDAD2E25E00A000431FB /* SoniScopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		C5FFFDED2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 111_1b2_Tc_sc_Meditron.wav; sourceTree = "<group>"; };
+		C5FFFDF42E273228000431FB /* soniscope.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = soniscope.mlpackage; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -52,6 +60,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5FFFDE82E26E1D4000431FB /* RosaKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -75,6 +84,8 @@
 		C5FFFD8D2E25E008000431FB = {
 			isa = PBXGroup;
 			children = (
+				C5FFFDF42E273228000431FB /* soniscope.mlpackage */,
+				C5FFFDED2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav */,
 				C5FFFD982E25E008000431FB /* SoniScope */,
 				C5FFFDA62E25E00A000431FB /* SoniScopeTests */,
 				C5FFFDB02E25E00A000431FB /* SoniScopeUITests */,
@@ -112,6 +123,7 @@
 			);
 			name = SoniScope;
 			packageProductDependencies = (
+				C5FFFDE72E26E1D4000431FB /* RosaKit */,
 			);
 			productName = SoniScope;
 			productReference = C5FFFD962E25E008000431FB /* SoniScope.app */;
@@ -195,6 +207,9 @@
 			);
 			mainGroup = C5FFFD8D2E25E008000431FB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C5FFFDE62E26E1D4000431FB /* XCRemoteSwiftPackageReference "RosaKit" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C5FFFD972E25E008000431FB /* Products */;
 			projectDirPath = "";
@@ -212,6 +227,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5FFFDEE2E26E5A6000431FB /* 111_1b2_Tc_sc_Meditron.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -236,6 +252,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5FFFDF52E273228000431FB /* soniscope.mlpackage in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -395,6 +412,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 78KA8WL8C4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -402,6 +420,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -422,6 +441,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 78KA8WL8C4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -429,6 +449,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -550,6 +571,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C5FFFDE62E26E1D4000431FB /* XCRemoteSwiftPackageReference "RosaKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dhrebeniuk/RosaKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.11;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C5FFFDE72E26E1D4000431FB /* RosaKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C5FFFDE62E26E1D4000431FB /* XCRemoteSwiftPackageReference "RosaKit" */;
+			productName = RosaKit;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C5FFFD8E2E25E008000431FB /* Project object */;
 }
