@@ -26,16 +26,12 @@ class AudioPreprocessor {
             }
             try file.read(into: originalBuffer)
             
-            guard let resampledBuffer = resampleTo22050Hz(originalBuffer, from: format) else {
-                print("❌ Failed to resample.")
-                return nil
-            }
-            let audioSamples = convertToDoubleArray(buffer: resampledBuffer)
-//            print(audioSamples.last)
+            let audioSamples = convertToDoubleArray(buffer: originalBuffer)
+            print(audioSamples.last)
             
             let nFFT = 2048
             let hopLength = 512
-            let sampleRate = 22050
+            let sampleRate = Int(format.sampleRate)
             let melsCount = 128
 
             let mfccs = audioSamples.mfcc(
@@ -51,7 +47,6 @@ class AudioPreprocessor {
                 sampleRate: sampleRate,
                 melsCount: melsCount
             )
-//            print(mfccs)
 
             let mfccMean = mfccs.map { $0.mean() }
             let melMean = mel.map { $0.mean() }
@@ -61,7 +56,6 @@ class AudioPreprocessor {
             let combined = mfccMean + melMean  // Shape: [168]
             let input = combined // .map { [$0] }  // Shape: [[Double]] (168, 1)
             
-            print(input.count)
             return input
             
         } catch {
@@ -74,10 +68,10 @@ class AudioPreprocessor {
     private func resampleTo22050Hz(_ inputBuffer: AVAudioPCMBuffer, from format: AVAudioFormat) -> AVAudioPCMBuffer? {
         let targetSampleRate: Double = 22050.0
         
-        guard let targetFormat = AVAudioFormat(commonFormat: .pcmFormatFloat32,
+        guard let targetFormat = AVAudioFormat(commonFormat: format.commonFormat,
                                                sampleRate: targetSampleRate,
                                                channels: format.channelCount,
-                                               interleaved: false) else {
+                                               interleaved: format.isInterleaved) else {
             print("❌ Failed to create target format.")
             return nil
         }
@@ -111,20 +105,30 @@ class AudioPreprocessor {
         outputBuffer.frameLength = newFrameCount
         return outputBuffer
     }
-    
-    /// Converts AVAudioPCMBuffer to [Float]
-    private func convertToFloatArray(buffer: AVAudioPCMBuffer) -> [Float] {
-        let channelData = buffer.floatChannelData![0]
-        let frameLength = Int(buffer.frameLength)
-        return (0..<frameLength).map { Float(channelData[$0]) }
-    }
-    
+  
     /// Converts AVAudioPCMBuffer to [Double]
     private func convertToDoubleArray(buffer: AVAudioPCMBuffer) -> [Double] {
-        let channelData = buffer.floatChannelData![0]
+        guard let channelData = buffer.floatChannelData else { return [] }
+        
         let frameLength = Int(buffer.frameLength)
-        return (0..<frameLength).map { Double(channelData[$0]) }
+        let channelCount = Int(buffer.format.channelCount)
+
+        var mono = [Double](repeating: 0.0, count: frameLength)
+        
+        for c in 0..<channelCount {
+            let channel = channelData[c]
+            for i in 0..<frameLength {
+                mono[i] += Double(channel[i])
+            }
+        }
+        
+        for i in 0..<frameLength {
+            mono[i] /= Double(channelCount)
+        }
+
+        return mono
     }
+
 }
 
 extension Array where Element == Float {

@@ -78,6 +78,7 @@ struct ContentView: View {
             let prediction = try model.prediction(input: input)
             
             // Get highest score index
+            print(prediction.Identity)
             let index = argmax(prediction.Identity) // Replace 'output' with your actual output name
             let label = labelMap[index] ?? "Unknown"
             predictedLabel = "Predicted: \(label)"
