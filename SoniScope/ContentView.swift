@@ -38,7 +38,7 @@ struct ContentView: View {
                 .padding()
             
             Button("Run Prediction") {
-                if let url = Bundle.main.url(forResource: "116_1b2_Pl_sc_Meditron", withExtension: "wav") {
+                if let url = Bundle.main.url(forResource: "144_1b1_Tc_sc_Meditron", withExtension: "wav") {
                     print("✅ Found audio file at: \(url)")
 
                     if let features = processor.extractFeatures(from: url) {
