@@ -15,6 +15,7 @@ struct SoniScopeApp: App {
             HealthProfileView()
             DebugAudioSaverView()
                 .edgesIgnoringSafeArea(.all)
+            PairingView()
         }
     }
 }

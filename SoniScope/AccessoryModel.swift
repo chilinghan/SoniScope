@@ -31,7 +31,7 @@ enum AccessoryModel {
     
     var accessoryImage: UIImage {
         switch self {
-        case .soniScope: UIImage(named: "soniScope")!
+        case .soniScope: .image
         }
     }
 }

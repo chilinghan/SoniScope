@@ -3,24 +3,10 @@
 <plist version="1.0">
 <dict>
 	<key>NSHealthShareUsageDescription</key>
-	<string>This app uses HealthKit to access your date of birth, biological sex, and blood type for your profile.</string>
-	<key>NSAccessorySetupKitSupports</key>
-	<array>
-		<string>Bluetooth</string>
-	</array>
-	<key>NSAccessorySetupBluetoothNames</key>
-	<array>
-		<string></string>
-	</array>
-	<key>NSAccessorySetupBluetoothCompanyIdentifiers</key>
-	<false/>
-	<key>NSAccessorySetupBluetoothNames</key>
-	<array>
-		<string></string>
-	</array>
+	<string>This app reads your health data to personalize your profile.</string>
 	<key>NSAccessorySetupBluetoothServices</key>
 	<array>
-		<string></string>
+		<string>180A</string>
 	</array>
 	<key>NSAccessorySetupKitSupports</key>
 	<array>
