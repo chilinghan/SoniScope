@@ -1,7 +1,7 @@
 import UIKit
 import AVFoundation
 
-class DebugAudioSaverViewController: UIViewController {
+class AudioSaverViewController: UIViewController {
 
     var player: AVAudioPlayer?
     var fileURL: URL?

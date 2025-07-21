@@ -13,7 +13,7 @@ struct SoniScopeApp: App {
         WindowGroup {
             ContentView()
             HealthProfileView()
-            DebugAudioSaverView()
+            AudioSaverView()
                 .edgesIgnoringSafeArea(.all)
             PairingView()
         }
