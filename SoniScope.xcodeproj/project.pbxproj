@@ -12,6 +12,7 @@
 		C5D731FE2E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */; };
 		C5D731FF2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731FA2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav */; };
 		C5D732002E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731FB2E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav */; };
+		C5D732042E2EB27800E49590 /* PlainPocketFFT in Frameworks */ = {isa = PBXBuildFile; productRef = C5D732032E2EB27800E49590 /* PlainPocketFFT */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C5D732042E2EB27800E49590 /* PlainPocketFFT in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -98,6 +100,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C5D732022E2EB27800E49590 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C5FFFD8D2E25E008000431FB = {
 			isa = PBXGroup;
 			children = (
@@ -109,6 +118,7 @@
 				C5FFFD982E25E008000431FB /* SoniScope */,
 				C5FFFDA62E25E00A000431FB /* SoniScopeTests */,
 				C5FFFDB02E25E00A000431FB /* SoniScopeUITests */,
+				C5D732022E2EB27800E49590 /* Frameworks */,
 				C5FFFD972E25E008000431FB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -143,6 +153,7 @@
 			);
 			name = SoniScope;
 			packageProductDependencies = (
+				C5D732032E2EB27800E49590 /* PlainPocketFFT */,
 			);
 			productName = SoniScope;
 			productReference = C5FFFD962E25E008000431FB /* SoniScope.app */;
@@ -226,6 +237,9 @@
 			);
 			mainGroup = C5FFFD8D2E25E008000431FB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				C5D732012E2EB26400E49590 /* XCRemoteSwiftPackageReference "plain-pocketfft" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C5FFFD972E25E008000431FB /* Products */;
 			projectDirPath = "";
@@ -429,8 +443,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SoniScope/SoniScope.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 78KA8WL8C4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
@@ -457,8 +473,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = SoniScope/SoniScope.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 78KA8WL8C4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
@@ -588,6 +606,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		C5D732012E2EB26400E49590 /* XCRemoteSwiftPackageReference "plain-pocketfft" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/dhrebeniuk/plain-pocketfft";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.0.9;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		C5D732032E2EB27800E49590 /* PlainPocketFFT */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C5D732012E2EB26400E49590 /* XCRemoteSwiftPackageReference "plain-pocketfft" */;
+			productName = PlainPocketFFT;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C5FFFD8E2E25E008000431FB /* Project object */;
 }

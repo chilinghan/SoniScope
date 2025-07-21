@@ -2,6 +2,8 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSHealthShareUsageDescription</key>
+	<string>This app uses HealthKit to access your date of birth, biological sex, and blood type for your profile.</string>
 	<key>NSAccessorySetupKitSupports</key>
 	<array>
 		<string>Bluetooth</string>

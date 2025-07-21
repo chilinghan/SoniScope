@@ -12,6 +12,7 @@ struct SoniScopeApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            HealthProfileView()
         }
     }
 }
