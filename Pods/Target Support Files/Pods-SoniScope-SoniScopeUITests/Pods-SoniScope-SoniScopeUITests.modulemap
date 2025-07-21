@@ -1,0 +1,6 @@
+framework module Pods_SoniScope_SoniScopeUITests {
+  umbrella header "Pods-SoniScope-SoniScopeUITests-umbrella.h"
+
+  export *
+  module * { export * }
+}

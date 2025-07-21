@@ -14,9 +14,17 @@
 	</array>
 	<key>NSAccessorySetupBluetoothCompanyIdentifiers</key>
 	<false/>
+	<key>NSAccessorySetupBluetoothNames</key>
+	<array>
+		<string></string>
+	</array>
 	<key>NSAccessorySetupBluetoothServices</key>
 	<array>
 		<string></string>
+	</array>
+	<key>NSAccessorySetupKitSupports</key>
+	<array>
+		<string>Bluetooth</string>
 	</array>
 </dict>
 </plist>
