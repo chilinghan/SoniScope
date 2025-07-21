@@ -7,12 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C55702722E286EC4009FC70A /* 115_1b1_Ar_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C55702712E286EC4009FC70A /* 115_1b1_Ar_sc_Meditron.wav */; };
-		C557027B2E28734C009FC70A /* PlainPocketFFT in Frameworks */ = {isa = PBXBuildFile; productRef = C557027A2E28734C009FC70A /* PlainPocketFFT */; };
-		C557027D2E28746A009FC70A /* 144_1b1_Tc_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C557027C2E28746A009FC70A /* 144_1b1_Tc_sc_Meditron.wav */; };
-		C5FFFE1A2E275163000431FB /* 123_1b1_Al_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5FFFE192E275163000431FB /* 123_1b1_Al_sc_Meditron.wav */; };
-		C5FFFE1E2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5FFFE1D2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav */; };
-		C5FFFE502E28458A000431FB /* 107_2b3_Tc_mc_AKGC417L.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5FFFE4F2E28458A000431FB /* 107_2b3_Tc_mc_AKGC417L.wav */; };
+		C5D731FC2E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731F82E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav */; };
+		C5D731FD2E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */; };
+		C5D731FE2E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */; };
+		C5D731FF2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731FA2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav */; };
+		C5D732002E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731FB2E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -33,14 +32,14 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		C55702712E286EC4009FC70A /* 115_1b1_Ar_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 115_1b1_Ar_sc_Meditron.wav; sourceTree = "<group>"; };
-		C557027C2E28746A009FC70A /* 144_1b1_Tc_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 144_1b1_Tc_sc_Meditron.wav; sourceTree = "<group>"; };
+		C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 107_2b3_Tc_mc_AKGC417L.wav; sourceTree = "<group>"; };
+		C5D731F82E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 115_1b1_Ar_sc_Meditron.wav; sourceTree = "<group>"; };
+		C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 116_1b2_Pl_sc_Meditron.wav; sourceTree = "<group>"; };
+		C5D731FA2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 123_1b1_Al_sc_Meditron.wav; sourceTree = "<group>"; };
+		C5D731FB2E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 144_1b1_Tc_sc_Meditron.wav; sourceTree = "<group>"; };
 		C5FFFD962E25E008000431FB /* SoniScope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoniScope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDA32E25E00A000431FB /* SoniScopeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDAD2E25E00A000431FB /* SoniScopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C5FFFE192E275163000431FB /* 123_1b1_Al_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 123_1b1_Al_sc_Meditron.wav; sourceTree = "<group>"; };
-		C5FFFE1D2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 116_1b2_Pl_sc_Meditron.wav; sourceTree = "<group>"; };
-		C5FFFE4F2E28458A000431FB /* 107_2b3_Tc_mc_AKGC417L.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 107_2b3_Tc_mc_AKGC417L.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -79,7 +78,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C557027B2E28734C009FC70A /* PlainPocketFFT in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -100,25 +98,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C55702792E28734C009FC70A /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			name = Frameworks;
-			sourceTree = "<group>";
-		};
 		C5FFFD8D2E25E008000431FB = {
 			isa = PBXGroup;
 			children = (
-				C5FFFE192E275163000431FB /* 123_1b1_Al_sc_Meditron.wav */,
-				C5FFFE1D2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav */,
-				C557027C2E28746A009FC70A /* 144_1b1_Tc_sc_Meditron.wav */,
-				C55702712E286EC4009FC70A /* 115_1b1_Ar_sc_Meditron.wav */,
-				C5FFFE4F2E28458A000431FB /* 107_2b3_Tc_mc_AKGC417L.wav */,
+				C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */,
+				C5D731F82E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav */,
+				C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */,
+				C5D731FA2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav */,
+				C5D731FB2E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav */,
 				C5FFFD982E25E008000431FB /* SoniScope */,
 				C5FFFDA62E25E00A000431FB /* SoniScopeTests */,
 				C5FFFDB02E25E00A000431FB /* SoniScopeUITests */,
-				C55702792E28734C009FC70A /* Frameworks */,
 				C5FFFD972E25E008000431FB /* Products */,
 			);
 			sourceTree = "<group>";
@@ -153,7 +143,6 @@
 			);
 			name = SoniScope;
 			packageProductDependencies = (
-				C557027A2E28734C009FC70A /* PlainPocketFFT */,
 			);
 			productName = SoniScope;
 			productReference = C5FFFD962E25E008000431FB /* SoniScope.app */;
@@ -237,9 +226,6 @@
 			);
 			mainGroup = C5FFFD8D2E25E008000431FB;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-				C55702782E287340009FC70A /* XCRemoteSwiftPackageReference "plain-pocketfft" */,
-			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = C5FFFD972E25E008000431FB /* Products */;
 			projectDirPath = "";
@@ -257,11 +243,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C5FFFE1E2E275253000431FB /* 116_1b2_Pl_sc_Meditron.wav in Resources */,
-				C55702722E286EC4009FC70A /* 115_1b1_Ar_sc_Meditron.wav in Resources */,
-				C5FFFE502E28458A000431FB /* 107_2b3_Tc_mc_AKGC417L.wav in Resources */,
-				C557027D2E28746A009FC70A /* 144_1b1_Tc_sc_Meditron.wav in Resources */,
-				C5FFFE1A2E275163000431FB /* 123_1b1_Al_sc_Meditron.wav in Resources */,
+				C5D731FC2E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav in Resources */,
+				C5D731FD2E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav in Resources */,
+				C5D731FE2E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav in Resources */,
+				C5D731FF2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav in Resources */,
+				C5D732002E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -445,7 +431,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 78KA8WL8C4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
@@ -454,7 +439,6 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -475,7 +459,6 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 78KA8WL8C4;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
@@ -484,7 +467,6 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				IPHONEOS_DEPLOYMENT_TARGET = 18.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -606,25 +588,6 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
-
-/* Begin XCRemoteSwiftPackageReference section */
-		C55702782E287340009FC70A /* XCRemoteSwiftPackageReference "plain-pocketfft" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/dhrebeniuk/plain-pocketfft.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.0.9;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
-
-/* Begin XCSwiftPackageProductDependency section */
-		C557027A2E28734C009FC70A /* PlainPocketFFT */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C55702782E287340009FC70A /* XCRemoteSwiftPackageReference "plain-pocketfft" */;
-			productName = PlainPocketFFT;
-		};
-/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = C5FFFD8E2E25E008000431FB /* Project object */;
 }
