@@ -60,7 +60,7 @@ struct CustomCalendarView: View {
             // MARK: Date Grid
             let gridItems = Array(repeating: GridItem(.flexible(minimum: 40)), count: 7)
             LazyVGrid(columns: gridItems, spacing: 10) {
-                ForEach(generateDatesForMonth().compactMap { $0 }, id: \.self) { date in
+                ForEach(generateDatesForMonth(), id: \.self) { date in
                     dateCell(for: date)
                         .frame(height: 40)
                 }

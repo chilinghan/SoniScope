@@ -32,7 +32,7 @@ struct ArchiveView: View {
                 
                 Spacer()
                 
-                Image(systemName: "person.circle.fill")
+                Image(systemName: "person.circle")
                     .font(.system(size: 30))
                     .foregroundColor(.orange)
             }
