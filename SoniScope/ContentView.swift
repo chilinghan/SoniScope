@@ -102,3 +102,7 @@ struct ContentView: View {
         return maxIndex
     }
 }
+
+#Preview {
+    ContentView()
+}

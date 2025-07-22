@@ -1,5 +1,4 @@
 #include "LVGL_Example.h"
-#include "LVGL_Music.h"
 #include <demos/lv_demos.h>
 // #include <demos/music/lv_demo_music_main.h>
 // #include <demos/music/lv_demo_music_list.h>
@@ -135,12 +134,10 @@ void Lvgl_Example1(void){
 
   lv_obj_t * t0 = lv_tabview_add_tab(tv, "       ");
   lv_obj_t * t1 = lv_tabview_add_tab(tv, "Onboard");
-  lv_obj_t * t2 = lv_tabview_add_tab(tv, "music");
   lv_obj_t * t3 = lv_tabview_add_tab(tv, "       ");
 
   // Redirect_create1(t0);
   Onboard_create(t1);
-  Music_create(t2);
   // Redirect_create2(t3);
   lv_timer_create(auto_switch, 100, NULL);
   // color_changer_create(tv);
@@ -323,14 +320,8 @@ void IRAM_ATTR example1_increase_lvgl_tick(lv_timer_t * t)
 {
   char buf[100]; 
   
-  snprintf(buf, sizeof(buf), "%d MB\r\n", SDCard_Size);
-  lv_textarea_set_placeholder_text(SD_Size, buf);
-  snprintf(buf, sizeof(buf), "%d MB\r\n", Flash_Size);
-  lv_textarea_set_placeholder_text(FlashSize, buf);
   snprintf(buf, sizeof(buf), "%.2f V\r\n", BAT_analogVolts);
   lv_textarea_set_placeholder_text(BAT_Volts, buf);
-  snprintf(buf, sizeof(buf), "X:%.2f  Y:%.2f  Z:%.2f\r\n", Accel.x, Accel.y, Accel.z);
-  lv_textarea_set_placeholder_text(Board_angle, buf);
   snprintf(buf, sizeof(buf), "%d.%d.%d   %d:%d:%d\r\n",datetime.year,datetime.month,datetime.day,datetime.hour,datetime.minute,datetime.second);
   lv_textarea_set_placeholder_text(RTC_Time, buf);
   if(Scan_finish)
@@ -343,14 +334,7 @@ void IRAM_ATTR example1_increase_lvgl_tick(lv_timer_t * t)
   lv_slider_set_value(Backlight_slider, LCD_Backlight, LV_ANIM_ON); 
   LVGL_Backlight_adjustment(LCD_Backlight);
 }
-static void Music_create(lv_obj_t * parent)
-{
-  static lv_obj_t * ctrl;
-  original_screen_bg_color = lv_obj_get_style_bg_color(parent, 0);
-  lv_obj_set_style_bg_color(parent, lv_color_hex(0x343247), 0);
 
-  ctrl = _lv_demo_music_main_create(parent);
-}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 static void color_changer_create(lv_obj_t * parent)
@@ -495,9 +479,6 @@ void Backlight_adjustment_event_cb(lv_event_t * e) {
     LCD_Backlight = Backlight;
     LVGL_Backlight_adjustment(Backlight);
   }
-  else
-    printf("Volume out of range: %d\n", Volume);
-
 }
 
 

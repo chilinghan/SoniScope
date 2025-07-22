@@ -7,6 +7,7 @@
 #include "PWR_Key.h"
 #include "LVGL_Example.h"
 #include "BAT_Driver.h"
+#include "ESP_I2S.h"
 
 void Psram_Inquiry() {
   char buffer[128];    /* Make sure buffer is enough for `sprintf` */
@@ -43,7 +44,25 @@ void Driver_Loop() {
     0                     
   );  
 }
+
+const uint8_t I2S_SCK = 48;
+const uint8_t I2S_WS = 38;
+const uint8_t I2S_DIN = 47;
+
+
+
 void setup() {
+  I2SClass i2s;
+
+  // Set up the pins used for audio input
+  i2s.setPins(I2S_SCK, I2S_WS, -1, I2S_DIN);
+
+  // Initialize the I2S bus in standard mode
+  if (!i2s.begin(I2S_MODE_STD, 44100, I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_MONO, I2S_STD_SLOT_LEFT)) {
+    Serial.println("Failed to initialize I2S bus!");
+    return;
+  }
+
   PWR_Init();
   //BAT_Init();
   //PCF85063_Init();

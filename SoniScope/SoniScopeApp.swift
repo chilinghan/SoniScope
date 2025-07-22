@@ -6,16 +6,26 @@
 //
 
 import SwiftUI
+import UIKit
+
+class AppDelegate: NSObject, UIApplicationDelegate {
+    func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
+        return .portrait
+    }
+}
 
 @main
-struct SoniScopeApp: App {
+struct YourApp: App {
+    // Connect AppDelegate
+    @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
-            ContentView()
-            HealthProfileView()
-            AudioSaverView()
-                .edgesIgnoringSafeArea(.all)
-            PairingView()
+//            ContentView()
+//            HealthProfileView()
+//            AudioSaverView()
+//                .edgesIgnoringSafeArea(.all)
+//            PairingView()
+            ArchiveView()
         }
     }
 }
