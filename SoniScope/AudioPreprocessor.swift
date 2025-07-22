@@ -12,7 +12,7 @@ import Accelerate
 
 class AudioPreprocessor {
     
-    /// Loads an audio file, resamples to 22050Hz, extracts MFCC + Mel features
+    /// Loads an audio file, extracts MFCC + Mel features
     func extractFeatures(from url: URL) -> [Double]? {
         do {
             let file = try AVAudioFile(forReading: url)

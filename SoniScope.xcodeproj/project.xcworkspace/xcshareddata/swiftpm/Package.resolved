@@ -1,0 +1,15 @@
+{
+  "originHash" : "9312c4ece64f595d62ca78dff399ab3872369efb94b28b6cc88a3fb1320f52aa",
+  "pins" : [
+    {
+      "identity" : "plain-pocketfft",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/dhrebeniuk/plain-pocketfft.git",
+      "state" : {
+        "revision" : "b9633be41ad61e40a93f58abafed9fb5e281ed18",
+        "version" : "0.0.9"
+      }
+    }
+  ],
+  "version" : 3
+}
