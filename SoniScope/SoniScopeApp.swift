@@ -16,6 +16,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct YourApp: App {
+    @StateObject var sessionStore = SessionStore()
+
     // Connect AppDelegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
@@ -25,7 +27,9 @@ struct YourApp: App {
 //            AudioSaverView()
 //                .edgesIgnoringSafeArea(.all)
 //            PairingView()
-            ArchiveView()
+//            ArchiveView().environmentObject(sessionStore)
+            HomeView()
+            
         }
     }
 }

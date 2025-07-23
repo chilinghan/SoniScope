@@ -6,9 +6,13 @@
 //
 import SwiftUI
 
+class SessionStore: ObservableObject {
+    @Published var sessions: [Session] = Session.sampleSessions
+}
+
 struct ArchiveView: View {
     @State private var selectedDate = Date()
-    let sessions: [Session] = Session.sampleSessions
+    @EnvironmentObject var sessionStore: SessionStore
 
     private var formattedDate: String {
         let formatter = DateFormatter()
@@ -53,7 +57,7 @@ struct ArchiveView: View {
             }
             
             // Filter sessions for selected date
-            let sessionsForDate = sessions.filter {
+            let sessionsForDate = sessionStore.sessions.filter {
                 Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
             }
             
