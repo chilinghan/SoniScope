@@ -9,6 +9,11 @@
 import SwiftUI
 import CoreML
 
+enum Tab {
+    case home
+    case archive
+}
+
 struct ContentView: View {
     let processor = AudioPreprocessor()
 
@@ -26,38 +31,95 @@ struct ContentView: View {
         7: "LRTI"
     ]
     
+    @State private var selectedTab: Tab = .home
+    
     var body: some View {
-        VStack(spacing: 20) {
-            Text("Prediction Result")
-                .font(.title)
-                .bold()
-            
-            Text(predictedLabel)
-                .font(.title2)
-                .multilineTextAlignment(.center)
-                .padding()
-            
-            Button("Run Prediction") {
-                if let url = Bundle.main.url(forResource: "144_1b1_Tc_sc_Meditron", withExtension: "wav") {
-                    print("✅ Found audio file at: \(url)")
-
-                    if let features = processor.extractFeatures(from: url) {
-                        runModel(with: features)
-                        print("🎯 Feature vector:\n", features)
-                    } else {
-                        print("❌ Feature extraction failed.")
-                    }
-                }
-
+        ZStack(alignment: .bottom) {
+            // Native TabView for managing navigation
+            TabView (selection: $selectedTab) {
+                StartView()
+                    .tag(Tab.home)
+                ArchiveView()
+                    .tag(Tab.archive)
             }
-            .padding()
-            .background(Color.blue)
-            .foregroundColor(.white)
-            .clipShape(RoundedRectangle(cornerRadius: 10))
+            
+            // Custom tab bar overlaid at the bottom
+            VStack(spacing: 6) {
+                HStack(spacing: 80) {
+                    tabItem(image: .orangelungs, label: "Home", tab: .home)
+                    tabItem(image: .archive, label: "Archive", tab: .archive)
+                }
+            }
+            .frame(height: 83)
+            .frame(maxWidth: .infinity)
+            .background(Color(red: 0.07, green: 0.07, blue: 0.07))
+            .padding(.horizontal, 16)
+            .padding(.bottom, 0) // 👈 Add this!
+
         }
-        .padding()
+//        VStack(spacing: 20) {
+//            Text("Prediction Result")
+//                .font(.title)
+//                .bold()
+//            
+//            Text(predictedLabel)
+//                .font(.title2)
+//                .multilineTextAlignment(.center)
+//                .padding()
+//            
+//            Button("Run Prediction") {
+//                if let url = Bundle.main.url(forResource: "144_1b1_Tc_sc_Meditron", withExtension: "wav") {
+//                    print("✅ Found audio file at: \(url)")
+//
+//                    if let features = processor.extractFeatures(from: url) {
+//                        runModel(with: features)
+//                        print("🎯 Feature vector:\n", features)
+//                    } else {
+//                        print("❌ Feature extraction failed.")
+//                    }
+//                }
+//
+//            }
+//            .padding()
+//            .background(Color.blue)
+//            .foregroundColor(.white)
+//            .clipShape(RoundedRectangle(cornerRadius: 10))
+//        }
+//        .padding()
     }
     
+    func tabItem(image: ImageResource, label: String, tab: Tab) -> some View {
+        VStack(spacing: 4) {
+            ZStack {
+                Color.clear
+                    .frame(width: 56, height: 45) // Fixed space for every image
+                
+                Image(image)
+                    .resizable()
+                    .renderingMode(.template)
+                    .scaledToFit()
+                    .frame(width: selectedTab == tab ? 56 : 45,
+                           height: selectedTab == tab ? 45 : 30)
+                    .foregroundColor(selectedTab == tab ? .orange : Color(red: 0.52, green: 0.52, blue: 0.53))
+            }
+            
+            Text(label)
+                .font(.system(size: 11, weight: .medium))
+                .foregroundColor(selectedTab == tab ? .orange : Color(red: 0.52, green: 0.52, blue: 0.53))
+        }
+        .padding(.bottom, 10)
+        .onTapGesture {
+            selectedTab = tab
+        }
+    }
+    
+    func safeAreaBottom() -> CGFloat {
+        UIApplication.shared.connectedScenes
+            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
+            .first?.safeAreaInsets.bottom ?? 0
+    }
+
+        
     func runModel(with featureArray: [Double]) {
         guard featureArray.count == 168 else {
             predictedLabel = "Invalid feature array size"

@@ -16,20 +16,12 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 @main
 struct YourApp: App {
-    @StateObject var sessionStore = SessionStore()
 
     // Connect AppDelegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     var body: some Scene {
         WindowGroup {
-//            ContentView()
-//            HealthProfileView()
-//            AudioSaverView()
-//                .edgesIgnoringSafeArea(.all)
-//            PairingView()
-//            ArchiveView().environmentObject(sessionStore)
-            HomeView()
-            
+            ContentView()
         }
     }
 }

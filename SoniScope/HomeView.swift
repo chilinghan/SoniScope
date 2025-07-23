@@ -1,108 +1,88 @@
 //
-//  HomeView.swift
+//  StartView.swift
 //  SoniScope
 //
 //  Created by Praise Durojaiye on 7/22/25.
 //
 
-
-
 import SwiftUI
 
 struct HomeView: View {
+    @State private var selectedDate = Date()
+
+    private var formattedDate: String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "EEEE, MMM d"
+        return formatter.string(from: Date()).uppercased()
+    }
     
     var body: some View {
-        
-        ZStack {
-            // Background
-            Color.black
-                .frame(width: 402, height: 902)
-                .cornerRadius(44)
-
-            // Gradient + image + arrow
-            ZStack {
-                LinearGradient(
-                    stops: [
-                        .init(color: Color(red: 0.56, green: 0.79, blue: 0.9), location: 0.00),
-                        .init(color: Color(red: 0.99, green: 0.52, blue: 0.0), location: 1.00),
-                    ],
-                    startPoint: UnitPoint(x: 0.25, y: -0.41),
-                    endPoint: UnitPoint(x: 0.77, y: 1.52)
-                )
-                .frame(width: 360, height: 52)
-                .cornerRadius(10)
-
-                Image("Rectangle 63")
-                    .resizable()
-                    .frame(width: 360, height: 52)
-                    .cornerRadius(10)
-                // Arrow symbol
-                Text(">") // SF Symbol character
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.black)
-                    .offset(x:160, y:0)
-                Text("Pair SoniScope") // SF Symbol character
-                    .font(.system(size: 18, weight: .semibold))
-                    .foregroundColor(.black)
-                    .offset(x:-100, y:0)
-                Text("SoniScope")
-                  .font(
-                    .system(size: 37, weight: .bold)
-                  )
-                  .foregroundColor(Color(red: 0.96, green: 1, blue: 0.98))
-                  .offset(x:-100, y:-540)
-                Text("FRIDAY, AUG 1")
-                  .font(
-                    Font.custom("SF Pro", size: 14)
-                      .weight(.medium)
-                  )
-                  .foregroundColor(Color(red: 0.54, green: 0.54, blue: 0.54))
-                  .offset(x:-138, y:-572)
-            }
-            
-            .offset(y: 220) // Moves the entire stack down
-            
-            // Bottom bar
-            Image("Rectangle 45")
-                .resizable()
-                .frame(width: 402, height: 83)
-                .background(Color(red: 0.07, green: 0.07, blue: 0.07))
-                .offset(y: 390)
-            
-             Image(.orangelungs)
-                .resizable() // Allows resizing
-                .frame(width: 56, height: 45) // Set your desired size
-                .offset(x: -70, y: 385) // Keep your positioning
-             Image(.archive)
-                .resizable() // Allows resizing
-                .frame(width: 45, height: 30) // Set your desired size
-                .offset(x: 70, y: 385) // Keep your positioning
+        VStack {
+            // Top bar
+            HStack {
+                VStack(alignment: .leading) {
+                    Text(formattedDate)
+                        .foregroundColor(.gray)
+                        .font(.caption)
+                    Text("SoniScope")
+                        .font(.largeTitle)
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                }
                 
-            Text("Archive")
-              .font(
-                Font.custom("SF Pro", size: 11)
-                  .weight(.medium)
-              )
-              .multilineTextAlignment(.center)
-              .foregroundColor(Color(red: 0.52, green: 0.52, blue: 0.53))
-              .offset(x: 70, y: 410)
-
-            Text("Home")
-              .font(
-                Font.custom("SF Pro", size: 11)
-                  .weight(.medium)
-              )
-              .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0.01))
-              .multilineTextAlignment(.center)
-              .foregroundColor(Color(red: 0.52, green: 0.52, blue: 0.53))
-              .offset(x:-68, y: 410)
+                Spacer()
+                
+                Image(systemName: "person.circle")
+                    .font(.system(size: 30))
+                    .foregroundColor(.orange)
+            }
+            .padding(.horizontal)
+            .padding(.top, 80)
             
+            Spacer()
+            
+            // Button
+             ZStack {
+                 LinearGradient(
+                     stops: [
+                         .init(color: Color(red: 0.56, green: 0.79, blue: 0.9), location: 0.00),
+                         .init(color: Color(red: 0.99, green: 0.52, blue: 0.0), location: 1.00),
+                     ],
+                     startPoint: UnitPoint(x: 0.25, y: -0.41),
+                     endPoint: UnitPoint(x: 0.77, y: 1.52)
+                 )
+                 .frame(width: 360, height: 52)
+                 .cornerRadius(10)
 
+                 Rectangle()
+                     .frame(width: 360, height: 52)
+                     .foregroundColor(.clear)
+                     .cornerRadius(10)
+
+                 HStack {
+                     Text("Pair SoniScope")
+                         .font(.system(size: 18, weight: .semibold))
+                     
+                     Spacer()
+                                          
+                     Image(systemName: "chevron.right")
+                         .font(.system(size: 18, weight: .semibold))
+                 }
+                 .foregroundColor(.black)
+                 .frame(width: 320, height: 52)
+
+             }
+             .padding(.bottom, 250)
+
+            
         }
-
+        .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height, alignment: .top)
+        .background(.black)
 
     }
+    
 }
+
 
 #Preview {
     HomeView()

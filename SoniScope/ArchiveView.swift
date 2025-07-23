@@ -6,13 +6,10 @@
 //
 import SwiftUI
 
-class SessionStore: ObservableObject {
-    @Published var sessions: [Session] = Session.sampleSessions
-}
 
 struct ArchiveView: View {
     @State private var selectedDate = Date()
-    @EnvironmentObject var sessionStore: SessionStore
+    @State private var sessions: [Session] = Session.sampleSessions
 
     private var formattedDate: String {
         let formatter = DateFormatter()
@@ -24,11 +21,11 @@ struct ArchiveView: View {
         VStack(spacing: 10) {
             // Top bar
             HStack {
-                VStack {
+                VStack (alignment: .leading) {
                     Text(formattedDate)
                         .foregroundColor(.gray)
                         .font(.caption)
-                    Text("Archive")
+                    Text("Calendar")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -57,7 +54,7 @@ struct ArchiveView: View {
             }
             
             // Filter sessions for selected date
-            let sessionsForDate = sessionStore.sessions.filter {
+            let sessionsForDate = sessions.filter {
                 Calendar.current.isDate($0.date, inSameDayAs: selectedDate)
             }
             
@@ -67,7 +64,7 @@ struct ArchiveView: View {
                     .padding()
             } else {
                 RecentSessionsView(sessions: sessionsForDate)
-                    .frame(maxHeight: 300) // limit height as needed
+                    .frame(maxHeight: 150) // limit height as needed
             }
         }
         .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height, alignment: .top)
