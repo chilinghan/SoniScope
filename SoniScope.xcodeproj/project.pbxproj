@@ -44,7 +44,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		C5D7324F2E2ED16500E49590 /* Exceptions for "SoniScope" folder in "SoniScope" target */ = {
+		C5D732932E304C9500E49590 /* Exceptions for "SoniScope" folder in "SoniScope" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -57,7 +57,7 @@
 		C5FFFD982E25E008000431FB /* SoniScope */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				C5D7324F2E2ED16500E49590 /* Exceptions for "SoniScope" folder in "SoniScope" target */,
+				C5D732932E304C9500E49590 /* Exceptions for "SoniScope" folder in "SoniScope" target */,
 			);
 			path = SoniScope;
 			sourceTree = "<group>";
