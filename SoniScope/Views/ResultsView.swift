@@ -157,6 +157,7 @@ struct ResultsView: View {
             }
             .frame(width: 300, height: 44)
             
+            
             Image(systemName: "play.circle")
               .font(
                 Font.custom("SF Pro", size: 24)
@@ -183,8 +184,27 @@ struct ResultsView: View {
                 Text("Jane Doe Session")
                     .font(.system(size:18))
                   .foregroundColor(.white)
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                  .padding(80)
             }
             .offset(y:-300)
+            
+            ZStack{
+                
+                
+                Rectangle()
+                    .foregroundColor(.clear)
+                    .frame(width: 360, height: 54)
+                    .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                    .cornerRadius(16)
+                
+                Text("Delete Session")
+                    .font(.system(size: 18, weight: .semibold))
+                  .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                
+            }
+            .offset(y:250)
+            
             
             
         }

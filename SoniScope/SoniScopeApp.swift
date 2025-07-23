@@ -28,7 +28,7 @@ struct YourApp: App {
 //                .edgesIgnoringSafeArea(.all)
 //            PairingView()
 //            ArchiveView().environmentObject(sessionStore)
-            StartView()
+            HomeView(accessoryManager: AccessorySessionManager())
             
         }
     }
