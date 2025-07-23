@@ -69,14 +69,14 @@ struct HomeView: View {
                 .background(Color(red: 0.07, green: 0.07, blue: 0.07))
                 .offset(y: 390)
             
-            // Image(.orangelungs)
-//                .resizable() // Allows resizing
-//                .frame(width: 56, height: 45) // Set your desired size
-//                .offset(x: -70, y: 385) // Keep your positioning
-            // Image(.archive)
-//                .resizable() // Allows resizing
-//                .frame(width: 45, height: 30) // Set your desired size
-//                .offset(x: 70, y: 385) // Keep your positioning
+             Image(.orangelungs)
+                .resizable() // Allows resizing
+                .frame(width: 56, height: 45) // Set your desired size
+                .offset(x: -70, y: 385) // Keep your positioning
+             Image(.archive)
+                .resizable() // Allows resizing
+                .frame(width: 45, height: 30) // Set your desired size
+                .offset(x: 70, y: 385) // Keep your positioning
                 
             Text("Archive")
               .font(
