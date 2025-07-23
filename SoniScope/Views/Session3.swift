@@ -16,15 +16,32 @@
 import SwiftUI
 
 struct Session3: View {
-    @State private var isShowingRecordingViewer = false
+    @State private var showStartView = false
+    @State private var navigateToRecordingViewer = false
     
     var body: some View {
+        ZStack {
+            if showStartView {
+                StartView()
+                    .transition(.move(edge: .leading)) // Slide from right to left (back)
+                    .animation(.easeInOut, value: showStartView)
+            } else {
+                mainView
+                    .transition(.move(edge: .trailing)) // Slide in from left
+                    .animation(.easeInOut, value: showStartView)
+            }
+        }
+        .background(Color.black)
+        .navigationBarBackButtonHidden(true)
+    }
+    
+    var mainView: some View {
         ZStack {
             Rectangle()
                 .foregroundColor(.clear)
                 .frame(width: 482, height: 104)
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                .offset(y:-410)
+                .offset(y:-400)
             
             Rectangle()
                 .foregroundColor(.clear)
@@ -45,28 +62,24 @@ struct Session3: View {
                     .foregroundColor(.white)
 
                 // Left-aligned End Button
-                HStack(spacing: 3) {
-                    Image(systemName: "chevron.left")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                Button(action: {
+                    showStartView = true  // Trigger slide back to StartView
+                }) {
+                    HStack(spacing: 3) {
+                        Image(systemName: "chevron.left")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
 
-                    Text("End")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-                }
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .onTapGesture {
-                    // Dismiss to root view
-                    if let window = UIApplication.shared.connectedScenes
-                        .compactMap({ $0 as? UIWindowScene })
-                        .first?.windows.first {
-                        window.rootViewController?.dismiss(animated: true)
+                        Text("End")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
                     }
                 }
+                .frame(maxWidth: .infinity, alignment: .leading)
             }
             .padding(.horizontal, 50)
             .padding(.top, 10)
-            .offset(y: -382)
+            .offset(y: -378)
             
             Circle()
                 .frame(width: 25, height: 25)
@@ -81,9 +94,16 @@ struct Session3: View {
                 .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: -10)
                 .offset(y:220)
             
-            // Next Step Button - Now navigates to RecordingViewer
+            // NavigationLink for RecordingViewer (hidden)
+            NavigationLink(destination: RecordingViewer()
+                            .navigationBarBackButtonHidden(true),
+                           isActive: $navigateToRecordingViewer) {
+                EmptyView()
+            }
+
+            // Next Step Button - triggers navigation
             Button(action: {
-                isShowingRecordingViewer = true
+                navigateToRecordingViewer = true
             }) {
                 ZStack {
                     Rectangle()
@@ -115,13 +135,13 @@ struct Session3: View {
                 .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(60)
-                .offset(y:150)
+                .offset(y:180)
             
             Rectangle()
                 .foregroundColor(.clear)
                 .frame(width: 370, height: 1)
                 .background(Color(red: 0.25, green: 0.25, blue: 0.27))
-                .offset(y:85)
+                .offset(y:90)
             
             ZStack {
                 ZStack {
@@ -157,12 +177,6 @@ struct Session3: View {
             .offset(y:50)
         }
         .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
-        .background(.black)
-        .navigationDestination(isPresented: $isShowingRecordingViewer) {
-            RecordingViewer() // Your recording viewer view
-                .navigationBarBackButtonHidden(true)
-        }
-        
     }
 }
 

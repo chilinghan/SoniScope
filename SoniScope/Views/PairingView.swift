@@ -124,6 +124,3 @@ struct PairingView: View {
     }
 }
 
-#Preview {
-    ContentView()
-}

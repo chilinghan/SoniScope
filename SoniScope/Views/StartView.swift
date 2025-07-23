@@ -91,6 +91,9 @@ struct StartView: View {
                     EmptyView()
                 }
             }
+            .navigationBarBackButtonHidden(true)
+
+            
         }
     }
 }

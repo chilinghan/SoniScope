@@ -40,17 +40,6 @@ struct RecordingViewer: View {
                     Text("Session")
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.white)
-
-                    HStack(spacing: 3) {
-                        Image(systemName: "chevron.left")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-
-                        Text("End")
-                            .font(.system(size: 18, weight: .semibold))
-                            .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-                    }
-                    .frame(maxWidth: .infinity, alignment: .leading)
                 }
                 .padding(.horizontal, 50)
                 .padding(.top, 10)
@@ -95,14 +84,14 @@ struct RecordingViewer: View {
                     .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(60)
-                    .offset(y: 150)
+                    .offset(y: 180)
                 
                 // Divider
                 Rectangle()
                     .foregroundColor(.clear)
                     .frame(width: 370, height: 1)
                     .background(Color(red: 0.25, green: 0.25, blue: 0.27))
-                    .offset(y: 85)
+                    .offset(y: 90)
                 
                 // Step indicator
                 ZStack {
@@ -217,8 +206,8 @@ struct RecordingViewer: View {
                 }
             }
         }
-        .navigationViewStyle(.stack)
         .navigationBarBackButtonHidden(true)
+        .navigationViewStyle(.stack)
     }
     
     private func timeString(from seconds: Int) -> String {

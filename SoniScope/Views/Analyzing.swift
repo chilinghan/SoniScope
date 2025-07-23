@@ -108,6 +108,7 @@ struct Analyzing: View {
                 }
             }
         }
+        .navigationBarBackButtonHidden(true)
         .navigationViewStyle(.stack)
     }
 }
