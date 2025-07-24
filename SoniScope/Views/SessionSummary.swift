@@ -1,11 +1,6 @@
-//
-//  SessionSummary.swift
-//  SoniScope
-//
-//  Created by Venkata Siva Ramisetty on 7/23/25.
-//
-
 import SwiftUI
+import AVFoundation
+import CoreData
 
 struct Constants {
     static let ColorsBlue: Color = Color(red: 0, green: 0.53, blue: 1)
@@ -13,172 +8,186 @@ struct Constants {
 }
 
 struct SessionSummary: View {
+    @Environment(\.dismiss) private var dismiss
+    @Environment(\.managedObjectContext) private var viewContext
     let session: SessionEntity
 
+    @State private var audioPlayer: AVAudioPlayer?
+
     var body: some View {
-        ZStack {
-            Rectangle()
-              .foregroundColor(.clear)
-              .frame(width: 360, height: 137)
-              .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-              .cornerRadius(16)
+        GeometryReader { geometry in
+            ScrollView {
+                VStack(spacing: 24) {
+                    // Header with back navigation
+                    HStack {
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(.chevron)
+                                    .resizable()
+                                    .frame(width: 24, height: 24)
 
-            Image("Rectangle 1")
-              .frame(width: 402, height: 83)
-              .background(Color(red: 0.07, green: 0.07, blue: 0.07))
-              .offset(x:0, y:380)
+                                Text(formattedMonth(session.timestamp))
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PlainButtonStyle())
 
-            Text("Session Details")
-              .font(.system(size: 18, weight: .medium))
-              .foregroundColor(.white)
-              .offset(x:0, y:-370)
+                        Spacer()
 
-            Text("Edit")
-              .font(.system(size: 18, weight: .medium))
-              .multilineTextAlignment(.trailing)
-              .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-              .offset(x:130, y:-370)
+                        Text("Session Details")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(.white)
 
-            Image(systemName: "square.and.arrow.up")
-              .font(.system(size: 18))
-              .multilineTextAlignment(.trailing)
-              .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-              .offset(x:170, y:-373)
+                        Spacer()
 
-            Text(formattedMonth(session.timestamp))
-              .font(.system(size: 18, weight: .medium))
-              .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-              .offset(x:-145, y:-370)
+                        HStack(spacing: 16) {
+                            Text("Edit")
+                                .font(.system(size: 18, weight: .medium))
+                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
 
-            Rectangle()
-              .foregroundColor(.clear)
-              .frame(width: 50, height: 36)
-              .background(
-                Image(.chevron)
-                  .resizable()
-                  .aspectRatio(contentMode: .fill)
-                  .frame(width: 50, height: 36)
-                  .clipped()
-              )
-              .offset(x:-180, y:-370)
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 18))
+                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                                .offset(y:-3)
+                        }
+                    }
+                    .padding(.horizontal)
 
-            Text(session.name ?? "Untitled Session")
-              .font(.system(size: 24, weight: .bold))
-              .foregroundColor(.white)
-              .offset(x:-90, y:-320)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(session.name ?? "Untitled Session")
+                            .font(.system(size: 24, weight: .bold))
+                            .foregroundColor(.white)
 
-            Text(formattedDate(session.timestamp))
-              .font(.system(size: 18, weight: .medium))
-              .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-              .offset(x:-108, y:-280)
+                        Text(formattedDate(session.timestamp))
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
 
-            Text("from 10:45 to 10:47") // Optional: make dynamic later
-              .font(.system(size: 18))
-              .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-              .offset(x:-108, y:-255)
+                        Text("from 10:45 to 10:47")
+                            .font(.system(size: 18))
+                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
+                    }
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding()
+                    .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                    .cornerRadius(16)
+                    .padding(.horizontal)
 
-            Text("Delete Session")
-              .font(.system(size: 18, weight: .bold))
-              .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-              .offset(x:0, y:380)
+                    VStack(alignment: .leading, spacing: 12) {
+                        Label(session.diagnosis ?? "Diagnosis Unknown", systemImage: "checkmark.circle.fill")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
 
-            Image("Rectangle 79")
-              .frame(width: 360, height: 132)
-              .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-              .cornerRadius(16)
-              .offset(x:0, y:-150)
+                        Text("This recording does not show signs of lung disease. SoniScope can not provide a formal diagnosis.")
+                            .font(.system(size: 18))
+                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                    .cornerRadius(16)
+                    .padding(.horizontal)
 
-            Rectangle()
-              .foregroundColor(.clear)
-              .frame(width: 360, height: 88)
-              .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-              .cornerRadius(16)
-              .offset(x:0, y:130)
+                    VStack(alignment: .leading, spacing: 16) {
+                        HStack {
+                            Text("Recording")
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(.white)
 
-            Label(session.diagnosis ?? "Diagnosis Unknown", systemImage: "checkmark.circle.fill")
-              .font(.system(size: 18, weight: .medium))
-              .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-              .offset(x:-125, y:-200)
+                            Spacer()
 
-            Text("Notes")
-              .font(.system(size: 18, weight: .semibold))
-              .foregroundColor(.white)
-              .offset(x:-140, y:110)
+                            Image(systemName: "waveform.circle")
+                                .font(.system(size: 28))
+                                .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                        }
 
-            Text("Recording")
-              .font(.system(size: 18, weight: .semibold))
-              .foregroundColor(.white)
-              .offset(x:-125,y:-50)
+                        HStack {
+                            Text("00:11")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(.gray)
 
-            Text(session.notes ?? "Write notes here...")
-              .font(.system(size: 18))
-              .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-              .offset(x:-94,y:135)
+                            Spacer()
 
-            Text("This recording does not show signs of lung disease. SoniScope can not provide a formal diagnosis.")
-              .font(.system(size: 18))
-              .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-              .frame(width: 334, alignment: .leading)
-              .offset(x:0, y:-150)
+                            Text("00:20")
+                                .font(.system(size: 12, weight: .semibold))
+                                .foregroundColor(.gray)
+                        }
 
-            Image(systemName:"waveform.circle")
-              .font(Font.custom("SF Pro", size: 28).weight(.semibold))
-              .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-              .offset(x:155,y:-50)
+                        ZStack(alignment: .leading) {
+                            Capsule()
+                                .fill(Constants.FillsPrimary)
+                                .frame(height: 6)
 
-            Text("00:11")
-              .font(.system(size: 12, weight: .semibold))
-              .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
-              .offset(x:-120, y:30)
+                            Capsule()
+                                .fill(
+                                    LinearGradient(
+                                        colors: [
+                                            Color(red: 0.99, green: 0.52, blue: 0),
+                                            Color(red: 0.56, green: 0.79, blue: 0.9)
+                                        ],
+                                        startPoint: .leading,
+                                        endPoint: .trailing
+                                    )
+                                )
+                                .frame(width: geometry.size.width * 0.4, height: 6)
+                        }
 
-            Text("00:20")
-              .font(.system(size: 12, weight: .semibold))
-              .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
-              .offset(x:120, y:30)
+                        HStack {
+                            Button(action: playAudio) {
+                                Image(systemName: "play.circle")
+                                    .font(.system(size: 24, weight: .bold))
+                                    .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                            }
 
-            ZStack {
-                HStack {
-                    ZStack {}
-                        .frame(width: 6, height: 6)
-                        .background(Constants.ColorsBlue)
-                        .cornerRadius(3)
-                        .padding(.trailing, 262)
-                        .frame(width: 268, alignment: .leading)
-                        .background(Constants.FillsPrimary)
-                        .cornerRadius(3)
+                            Spacer()
+
+                            Image(systemName: "speaker.wave.2.circle")
+                                .font(.system(size: 24, weight: .bold))
+                                .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                        }
+                    }
+                    .padding()
+                    .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                    .cornerRadius(16)
+                    .padding(.horizontal)
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text("Notes")
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundColor(.white)
+
+                        Text(session.notes ?? "Write notes here...")
+                            .font(.system(size: 18))
+                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                    .padding()
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                    .cornerRadius(16)
+                    .padding(.horizontal)
+
+                    Button(action: deleteSession) {
+                        Text("Delete Session")
+                            .font(.system(size: 18, weight: .bold))
+                            .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(Color(red: 0.07, green: 0.07, blue: 0.07))
+                            .cornerRadius(16)
+                    }
+                    .padding(.horizontal)
                 }
-                .frame(width: 300, height: 44)
-                .offset(y:15)
-
-                Rectangle()
-                  .foregroundColor(.clear)
-                  .frame(width: 145, height: 6)
-                  .background(
-                    LinearGradient(
-                      stops: [
-                        .init(color: Color(red: 0.99, green: 0.52, blue: 0), location: 0),
-                        .init(color: Color(red: 0.56, green: 0.79, blue: 0.9), location: 1)
-                      ],
-                      startPoint: .leading,
-                      endPoint: .trailing
-                    )
-                  )
-                  .cornerRadius(3)
-                  .offset(x:-62, y:15)
+                .padding(.top, 24)
+                .padding(.bottom, 100)
             }
-
-            Image(systemName: "play.circle")
-              .font(Font.custom("SF Pro", size: 24).weight(.bold))
-              .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-              .offset(x:-150, y:15)
-
-            Image(systemName: "speaker.wave.2.circle")
-              .font(Font.custom("SF Pro", size: 24).weight(.bold))
-              .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-              .offset(x:150, y:15)
+            .background(Color.black.ignoresSafeArea())
         }
-        .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
-        .background(Color.black)
+        .navigationBarBackButtonHidden(true)
     }
 
     private func formattedDate(_ date: Date?) -> String {
@@ -193,5 +202,30 @@ struct SessionSummary: View {
         let formatter = DateFormatter()
         formatter.dateFormat = "LLLL"
         return formatter.string(from: date)
+    }
+
+    private func playAudio() {
+        guard let path = session.audioPath else {
+            print("⚠️ No audio path saved")
+            return
+        }
+
+        let fileURL = URL(fileURLWithPath: path)
+        do {
+            audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
+            audioPlayer?.play()
+        } catch {
+            print("⚠️ Could not play audio: \(error)")
+        }
+    }
+
+    private func deleteSession() {
+        viewContext.delete(session)
+        do {
+            try viewContext.save()
+            dismiss()
+        } catch {
+            print("⚠️ Failed to delete session: \(error)")
+        }
     }
 }
