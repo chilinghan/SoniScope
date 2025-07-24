@@ -18,7 +18,7 @@ struct RecordingView: View {
                 .foregroundColor(.clear)
                 .frame(width: 482, height: 104)
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                .offset(y: -410)
+                .offset(y: -400)
 
             // Header
             ZStack {
@@ -28,7 +28,7 @@ struct RecordingView: View {
             }
             .padding(.horizontal, 50)
             .padding(.top, 10)
-            .offset(y: -382)
+            .offset(y: -370)
 
             Rectangle()
                 .foregroundColor(.clear)
@@ -36,7 +36,7 @@ struct RecordingView: View {
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                 .cornerRadius(30)
                 .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: -10)
-                .offset(y: 220)
+                .offset(y: 260)
 
             // Recording Button
             ZStack {
@@ -61,22 +61,27 @@ struct RecordingView: View {
                     .multilineTextAlignment(.center)
                     .foregroundColor(.black)
             }
-            .offset(y: 325)
+            .offset(y: 310)
 
             // Instructions
-            Text("Breathe normally and deeply. Maintain quiet environment during recording.")
-                .font(.system(size: 20, weight: .medium))
-                .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
-                .frame(maxWidth: .infinity, alignment: .leading)
-                .padding(60)
-                .offset(y: 150)
+            HStack{
+                Text("Breathe normally and deeply. Maintain quiet environment during recording.")
+                    .font(.system(size: 20, weight: .medium))
+                    .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
+                    .multilineTextAlignment(.leading)
+                    .fixedSize(horizontal: false, vertical: true)
+                Spacer()
+            }
+            .padding(60)
+            .offset(y: 200)
+
 
             // Divider
             Rectangle()
                 .foregroundColor(.clear)
                 .frame(width: 370, height: 1)
                 .background(Color(red: 0.25, green: 0.25, blue: 0.27))
-                .offset(y: 85)
+                .offset(y: 130)
 
             // Step indicator
             ZStack {
@@ -107,7 +112,7 @@ struct RecordingView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
             }
             .padding(60)
-            .offset(y: 50)
+            .offset(y: 90)
 
             // Recording Indicator
             HStack(alignment: .top, spacing: 3) {

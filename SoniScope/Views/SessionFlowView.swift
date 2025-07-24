@@ -18,8 +18,6 @@ struct SessionFlowView: View {
     @State private var step: Step = .session1
 
     var body: some View {
-        NavigationStack {
-            ZStack {
                 switch step {
                 case .session1:
                     Session1(onNext: { step = .session2 })
@@ -35,10 +33,7 @@ struct SessionFlowView: View {
                     RecordingSuccess(onNext: { step = .results })
                 case .results:
                     ResultsView(onFinish: { dismiss() })
-                }
-            }
-            .background(Color.black)
-            .ignoresSafeArea()
+            
         }
     }
 }

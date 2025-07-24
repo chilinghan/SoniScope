@@ -10,7 +10,7 @@ struct Session2: View {
                     .foregroundColor(.clear)
                     .frame(width: 482, height: 104)
                     .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                    .offset(y: -410)
+                    .offset(y: -400)
                 
                 Rectangle()
                     .foregroundColor(.clear)
@@ -22,7 +22,8 @@ struct Session2: View {
                             .frame(width: 339 * 1.4, height: 412 * 1.4)
                             .clipped()
                     )
-                    .offset(y: -110)
+                    .offset(y: -90)
+                
                 
                 ZStack {
                     Text("Session")
@@ -31,12 +32,12 @@ struct Session2: View {
                 }
                 .padding(.horizontal, 50)
                 .padding(.top, 10)
-                .offset(y: -382)
+                .offset(y: -370)
                 
                 Circle()
                     .frame(width: 25, height: 25)
                     .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-                    .offset(x: -70, y: -230)
+                    .offset(x: -70, y: -210)
                 
                 Rectangle()
                     .foregroundColor(.clear)
@@ -44,7 +45,7 @@ struct Session2: View {
                     .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                     .cornerRadius(30)
                     .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: -10)
-                    .offset(y: 220)
+                    .offset(y: 260)
                 
                 Button(action: {
                     onNext()
@@ -72,20 +73,25 @@ struct Session2: View {
                             .foregroundColor(.black)
                     }
                 }
-                .offset(y: 325)
+                .offset(y: 310)
                 
-                Text("Place SoniScope firmly against skin. Ensure good contact without excessive pressure.")
-                    .font(.system(size: 20, weight: .medium))
-                    .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(60)
-                    .offset(y: 150)
+                HStack{
+                    Text("Place SoniScope firmly against skin. Ensure good contact without excessive pressure.")
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundColor(Color(red: 0.6, green: 0.6, blue: 0.6))
+                        .multilineTextAlignment(.leading)
+                        .fixedSize(horizontal: false, vertical: true)
+                    Spacer()
+                }
+                .padding(60)
+                .offset(y: 200)
+
                 
                 Rectangle()
                     .foregroundColor(.clear)
                     .frame(width: 370, height: 1)
                     .background(Color(red: 0.25, green: 0.25, blue: 0.27))
-                    .offset(y: 85)
+                    .offset(y: 130)
                 
                 ZStack {
                     ZStack {
@@ -118,7 +124,7 @@ struct Session2: View {
                         .frame(maxWidth: .infinity, alignment: .center)
                 }
                 .padding(60)
-                .offset(y: 50)
+                .offset(y: 90)
             }
             .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
             .background(.black)

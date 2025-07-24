@@ -27,7 +27,7 @@ struct AnalyzingView: View {
                     .foregroundColor(.clear)
                     .frame(width: 482, height: 104)
                     .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                    .offset(y: -410)
+                    .offset(y: -400)
 
                 // Header
                 ZStack {
@@ -37,7 +37,7 @@ struct AnalyzingView: View {
                 }
                 .padding(.horizontal, 50)
                 .padding(.top, 10)
-                .offset(y: -382)
+                .offset(y: -370)
 
                 // Progress bar
                 ZStack {

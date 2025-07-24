@@ -10,7 +10,7 @@ struct RecordingSuccess: View {
                 .foregroundColor(.clear)
                 .frame(width: 482, height: 104)
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                .offset(y: -410)
+                .offset(y: -400)
             
             // Header
             ZStack {
@@ -20,7 +20,7 @@ struct RecordingSuccess: View {
             }
             .padding(.horizontal, 50)
             .padding(.top, 10)
-            .offset(y: -382)
+            .offset(y: -370)
             
             VStack {
                 Image(systemName: "checkmark.circle")
@@ -38,7 +38,7 @@ struct RecordingSuccess: View {
         .background(.black)
         .onAppear {
             // Auto-advance after 2 seconds
-            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
                 onNext()
             }
         }
