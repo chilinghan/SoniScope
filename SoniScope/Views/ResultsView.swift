@@ -56,52 +56,55 @@ struct ResultsView: View {
             
             
     ZStack{
-                    Image("Rectangle 79")
-                        .frame(width: 360, height: 132)
-                        .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                        .cornerRadius(16)
-                        .offset(x:0, y:-150)
+        Image("Rectangle 79")
+                        .frame(width: 360, height: 132)
+                    .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                        .cornerRadius(16)
+                        .offset(x:0, y:-150)
 
-                    Label("Healthy", systemImage: "checkmark.circle.fill")
-                        .font(.system(size:18, weight:.medium))
-                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-                        .offset(x:-125, y:-200)
+        Label("Healthy", systemImage: "checkmark.circle.fill")
+                        .font(.system(size:18, weight:.medium))
+                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                        .offset(x:-125, y:-200)
+        
         HStack{
-                            Text("This recording does not show signs of lung disease. SoniScope can not provide a formal diagnosis.")
-                                .font(.system(size:18))
-                                .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-                                .frame(width: 334, alignment: .leading)
-                                
+            Text("This recording does not show signs of lung disease. SoniScope can not provide a formal diagnosis.")
+                .font(.system(size: 18))
+                .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
+                .multilineTextAlignment(.leading)
+                .fixedSize(horizontal: false, vertical: true)
+            Spacer()
         }
-        .offset(x:0, y:-150)
-                }
-                .offset(y:-50)
+        .padding(80)
+        .offset(y: -145)
+    }
+                .offset(y:-50)
 
-                ZStack{
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 360, height: 88)
-                        .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                        .cornerRadius(16)
-                        .offset(x:0, y:130)
+            ZStack{
+                Rectangle()
+                        .foregroundColor(.clear)
+                        .frame(width: 360, height: 88)
+                        .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                        .cornerRadius(16)
+                        .offset(x:0, y:130)
 
-                    Text("Notes")
-                        .font(.system(size:18, weight: .semibold))
-                        .foregroundColor(.white)
-                        .offset(x:-140, y:110)
+                Text("Notes")
+                        .font(.system(size:18, weight: .semibold))
+                        .foregroundColor(.white)
+                        .offset(x:-140, y:110)
 
-                    Text("Write notes here..")
-                        .font(.system(size:18))
-                        .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-                        .offset(x:-94,y:135)
-                }
-                .offset(y:-50)
+                Text("Write notes here..")
+                        .font(.system(size:18))
+                        .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
+                        .offset(x:-94,y:135)
+            }
+                .offset(y:-50)
 
-                ZStack{
-                    Rectangle()
-                        .foregroundColor(.clear)
-                        .frame(width: 360, height: 137)
-                        .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+            ZStack{
+                Rectangle()
+                        .foregroundColor(.clear)
+                        .frame(width: 360, height: 137)
+                        .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                         .cornerRadius(16)
 
                     Text("00:11")
@@ -208,8 +211,11 @@ struct ResultsView: View {
                 .offset(y:170)
             }
             .navigationBarBackButtonHidden(true)
+            .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height)
+            .background(Color.black)
 
         }
+
 
     }
 
