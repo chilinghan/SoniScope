@@ -12,6 +12,7 @@ import CoreML
 enum Tab {
     case home
     case archive
+    case start
 }
 
 struct ContentView: View {
@@ -37,7 +38,7 @@ struct ContentView: View {
         ZStack(alignment: .bottom) {
             // Native TabView for managing navigation
             TabView (selection: $selectedTab) {
-                StartView()
+                StartView() // HomeView(accessoryManager: AccessorySessionManager())
                     .tag(Tab.home)
                 ArchiveView()
                     .tag(Tab.archive)
@@ -50,12 +51,11 @@ struct ContentView: View {
                     tabItem(image: .archive, label: "Archive", tab: .archive)
                 }
             }
-            .frame(height: 83)
-            .frame(maxWidth: .infinity)
+            .frame(width: UIScreen.main.bounds.size.width, height: 77)
+            .cornerRadius(16)
             .background(Color(red: 0.07, green: 0.07, blue: 0.07))
             .padding(.horizontal, 16)
-            .padding(.bottom, 0) // 👈 Add this!
-
+            .padding(.bottom, 0)
         }
 //        VStack(spacing: 20) {
 //            Text("Prediction Result")

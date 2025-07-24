@@ -14,14 +14,23 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
+
 @main
-struct YourApp: App {
+struct SoniScopeApp: App {
 
     // Connect AppDelegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
+    @AppStorage("isSignedIn") var isSignedIn: Bool = false
+
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            if isSignedIn {
+                ContentView()
+            } else {
+                ContentView()
+                // LoginView()
+            }
         }
     }
+    
 }

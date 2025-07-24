@@ -18,14 +18,14 @@ struct ArchiveView: View {
     }
     
     var body: some View {
-        VStack(spacing: 10) {
+        VStack {
             // Top bar
             HStack {
-                VStack (alignment: .leading) {
+                VStack(alignment: .leading, spacing: 4) {
                     Text(formattedDate)
                         .foregroundColor(.gray)
                         .font(.caption)
-                    Text("Calendar")
+                    Text("Logs")
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -40,7 +40,6 @@ struct ArchiveView: View {
             .padding(.horizontal)
             .padding(.top, 80)
 
-            
             CustomCalendarView(selectedDate: $selectedDate)
                 .padding()
             
@@ -61,14 +60,15 @@ struct ArchiveView: View {
             if sessionsForDate.isEmpty {
                 Text("No sessions on this date.")
                     .foregroundColor(.gray)
-                    .padding()
+                    .padding(.vertical, 20)
             } else {
                 RecentSessionsView(sessions: sessionsForDate)
                     .frame(maxHeight: 150) // limit height as needed
             }
         }
         .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height, alignment: .top)
-        .background(.black)
+        .background(Color.black)
+        .ignoresSafeArea()
 
     }
 }
