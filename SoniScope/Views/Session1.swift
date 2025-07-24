@@ -2,6 +2,7 @@ import SwiftUI
 
 struct Session1: View {
     var onNext: () -> Void = {}
+    var onEnd: () -> Void = {} // <-- Add this line
     
     @State private var navigateToSession2 = false
 
@@ -31,10 +32,24 @@ struct Session1: View {
                         .font(.system(size: 18, weight: .semibold))
                         .foregroundColor(.white)
                     
+                    Button(action: {
+                                onEnd()
+                                    }) {
+                                        HStack(spacing: 3) {
+                                            Image(systemName: "chevron.left")
+                                                .font(.system(size: 18, weight: .semibold))
+                                                .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                                            Text("End")
+                                                .font(.system(size: 18, weight: .semibold))
+                                                .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                                        }
+                                    }
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                    
                 }
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 65)
                 .padding(.top, 10)
-                .offset(y: -370)
+                .offset(y: -366)
                 
                 Circle()
                     .frame(width: 25, height: 25)
