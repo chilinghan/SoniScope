@@ -44,9 +44,9 @@ struct Session2: View {
                                     }
                                     .frame(maxWidth: .infinity, alignment: .leading)
                 }
-                .padding(.horizontal, 50)
+                .padding(.horizontal, 65)
                 .padding(.top, 10)
-                .offset(y: -370)
+                .offset(y: -366)
                 
                 Circle()
                     .frame(width: 25, height: 25)

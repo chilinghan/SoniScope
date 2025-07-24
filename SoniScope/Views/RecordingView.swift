@@ -26,9 +26,9 @@ struct RecordingView: View {
                     .font(.system(size: 18, weight: .semibold))
                     .foregroundColor(.white)
             }
-            .padding(.horizontal, 50)
+            .padding(.horizontal, 65)
             .padding(.top, 10)
-            .offset(y: -370)
+            .offset(y: -366)
 
             Rectangle()
                 .foregroundColor(.clear)
