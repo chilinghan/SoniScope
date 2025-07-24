@@ -15,25 +15,7 @@ struct HomeView: View {
         NavigationStack {
             VStack {
                 // MARK: Top Bar
-                HStack {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(formattedDate)
-                            .foregroundColor(.gray)
-                            .font(.caption)
-                        Text("SoniScope")
-                            .font(.largeTitle)
-                            .fontWeight(.bold)
-                            .foregroundColor(.white)
-                    }
-
-                    Spacer()
-
-                    Image(systemName: "person.circle")
-                        .font(.system(size: 30))
-                        .foregroundColor(.orange)
-                }
-                .padding(.horizontal)
-                .padding(.top, 80)
+                HeaderView(title: "SoniScope")
 
                 Spacer()
 

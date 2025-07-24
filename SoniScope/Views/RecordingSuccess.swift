@@ -24,7 +24,7 @@ struct RecordingSuccess: View {
             
             VStack {
                 Image(systemName: "checkmark.circle")
-                    .font(.system(size: 96, weight: .medium))
+                    .font(.system(size: 96, weight: .light))
                     .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
                     .padding(10)
                 

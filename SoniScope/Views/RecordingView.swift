@@ -30,11 +30,10 @@ struct RecordingView: View {
             .padding(.top, 10)
             .offset(y: -370)
 
-            Rectangle()
+            RoundedRectangle(cornerRadius: 30)
                 .foregroundColor(.clear)
                 .frame(width: 402, height: 423)
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                .cornerRadius(30)
                 .shadow(color: .black.opacity(0.25), radius: 2, x: 0, y: -10)
                 .offset(y: 260)
 

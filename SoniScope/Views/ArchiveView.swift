@@ -10,35 +10,11 @@ import SwiftUI
 struct ArchiveView: View {
     @State private var selectedDate = Date()
     @State private var sessions: [Session] = Session.sampleSessions
-
-    private var formattedDate: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "EEEE, MMM d"
-        return formatter.string(from: Date()).uppercased()
-    }
     
     var body: some View {
         VStack {
             // Top bar
-            HStack {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(formattedDate)
-                        .foregroundColor(.gray)
-                        .font(.caption)
-                    Text("Logs")
-                        .font(.largeTitle)
-                        .fontWeight(.bold)
-                        .foregroundColor(.white)
-                }
-                
-                Spacer()
-                
-                Image(systemName: "person.circle")
-                    .font(.system(size: 30))
-                    .foregroundColor(.orange)
-            }
-            .padding(.horizontal)
-            .padding(.top, 80)
+            HeaderView(title: "Logs")
 
             CustomCalendarView(selectedDate: $selectedDate)
                 .padding()

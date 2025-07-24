@@ -1,17 +1,17 @@
 //
-//  HealthProfileViewModel.swift
+//  HealthDataManager.swift
 //  SoniScope
 //
-//  Created by Chiling Han on 7/21/25.
+//  Created by Chiling Han on 7/24/25.
 //
 
 
 import Foundation
 import HealthKit
 
-class HealthProfileViewModel: ObservableObject {
-    private var healthStore = HKHealthStore()
-    
+class HealthDataManager: ObservableObject {
+    private let healthStore = HKHealthStore()
+
     @Published var dateOfBirth: String = "Not available"
     @Published var biologicalSex: String = "Not available"
     @Published var bloodType: String = "Not available"
