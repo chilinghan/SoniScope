@@ -2,11 +2,10 @@
 //  SoniScopeApp.swift
 //  SoniScope
 //
-//  Created by Chiling Han on 7/14/25.
-//
 
 import SwiftUI
 import UIKit
+import CoreData // ✅ REQUIRED for NSManagedObjectContext
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -14,23 +13,26 @@ class AppDelegate: NSObject, UIApplicationDelegate {
     }
 }
 
-
 @main
 struct SoniScopeApp: App {
-
-    // Connect AppDelegate
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @AppStorage("isSignedIn") var isSignedIn: Bool = false
 
+    let persistenceController = PersistenceController.shared
+
+    // ✅ Setup context first
+    var context: NSManagedObjectContext {
+        persistenceController.container.viewContext
+    }
+
+    // ✅ Properly initialize SessionManager using StateObject + wrappedValue
+    @StateObject private var sessionManager = SessionManager()
+
     var body: some Scene {
         WindowGroup {
-            if isSignedIn {
-                ContentView()
-            } else {
-                ContentView()
-                // LoginView()
-            }
+            ContentView()
+                .environment(\.managedObjectContext, context)
+                .environmentObject(sessionManager)
         }
     }
-    
 }

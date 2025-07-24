@@ -1,115 +1,69 @@
 //
 //  RecentSessionsView.swift
-//  YourAppName
+//  SoniScope
 //
 //  Created by Chiling Han on 7/22/25.
 //
 
 import SwiftUI
+import CoreData
 
-// MARK: - Session Model
+// MARK: - Helper Functions
 
-struct Session: Identifiable {
-    let id = UUID()
-    let title: String
-    let date: Date          // Session start date & time
-    let duration: TimeInterval // Duration in seconds
-}
-
-// MARK: - Sample Data
-
-extension Session {
-    static let sampleSessions: [Session] = [
-        Session(title: "Healthy", date: Date().addingTimeInterval(-3600 * 6), duration: 65), // 6 hrs ago, 1 hr
-        Session(title: "Healthy", date: Date().addingTimeInterval(-3600 * 2), duration: 84), // 2 hrs ago, 30 min
-        
-        Session(title: "Healthy", date: Date(), duration: 72), // yesterday 9AM, 2hr
-        
-        Session(title: "Healthy", date: Calendar.current.date(byAdding: .day, value: -3, to: Date())!.addingTimeInterval(3600 * 12), duration: 93), // 3 days ago 12PM, 1.5hr
-    ]
-}
-
-// MARK: - Helpers for Formatting
-func dateString(from date: Date) -> String {
+func formattedDate(_ date: Date?) -> String {
+    guard let date = date else { return "Unknown Date" }
     let formatter = DateFormatter()
     formatter.dateStyle = .medium
     return formatter.string(from: date)
 }
 
-func timeString(from date: Date) -> String {
+func formattedTime(_ date: Date?) -> String {
+    guard let date = date else { return "Unknown Time" }
     let formatter = DateFormatter()
     formatter.timeStyle = .short
     return formatter.string(from: date)
 }
 
-func durationString(from interval: TimeInterval) -> String {
-    let minutes = Int(interval) / 60
-    let seconds = Int(interval) % 60
-    if seconds == 0 {
-        return "\(minutes) min"
-    } else {
-        return String(format: "%d:%02d min", minutes, seconds)
-    }
-}
-
-// MARK: - Grouping Extension
-
-extension Array where Element == Session {
-    func groupedByDate() -> [(date: Date, sessions: [Session])] {
-        let groupedDict = Dictionary(grouping: self) { session -> Date in
-            Calendar.current.startOfDay(for: session.date)
-        }
-        
-        return groupedDict
-            .map { ($0.key, $0.value) }
-            .sorted { $0.0 > $1.0 } // descending date order
-    }
-}
-
-// MARK: - Session Row View
+// MARK: - Session Row
 
 struct SessionRow: View {
-    let session: Session
-    
+    let session: SessionEntity
+
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
                 HStack {
-                    ZStack { }
-                    .frame(width: 4, height: 24, alignment: .top)
-                    .background(Color(red: 0.56, green: 0.79, blue: 0.9))
-                    .cornerRadius(100)
-                    
-                    Text(session.title)
+                    ZStack {}
+                        .frame(width: 4, height: 24)
+                        .background(Color(red: 0.56, green: 0.79, blue: 0.9))
+                        .cornerRadius(100)
+
+                    Text(session.name ?? "Untitled")
                         .font(.system(size: 17, weight: .semibold))
                         .foregroundColor(.white)
-                    
+
                     Spacer()
-                    
-                    Text(dateString(from: session.date))
+
+                    Text(formattedDate(session.timestamp))
                         .font(.subheadline)
                         .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.57))
-                                         
                 }
-                
+
                 HStack(spacing: 12) {
-                    HStack (spacing: 4) {
+                    HStack(spacing: 4) {
                         Image(systemName: "clock")
                             .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
-
-                        Text(timeString(from: session.date))
+                        Text(formattedTime(session.timestamp))
                             .font(.subheadline)
                             .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
                     }
-                    
+
                     Text(" ")
-                        .foregroundColor(.gray)
-                    
-                    HStack (spacing: 4) {
+
+                    HStack(spacing: 4) {
                         Image(systemName: "timer")
                             .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
-                        
-                        Text(durationString(from: session.duration))
+                        Text("1:24 min") // TODO: Replace with actual duration if needed
                             .font(.subheadline)
                             .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
                     }
@@ -126,34 +80,41 @@ struct SessionRow: View {
 // MARK: - Recent Sessions View
 
 struct RecentSessionsView: View {
-    let sessions: [Session]
-    
+    @FetchRequest(
+        sortDescriptors: [NSSortDescriptor(keyPath: \SessionEntity.timestamp, ascending: false)],
+        animation: .default
+    ) private var sessions: FetchedResults<SessionEntity>
+
     var body: some View {
         ScrollView {
             LazyVStack(alignment: .leading, spacing: 12) {
-                ForEach(sessions.groupedByDate(), id: \.date) { group in
-                        ForEach(group.sessions) { session in
-                            SessionRow(session: session)
-                                .padding(.horizontal)
-                        }
+                ForEach(sessions) { session in
+                    SessionRow(session: session)
+                        .padding(.horizontal)
                 }
             }
             .padding(.top)
             .padding(.bottom, 60)
         }
-    }
-    
-    func dateString(from date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        return formatter.string(from: date)
+        .background(Color.black)
     }
 }
 
 // MARK: - Preview
 
-struct RecentSessionsView_Previews: PreviewProvider {
-    static var previews: some View {
-        RecentSessionsView(sessions: Session.sampleSessions)
-    }
+#Preview {
+    let context = PersistenceController.shared.container.viewContext
+
+    // Mock Data for Preview
+    let sample = SessionEntity(context: context)
+    sample.name = "Jane Doe Session"
+    sample.timestamp = Date()
+    sample.diagnosis = "Healthy"
+    sample.notes = "Normal sounds"
+    sample.audioPath = "/dev/null"
+
+    try? context.save()
+
+    return RecentSessionsView()
+        .environment(\.managedObjectContext, context)
 }
