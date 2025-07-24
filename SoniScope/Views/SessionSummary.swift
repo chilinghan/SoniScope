@@ -13,6 +13,11 @@ struct SessionSummary: View {
     let session: SessionEntity
 
     @State private var audioPlayer: AVAudioPlayer?
+    @State private var notesText: String = ""
+    @State private var lastSavedNotes: String = ""
+    @FocusState private var notesFocused: Bool
+
+    private let saveTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
 
     var body: some View {
         GeometryReader { geometry in
@@ -20,42 +25,39 @@ struct SessionSummary: View {
                 VStack(spacing: 24) {
                     // Header with back navigation
                     HStack {
-                        Button(action: {
-                            dismiss()
-                        }) {
-                            HStack(spacing: 4) {
-                                Image(.chevron)
-                                    .resizable()
-                                    .frame(width: 24, height: 24)
+                                            Button(action: {
+                                                dismiss()
+                                            }) {
+                                                HStack(spacing: 4) {
+                                                    Image(systemName: "chevron.left")
+                                                        .resizable()
+                                                        .frame(width: 12, height: 20)
+                                                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                                                        .padding(.leading, 16)
 
-                                Text(formattedMonth(session.timestamp))
-                                    .font(.system(size: 18, weight: .medium))
-                                    .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-                            }
-                            .contentShape(Rectangle())
-                        }
-                        .buttonStyle(PlainButtonStyle())
+                                                    Text(formattedMonth(session.timestamp))
+                                                        .font(.system(size: 18, weight: .medium))
+                                                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                                                }
+                                                .contentShape(Rectangle())
+                                            }
+                                            .buttonStyle(PlainButtonStyle())
 
-                        Spacer()
+                                            Spacer(minLength: 16)
 
-                        Text("Session Details")
-                            .font(.system(size: 18, weight: .medium))
-                            .foregroundColor(.white)
+                                            Text("Session Details")
+                                                .font(.system(size: 18, weight: .medium))
+                                                .foregroundColor(.white)
 
-                        Spacer()
+                                            Spacer()
 
-                        HStack(spacing: 16) {
-                            Text("Edit")
-                                .font(.system(size: 18, weight: .medium))
-                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 18))
-                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-                                .offset(y:-3)
-                        }
-                    }
-                    .padding(.horizontal)
+                                            Image(systemName: "square.and.arrow.up")
+                                                .font(.system(size: 18))
+                                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                                                .offset(y:-3)
+                                                .padding(.trailing, 16)
+                                        }
+                                        .padding(.horizontal)
 
                     VStack(alignment: .leading, spacing: 12) {
                         Text(session.name ?? "Untitled Session")
@@ -160,10 +162,33 @@ struct SessionSummary: View {
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
 
-                        Text(session.notes ?? "Write notes here...")
-                            .font(.system(size: 18))
-                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
-                            .fixedSize(horizontal: false, vertical: true)
+                        ZStack(alignment: .topLeading) {
+                            if notesText.isEmpty {
+                                Text("Write notes here...")
+                                    .foregroundColor(Color.gray)
+                                    .padding(12)
+                            }
+                            TextEditor(text: $notesText)
+                                .scrollContentBackground(.hidden)
+                                .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                                .focused($notesFocused)
+                                .padding(8)
+                                .cornerRadius(12)
+                                .foregroundColor(.white)
+                                .font(.system(size: 18))
+                                .frame(height: 150)
+                                .onReceive(saveTimer) { _ in
+                                    autoSaveNotes()
+                                }
+                                .toolbar {
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        Spacer()
+                                        Button("Done") {
+                                            notesFocused = false
+                                        }
+                                    }
+                                }
+                        }
                     }
                     .padding()
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -184,8 +209,14 @@ struct SessionSummary: View {
                 }
                 .padding(.top, 24)
                 .padding(.bottom, 100)
+                .onAppear {
+                    notesText = session.notes ?? ""
+                }
             }
             .background(Color.black.ignoresSafeArea())
+            .onTapGesture {
+                notesFocused = false
+            }
         }
         .navigationBarBackButtonHidden(true)
     }
@@ -226,6 +257,18 @@ struct SessionSummary: View {
             dismiss()
         } catch {
             print("⚠️ Failed to delete session: \(error)")
+        }
+    }
+
+    private func autoSaveNotes() {
+        guard notesText != lastSavedNotes else { return }
+        session.notes = notesText
+        do {
+            try viewContext.save()
+            lastSavedNotes = notesText
+            print("✅ Notes auto-saved")
+        } catch {
+            print("⚠️ Auto-save failed: \(error)")
         }
     }
 }
