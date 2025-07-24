@@ -11,66 +11,73 @@ struct ResultsView: View {
     @State private var notesText: String = ""
     @State private var lastSavedNotes: String = ""
     @State private var audioPlayer: AVAudioPlayer?
+    @FocusState private var notesFocused: Bool
+    @StateObject private var keyboardResponder = KeyboardResponder()
 
     private let saveTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
 
     var body: some View {
         GeometryReader { geometry in
-            ScrollView {
-                VStack(alignment: .leading, spacing: 24) {
+            ZStack(alignment: .top) {
+                Rectangle()
+                    .fill(Color(red: 0.11, green: 0.11, blue: 0.12))
+                    .frame(height: geometry.safeAreaInsets.top + 50)
+                    .edgesIgnoringSafeArea(.top)
+
+                VStack(alignment: .leading, spacing: 16) {
                     // Header
-                    HStack {
-                        Button(action: onFinish) {
-                            HStack(spacing: 4) {
-                                Image(systemName: "chevron.left")
-                                    .font(.system(size: 18, weight: .semibold))
-                                Text("Home")
-                                    .font(.system(size: 18, weight: .semibold))
-                            }
-                            .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-                        }
-
-                        Spacer()
-
+                    ZStack {
                         Text("Results")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
 
-                        Spacer()
+                        HStack {
+                            Button(action: onFinish) {
+                                HStack(spacing: 4) {
+                                    Image(systemName: "chevron.left")
+                                    Text("Home")
+                                }
+                                .font(.system(size: 18, weight: .semibold))
+                                .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                            }
 
-                        Button(action: {
-                            // Share action
-                        }) {
-                            Image(systemName: "square.and.arrow.up")
-                                .font(.system(size: 24))
-                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                            Spacer()
+
+                            Button(action: {
+                                // Share action
+                            }) {
+                                Image(systemName: "square.and.arrow.up")
+                                    .font(.system(size: 24))
+                                    .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                                    .offset(y: -5)
+                            }
                         }
                     }
-                    .padding(.top, geometry.safeAreaInsets.top + 10)
+                    .padding(.top, geometry.safeAreaInsets.top + 4)
+                    .padding(.horizontal, 16)
+                    .padding(.bottom, 8)
 
                     // Session Title
                     Text(sessionManager.currentSession?.name ?? "Untitled")
                         .font(.system(size: 18))
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity)
                         .multilineTextAlignment(.leading)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .foregroundColor(.white)
                         .padding()
                         .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                         .cornerRadius(16)
 
-                    // Diagnosis Box
+
+                    // Diagnosis
                     VStack(alignment: .leading, spacing: 8) {
-                        Label(
-                            sessionManager.currentSession?.diagnosis ?? "Unknown",
-                            systemImage: "checkmark.circle.fill"
-                        )
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                        Label(sessionManager.currentSession?.diagnosis ?? "Unknown", systemImage: "checkmark.circle.fill")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
 
                         Text("This recording does not show signs of lung disease. SoniScope can not provide a formal diagnosis.")
                             .font(.system(size: 16))
-                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
                             .multilineTextAlignment(.leading)
+                            .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
                             .fixedSize(horizontal: false, vertical: true)
                     }
                     .padding()
@@ -105,10 +112,10 @@ struct ResultsView: View {
                                 .frame(height: 6)
 
                             Capsule()
-                                .fill(LinearGradient(
-                                    colors: [Color(red: 0.99, green: 0.52, blue: 0), Color(red: 0.56, green: 0.79, blue: 0.9)],
-                                    startPoint: .leading, endPoint: .trailing
-                                ))
+                                .fill(LinearGradient(colors: [
+                                    Color(red: 0.99, green: 0.52, blue: 0),
+                                    Color(red: 0.56, green: 0.79, blue: 0.9)
+                                ], startPoint: .leading, endPoint: .trailing))
                                 .frame(width: 145, height: 6)
                         }
 
@@ -130,26 +137,46 @@ struct ResultsView: View {
                     .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                     .cornerRadius(16)
 
-                    // Notes Section
+                    // Notes
                     VStack(alignment: .leading, spacing: 8) {
                         Text("Notes")
                             .font(.system(size: 18, weight: .semibold))
                             .foregroundColor(.white)
 
-                        TextEditor(text: $notesText)
-                            .scrollContentBackground(.hidden)
-                            .padding(8)
-                            .background(Color(red: 0.11, green: 0.11, blue: 0.12))
-                            .cornerRadius(12)
-                            .foregroundColor(.white)
-                            .font(.system(size: 15))
-                            .frame(height: 100)
-                            .onReceive(saveTimer) { _ in
-                                autoSaveNotes()
+                        ZStack(alignment: .topLeading) {
+                            if notesText.isEmpty {
+                                Text("Add any notes or observations here...")
+                                    .foregroundColor(Color.gray)
+                                    .padding(.horizontal, 12)
+                                    .padding(.vertical, 16)
                             }
+
+                            TextEditor(text: $notesText)
+                                .focused($notesFocused)
+                                .scrollContentBackground(.hidden)
+                                .padding(8)
+                                .background(Color(red: 0.11, green: 0.11, blue: 0.12))
+                                .cornerRadius(12)
+                                .foregroundColor(.white)
+                                .font(.system(size: 15))
+                                .multilineTextAlignment(.leading)
+                                .frame(height: 100)
+                                .toolbar {
+                                    ToolbarItemGroup(placement: .keyboard) {
+                                        Spacer()
+                                        Button("Done") {
+                                            notesFocused = false
+                                        }
+                                    }
+                                }
+                                .onReceive(saveTimer) { _ in
+                                    autoSaveNotes()
+                                }
+                        }
+
                     }
 
-                    // Delete Button
+                    // Delete Session
                     Button(action: deleteSession) {
                         Text("Delete Session")
                             .font(.system(size: 18, weight: .semibold))
@@ -159,16 +186,21 @@ struct ResultsView: View {
                             .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                             .cornerRadius(16)
                     }
-
-                    Spacer(minLength: 40)
                 }
                 .padding(.horizontal, 16)
-            }
-            .background(Color.black.ignoresSafeArea())
-            .onAppear {
-                notesText = sessionManager.currentSession?.notes ?? ""
+                .padding(.bottom, keyboardResponder.currentHeight)
+                .animation(.easeInOut(duration: 0.25), value: keyboardResponder.currentHeight)
+                .offset(y: keyboardResponder.currentHeight > 0 ? -keyboardResponder.currentHeight + 30 : -45)
             }
         }
+        .onTapGesture {
+            notesFocused = false
+            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+        }
+        .onAppear {
+            notesText = sessionManager.currentSession?.notes ?? ""
+        }
+        .background(Color.black.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
     }
 
@@ -191,7 +223,6 @@ struct ResultsView: View {
         }
 
         let fileURL = URL(fileURLWithPath: path)
-
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
             audioPlayer?.play()
