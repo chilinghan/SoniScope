@@ -25,7 +25,7 @@ struct AnalyzingView: View {
                 // Background bar
                 Rectangle()
                     .foregroundColor(.clear)
-                    .frame(width: 482, height: 104)
+                    .frame(width: 482, height: 120)
                     .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                     .offset(y: -400)
 

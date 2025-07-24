@@ -1,5 +1,5 @@
 //
-//  RecentSessionsView.swift
+//  SessionRow.swift
 //  SoniScope
 //
 //  Created by Chiling Han on 7/22/25.
@@ -75,46 +75,4 @@ struct SessionRow: View {
         .background(Color(red: 0.11, green: 0.11, blue: 0.12))
         .cornerRadius(20)
     }
-}
-
-// MARK: - Recent Sessions View
-
-struct RecentSessionsView: View {
-    @FetchRequest(
-        sortDescriptors: [NSSortDescriptor(keyPath: \SessionEntity.timestamp, ascending: false)],
-        animation: .default
-    ) private var sessions: FetchedResults<SessionEntity>
-
-    var body: some View {
-        ScrollView {
-            LazyVStack(alignment: .leading, spacing: 12) {
-                ForEach(sessions) { session in
-                    SessionRow(session: session)
-                        .padding(.horizontal)
-                }
-            }
-            .padding(.top)
-            .padding(.bottom, 60)
-        }
-        .background(Color.black)
-    }
-}
-
-// MARK: - Preview
-
-#Preview {
-    let context = PersistenceController.shared.container.viewContext
-
-    // Mock Data for Preview
-    let sample = SessionEntity(context: context)
-    sample.name = "Jane Doe Session"
-    sample.timestamp = Date()
-    sample.diagnosis = "Healthy"
-    sample.notes = "Normal sounds"
-    sample.audioPath = "/dev/null"
-
-    try? context.save()
-
-    return RecentSessionsView()
-        .environment(\.managedObjectContext, context)
 }

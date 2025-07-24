@@ -46,7 +46,7 @@ struct ArchiveView: View {
                 if filteredSessions.isEmpty {
                     Text("No sessions on this date.")
                         .foregroundColor(.gray)
-                        .padding(.vertical, 20)
+                        .padding(.vertical, 30)
                 } else {
                     ScrollView {
                         LazyVStack(spacing: 12) {
@@ -58,7 +58,7 @@ struct ArchiveView: View {
                                 .padding(.horizontal)
                             }
                         }
-                        .padding(.bottom, 60)
+                        .padding(.bottom, 120)
                     }
                     .frame(maxHeight: 300)
                 }

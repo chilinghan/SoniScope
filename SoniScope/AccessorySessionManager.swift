@@ -36,6 +36,7 @@ final class AccessorySessionManager: NSObject {
 
     override init() {
         super.init()
+        cleanupConnection()
         session.activate(on: .main, eventHandler: handleSessionEvent)
     }
     

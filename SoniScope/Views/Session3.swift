@@ -7,12 +7,14 @@ struct Session3: View {
 
     var onNext: () -> Void = {}
     var onEnd: () -> Void = {}
+    
+    @State private var pulse = false
 
     var body: some View {
         ZStack {
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(width: 482, height: 104)
+                .frame(width: 482, height: 120)
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                 .offset(y: -400)
 
@@ -49,10 +51,24 @@ struct Session3: View {
             .padding(.top, 10)
             .offset(y: -366)
 
-            Circle()
-                .frame(width: 25, height: 25)
-                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-                .offset(x: -70, y: -210)
+            ZStack {
+                // Outer pulsing ring
+                Circle()
+                    .stroke(Color(red: 0.99, green: 0.52, blue: 0), lineWidth: 2)
+                    .frame(width: 40, height: 40)
+                    .scaleEffect(pulse ? 1.4 : 1.0)
+                    .opacity(pulse ? 0.0 : 0.8)
+                    .animation(Animation.easeOut(duration: 1.0).repeatForever(autoreverses: false), value: pulse)
+
+                // Inner solid circle
+                Circle()
+                    .frame(width: 25, height: 25)
+                    .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+            }
+            .offset(x: -70, y: -210)
+            .onAppear {
+                pulse = true
+            }
 
             Rectangle()
                 .foregroundColor(.clear)
@@ -108,32 +124,35 @@ struct Session3: View {
                 .offset(y: 130)
 
             ZStack {
-                ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                stops: [
-                                    .init(color: Color(red: 0.56, green: 0.79, blue: 0.9), location: 0.00),
-                                    .init(color: Color(red: 0.99, green: 0.52, blue: 0), location: 1.00),
-                                ],
-                                startPoint: UnitPoint(x: 0.17, y: 0.14),
-                                endPoint: UnitPoint(x: 0.84, y: 1)
+                HStack(alignment: .center, spacing: 12) {
+                    // Numbered circle
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    stops: [
+                                        .init(color: Color(red: 0.56, green: 0.79, blue: 0.9), location: 0.00),
+                                        .init(color: Color(red: 0.99, green: 0.52, blue: 0), location: 1.00)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
                             )
-                        )
-                        .frame(width: 32, height: 32)
-
-                    Text("3")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.black)
+                            .frame(width: 32, height: 32)
+                        
+                        Text("3")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.black)
+                    }
+                    
+                    // Left-justified title text, aligned right next to circle
+                    Text("Record & Analyze")
+                        .font(.system(size: 25, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.leading, 8)
+                    
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Spacer()
-
-                Text("Record & Analyze")
-                    .font(.system(size: 25, weight: .bold))
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .center)
             }
             .padding(60)
             .offset(y: 90)

@@ -16,7 +16,7 @@ struct RecordingView: View {
             // Background Header
             Rectangle()
                 .foregroundColor(.clear)
-                .frame(width: 482, height: 104)
+                .frame(width: 482, height: 120)
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                 .offset(y: -400)
 
@@ -84,31 +84,35 @@ struct RecordingView: View {
 
             // Step indicator
             ZStack {
-                ZStack {
-                    Circle()
-                        .fill(
-                            LinearGradient(
-                                stops: [
-                                    Gradient.Stop(color: Color(red: 0.56, green: 0.79, blue: 0.9), location: 0.00),
-                                    Gradient.Stop(color: Color(red: 0.99, green: 0.52, blue: 0), location: 1.00),
-                                ],
-                                startPoint: .topLeading,
-                                endPoint: .bottomTrailing
+                HStack(alignment: .center, spacing: 12) {
+                    // Numbered circle
+                    ZStack {
+                        Circle()
+                            .fill(
+                                LinearGradient(
+                                    stops: [
+                                        .init(color: Color(red: 0.56, green: 0.79, blue: 0.9), location: 0.00),
+                                        .init(color: Color(red: 0.99, green: 0.52, blue: 0), location: 1.00)
+                                    ],
+                                    startPoint: .topLeading,
+                                    endPoint: .bottomTrailing
+                                )
                             )
-                        )
-                        .frame(width: 32, height: 32)
-
-                    Text("4")
-                        .font(.system(size: 20, weight: .bold))
-                        .foregroundColor(.black)
-                        .frame(width: 15, height: 34)
+                            .frame(width: 32, height: 32)
+                        
+                        Text("4")
+                            .font(.system(size: 20, weight: .bold))
+                            .foregroundColor(.black)
+                    }
+                    
+                    // Left-justified title text, aligned right next to circle
+                    Text("Recording Session")
+                        .font(.system(size: 25, weight: .bold))
+                        .foregroundColor(.white)
+                        .padding(.leading, 8)
+                    
+                    Spacer()
                 }
-                .frame(maxWidth: .infinity, alignment: .leading)
-
-                Text("Recording Session")
-                    .font(.system(size: 25, weight: .bold))
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .center)
             }
             .padding(60)
             .offset(y: 90)

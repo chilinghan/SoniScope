@@ -38,7 +38,7 @@ struct ContentView: View {
         ZStack(alignment: .bottom) {
             // Native TabView for managing navigation
             TabView (selection: $selectedTab) {
-                StartView() // HomeView(accessoryManager: AccessorySessionManager())
+                StartView(accessoryManager: AccessorySessionManager())
                     .tag(Tab.home)
                 ArchiveView()
                     .tag(Tab.archive)
