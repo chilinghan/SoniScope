@@ -3,6 +3,16 @@ import SwiftUI
 struct HealthDetailCardView: View {
     @ObservedObject var healthData: HealthDataManager
 
+    private var views: [AnyView] {
+        [
+            // infoRow(title: "First Name", value: healthData.firstName)
+            // infoRow(title: "Last Name", value: healthData.lastName)
+            AnyView(infoRow(title: "Date of Birth", value: healthData.dateOfBirth)),
+            AnyView(infoRow(title: "Sex", value: healthData.biologicalSex)),
+            AnyView(infoRow(title: "Blood Type", value: healthData.bloodType))
+        ]
+    }
+    
     var body: some View {
         VStack(spacing: 25) {
             // Title
@@ -22,32 +32,15 @@ struct HealthDetailCardView: View {
 
             // Info Section
             VStack(spacing: 0) {
-//                infoRow(title: "First Name", value: healthData.firstName)
-//                infoRow(title: "Last Name", value: healthData.lastName)
-                infoRow(title: "Date of Birth", value: healthData.dateOfBirth)
-                Divider()
-                    .background(Color.gray.opacity(0.3))
-                    .padding(.horizontal)
-                
-                infoRow(title: "Date of Birth", value: healthData.dateOfBirth)
-                
-                Divider()
-                    .background(Color.gray.opacity(0.3))
-                    .padding(.horizontal)
-                
-                infoRow(title: "Date of Birth", value: healthData.dateOfBirth)
-                
-                Divider()
-                    .background(Color.gray.opacity(0.3))
-                    .padding(.horizontal)
-                
-                infoRow(title: "Sex", value: healthData.biologicalSex)
-                
-                Divider()
-                    .background(Color.gray.opacity(0.3))
-                    .padding(.horizontal)
-                
-                infoRow(title: "Blood Type", value: healthData.bloodType)
+                ForEach(Array(views.enumerated()), id: \.offset) { index, view in
+                    view
+                    if index < views.count - 1 {
+                        Divider()
+                            .background(Color.gray.opacity(0.3))
+                            .padding(.horizontal)
+                    }
+                }
+
             }
             .background(Color(red: 40 / 255, green: 40 / 255, blue: 43 / 255))
             .clipShape(RoundedRectangle(cornerRadius: 16))
