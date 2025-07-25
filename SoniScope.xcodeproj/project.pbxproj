@@ -446,11 +446,12 @@
 				CODE_SIGN_ENTITLEMENTS = SoniScope/SoniScope.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 78KA8WL8C4;
+				DEVELOPMENT_TEAM = 43BU72Z6G6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your health data to personalize your profile.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your health data to personalize your experience.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This app uses your Apple ID to securely sign in.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -462,7 +463,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = chiling.SoniScope;
+				PRODUCT_BUNDLE_IDENTIFIER = venkat.SoniScope;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -478,11 +479,12 @@
 				CODE_SIGN_ENTITLEMENTS = SoniScope/SoniScope.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 78KA8WL8C4;
+				DEVELOPMENT_TEAM = 43BU72Z6G6;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your health data to personalize your profile.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your health data to personalize your experience.";
+				INFOPLIST_KEY_NSUserTrackingUsageDescription = "This app uses your Apple ID to securely sign in.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -494,7 +496,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = chiling.SoniScope;
+				PRODUCT_BUNDLE_IDENTIFIER = venkat.SoniScope;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

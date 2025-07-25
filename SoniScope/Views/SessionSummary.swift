@@ -1,6 +1,8 @@
 import SwiftUI
 import AVFoundation
 import CoreData
+import PDFKit
+import UIKit
 
 struct Constants {
     static let ColorsBlue: Color = Color(red: 0, green: 0.53, blue: 1)
@@ -10,6 +12,7 @@ struct Constants {
 struct SessionSummary: View {
     @Environment(\.dismiss) private var dismiss
     @Environment(\.managedObjectContext) private var viewContext
+    @EnvironmentObject var healthManager: HealthDataManager
     let session: SessionEntity
 
     @State private var audioPlayer: AVAudioPlayer?
@@ -17,47 +20,52 @@ struct SessionSummary: View {
     @State private var lastSavedNotes: String = ""
     @FocusState private var notesFocused: Bool
 
+    @State private var isSharing = false
+    @State private var pdfURL: URL?
+    @State private var audioFileURL: URL?
+
     private let saveTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
 
     var body: some View {
         GeometryReader { geometry in
             ScrollView {
                 VStack(spacing: 24) {
-                    // Header with back navigation
                     HStack {
-                                            Button(action: {
-                                                dismiss()
-                                            }) {
-                                                HStack(spacing: 4) {
-                                                    Image(systemName: "chevron.left")
-                                                        .resizable()
-                                                        .frame(width: 12, height: 20)
-                                                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-                                                        .padding(.leading, 16)
+                        Button(action: {
+                            dismiss()
+                        }) {
+                            HStack(spacing: 4) {
+                                Image(systemName: "chevron.left")
+                                    .resizable()
+                                    .frame(width: 12, height: 20)
+                                    .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                                    .padding(.leading, 16)
 
-                                                    Text(formattedMonth(session.timestamp))
-                                                        .font(.system(size: 18, weight: .medium))
-                                                        .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
-                                                }
-                                                .contentShape(Rectangle())
-                                            }
-                                            .buttonStyle(PlainButtonStyle())
+                                Text(formattedMonth(session.timestamp))
+                                    .font(.system(size: 18, weight: .medium))
+                                    .foregroundColor(Color(red: 0.56, green: 0.79, blue: 0.9))
+                            }
+                            .contentShape(Rectangle())
+                        }
+                        .buttonStyle(PlainButtonStyle())
 
-                                            Spacer(minLength: 16)
+                        Spacer(minLength: 16)
 
-                                            Text("Session Details")
-                                                .font(.system(size: 18, weight: .medium))
-                                                .foregroundColor(.white)
+                        Text("Session Details")
+                            .font(.system(size: 18, weight: .medium))
+                            .foregroundColor(.white)
 
-                                            Spacer()
+                        Spacer()
 
-                                            Image(systemName: "square.and.arrow.up")
-                                                .font(.system(size: 18))
-                                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
-                                                .offset(y:-3)
-                                                .padding(.trailing, 16)
-                                        }
-                                        .padding(.horizontal)
+                        Button(action: shareFiles) {
+                            Image(systemName: "square.and.arrow.up")
+                                .font(.system(size: 18))
+                                .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
+                                .offset(y:-3)
+                                .padding(.trailing, 16)
+                        }
+                    }
+                    .padding(.horizontal)
 
                     VStack(alignment: .leading, spacing: 12) {
                         Text(session.name ?? "Untitled Session")
@@ -218,7 +226,27 @@ struct SessionSummary: View {
                 notesFocused = false
             }
         }
+        .sheet(isPresented: $isSharing) {
+            if let pdf = pdfURL, let audio = audioFileURL {
+                ShareSheet(activityItems: [pdf, audio])
+            }
+        }
         .navigationBarBackButtonHidden(true)
+    }
+
+    private func shareFiles() {
+        guard let audioPath = session.audioPath else {
+            print("⚠️ No audio path available")
+            return
+        }
+
+        let audioURL = URL(fileURLWithPath: audioPath)
+
+        if let pdf = PDFReportGenerator.generate(from: session, healthManager: healthManager) {
+            self.audioFileURL = audioURL
+            self.pdfURL = pdf
+            self.isSharing = true
+        }
     }
 
     private func formattedDate(_ date: Date?) -> String {
@@ -271,4 +299,14 @@ struct SessionSummary: View {
             print("⚠️ Auto-save failed: \(error)")
         }
     }
+}
+
+struct ShareSheet: UIViewControllerRepresentable {
+    let activityItems: [Any]
+
+    func makeUIViewController(context: Context) -> UIActivityViewController {
+        UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+    }
+
+    func updateUIViewController(_ vc: UIActivityViewController, context: Context) {}
 }

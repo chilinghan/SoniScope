@@ -1,10 +1,13 @@
 import SwiftUI
 import AVFoundation
 import CoreData
+import PDFKit
+import UIKit
 
 struct ResultsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var sessionManager: SessionManager
+    @EnvironmentObject var healthManager: HealthDataManager
 
     var onFinish: () -> Void
 
@@ -13,6 +16,10 @@ struct ResultsView: View {
     @State private var audioPlayer: AVAudioPlayer?
     @FocusState private var notesFocused: Bool
     @StateObject private var keyboardResponder = KeyboardResponder()
+
+    @State private var isSharing = false
+    @State private var pdfURL: URL?
+    @State private var audioFileURL: URL?
 
     private let saveTimer = Timer.publish(every: 5, on: .main, in: .common).autoconnect()
 
@@ -43,9 +50,7 @@ struct ResultsView: View {
 
                             Spacer()
 
-                            Button(action: {
-                                // Share action
-                            }) {
+                            Button(action: shareFiles) {
                                 Image(systemName: "square.and.arrow.up")
                                     .font(.system(size: 24))
                                     .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
@@ -66,7 +71,6 @@ struct ResultsView: View {
                         .padding()
                         .background(Color(red: 0.11, green: 0.11, blue: 0.12))
                         .cornerRadius(16)
-
 
                     // Diagnosis
                     VStack(alignment: .leading, spacing: 8) {
@@ -200,6 +204,11 @@ struct ResultsView: View {
         .onAppear {
             notesText = sessionManager.currentSession?.notes ?? ""
         }
+        .sheet(isPresented: $isSharing) {
+            if let pdf = pdfURL, let audio = audioFileURL {
+                ShareSheet(activityItems: [pdf, audio])
+            }
+        }
         .background(Color.black.ignoresSafeArea())
         .navigationBarBackButtonHidden(true)
     }
@@ -235,5 +244,20 @@ struct ResultsView: View {
         guard let session = sessionManager.currentSession else { return }
         sessionManager.deleteSession(session)
         onFinish()
+    }
+
+    private func shareFiles() {
+        guard let session = sessionManager.currentSession, let audioPath = session.audioPath else {
+            print("⚠️ No audio path available")
+            return
+        }
+
+        let audioURL = URL(fileURLWithPath: audioPath)
+
+        if let pdf = PDFReportGenerator.generate(from: session, healthManager: healthManager) {
+            self.audioFileURL = audioURL
+            self.pdfURL = pdf
+            self.isSharing = true
+        }
     }
 }
