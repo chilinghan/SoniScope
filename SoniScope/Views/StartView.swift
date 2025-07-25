@@ -3,6 +3,7 @@ import SwiftUI
 struct StartView: View {
     @Bindable var accessoryManager: AccessorySessionManager
     @State private var showSessionFlow = false
+    @State private var startSessionPressed = false
 
     var body: some View {
         VStack {
@@ -14,19 +15,10 @@ struct StartView: View {
             // MARK: Start Session Button
             Button(action: {
                 if accessoryManager.connectionStatus != "Connected" {
+                    startSessionPressed = true  // User pressed button to start pairing
                     accessoryManager.presentPicker()
-                    
-                    Task {
-                        while accessoryManager.connectionStatus != "Connected" {
-                            try? await Task.sleep(nanoseconds: 300_000_000) // 0.3s
-                        }
-                        if accessoryManager.connectionStatus == "Connected" {
-                            showSessionFlow = true
-                        }
-                    }
-                    
                 } else {
-                    showSessionFlow = true
+                    showSessionFlow = true      // Already connected, proceed immediately
                 }
             }) {
                 ZStack {
@@ -53,20 +45,28 @@ struct StartView: View {
             }
 
             // Optional: Show connection status
-//            if accessoryManager.connectionStatus != "Disconnected" {
-//                Text(accessoryManager.connectionStatus)
-//                    .font(.system(size: 14, weight: .medium))
-//                    .foregroundColor(.white)
-//                    .padding(.top, 10)
-//            }
+            if accessoryManager.connectionStatus != "Disconnected" {
+                Text(accessoryManager.connectionStatus)
+                    .font(.system(size: 14, weight: .medium))
+                    .foregroundColor(.white)
+                    .padding(.top, 10)
+            }
 
             Spacer(minLength: 200)
         }
         .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height, alignment: .top)
         .background(Color.black)
         .ignoresSafeArea()
+
         .fullScreenCover(isPresented: $showSessionFlow) {
             SessionFlowView()
+        }
+        .onChange(of: accessoryManager.connectionStatus) {
+            // Only navigate if user pressed start AND connected now
+            if startSessionPressed && accessoryManager.connectionStatus == "Connected" {
+                showSessionFlow = true
+                startSessionPressed = false  // reset flag
+            }
         }
         .navigationBarBackButtonHidden(true)
     }

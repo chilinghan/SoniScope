@@ -23,7 +23,6 @@ final class AccessorySessionManager: NSObject {
     private static let serviceUUID = CBUUID(string: "180A")
     private static let audioCharUUID = CBUUID(string: "2A57")
     
-    // Picker Configuration
     private static let soniScopeItem: ASPickerDisplayItem = {
         let descriptor = ASDiscoveryDescriptor()
         descriptor.bluetoothServiceUUID = serviceUUID
@@ -36,7 +35,6 @@ final class AccessorySessionManager: NSObject {
 
     override init() {
         super.init()
-        cleanupConnection()
         session.activate(on: .main, eventHandler: handleSessionEvent)
     }
     
@@ -104,7 +102,6 @@ extension AccessorySessionManager: CBCentralManagerDelegate {
                     self.peripheral = peripheral
                     peripheral.delegate = self
                     central.connect(peripheral)
-                    connectionStatus = "Connecting..."
                 }
             }
         case .poweredOff:
