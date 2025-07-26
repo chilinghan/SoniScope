@@ -9,8 +9,10 @@ struct StartView: View {
         VStack {
             // MARK: Top Bar
             HeaderView(title: "SoniScope")
-
-            Spacer()
+            
+            Image(.render)
+                .resizable()
+                .frame(width: 700, height: 400)
 
             // MARK: Start Session Button
             Button(action: {
@@ -51,8 +53,9 @@ struct StartView: View {
                     .foregroundColor(.white)
                     .padding(.top, 10)
             }
+            
+            Spacer()
 
-            Spacer(minLength: 200)
         }
         .background(Color.black)
         .ignoresSafeArea()

@@ -13,9 +13,9 @@ bool deviceConnected = false;
 
 I2SClass I2S;
 
-#define I2S_WS 5   // LRCK
-#define I2S_SCK 6 // BCLK
-#define I2S_DIN 2 // Data In (SD)
+#define I2S_WS 44  // LRCK (yellow)
+#define I2S_SCK 43 // BCLK (orange)
+#define I2S_DIN 12 // Data In (SD)
 
 // Audio buffer
 char audioBuffer[256];  // Size depends on BLE MTU and latency

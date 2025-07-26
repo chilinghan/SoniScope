@@ -42,7 +42,7 @@ struct ContentView: View {
         TabView (selection: $selectedTab) {
             StartView(accessoryManager: AccessorySessionManager())
                 .tabItem {
-                    Image("orangelungs")
+                    Image(.orangelungs)
                         .renderingMode(.template)
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 24, height: 24) // Custom size here

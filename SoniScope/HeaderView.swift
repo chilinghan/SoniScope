@@ -20,7 +20,7 @@ struct HeaderView: View {
     }
 
     var body: some View {
-        HStack {
+        HStack (alignment: .top) {
             VStack(alignment: .leading, spacing: 4) {
                 Text(formattedDate)
                     .foregroundColor(.gray)

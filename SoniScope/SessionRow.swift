@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import CoreData
 
 // MARK: - Helper Functions
 
@@ -63,7 +62,7 @@ struct SessionRow: View {
                     HStack(spacing: 4) {
                         Image(systemName: "timer")
                             .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
-                        Text("1:24 min") // TODO: Replace with actual duration if needed
+                        Text("0:20 min")
                             .font(.subheadline)
                             .foregroundColor(Color(red: 0.35, green: 0.35, blue: 0.37))
                     }

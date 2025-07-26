@@ -56,7 +56,7 @@ struct LoginView: View {
                     .offset(x:0, y:250)
 
                 // Image
-                Image(.copyOfMinimalistHospitalAndMedicalHealthLogoRemovebgPreview)
+                Image(.lungs)
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: 394, height: 394)

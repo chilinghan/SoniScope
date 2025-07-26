@@ -53,6 +53,7 @@ struct StepCardView: View {
                 .font(.system(size: 18, weight: .medium))
                 .foregroundColor(Color.gray)
                 .fixedSize(horizontal: false, vertical: true)
+                .lineSpacing(5)
 
             Spacer()
 
