@@ -4,6 +4,7 @@
 <dict>
 	<key>NSAccessorySetupBluetoothServices</key>
 	<array>
+		<string>12345678-1234-1234-1234-1234567890AB</string>
 		<string>180A</string>
 	</array>
 	<key>NSAccessorySetupKitSupports</key>

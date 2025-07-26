@@ -2,6 +2,7 @@ import SwiftUI
 
 struct SessionView: View {
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject var accessoryManager: AccessorySessionManager
 
     var step: Int = 0
     var title: String = ""
@@ -20,6 +21,9 @@ struct SessionView: View {
                 BodyImageWithPulsingDot().frame(width: 339, height: 412)
             } else {
                 RecordingView(onNext: onNext).frame(width: 339, height: 412)
+                    .onAppear {
+                        accessoryManager.sendScreenCommand("recording")
+                    }
             }
 
 
@@ -32,7 +36,6 @@ struct SessionView: View {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button(action: {
                     dismiss()
-                    print("Settings tapped")
                 }) {
                     Image(systemName: "chevron.left")
                         .foregroundColor(.soniscopeBlue)
@@ -50,3 +53,4 @@ struct SessionView: View {
         SessionView()
     }.preferredColorScheme(.dark)
 }
+

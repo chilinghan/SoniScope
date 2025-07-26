@@ -4,7 +4,7 @@ struct StartView: View {
     @Bindable var accessoryManager: AccessorySessionManager
     @State private var showSessionFlow = false
     @State private var startSessionPressed = false
-
+    
     var body: some View {
         VStack {
             // MARK: Top Bar
@@ -13,14 +13,19 @@ struct StartView: View {
             Image(.render)
                 .resizable()
                 .frame(width: 700, height: 400)
-
+            
             // MARK: Start Session Button
             Button(action: {
                 if accessoryManager.connectionStatus != "Connected" {
                     startSessionPressed = true  // User pressed button to start pairing
                     accessoryManager.presentPicker()
                 } else {
-                    showSessionFlow = true      // Already connected, proceed immediately
+                    // Already connected, send commands and proceed
+                    accessoryManager.sendScreenCommand("connected")
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                        accessoryManager.sendScreenCommand("recording")
+                    }
+                    showSessionFlow = true
                 }
             }) {
                 ZStack {
@@ -34,7 +39,7 @@ struct StartView: View {
                     )
                     .frame(width: 320, height: 60)
                     .cornerRadius(60)
-
+                    
                     HStack {
                         Image(systemName: "play.fill")
                             .font(.system(size: 18, weight: .semibold))
@@ -45,8 +50,8 @@ struct StartView: View {
                     .frame(width: 320, height: 60)
                 }
             }
-
-            // Optional: Show connection status
+            
+            // Connection Status
             if accessoryManager.connectionStatus != "Disconnected" {
                 Text(accessoryManager.connectionStatus)
                     .font(.system(size: 14, weight: .medium))
@@ -55,18 +60,29 @@ struct StartView: View {
             }
             
             Spacer()
-
         }
         .background(Color.black)
         .ignoresSafeArea()
         .fullScreenCover(isPresented: $showSessionFlow) {
-            SessionFlowView()
+            SessionFlowView(accessoryManager: accessoryManager)
         }
         .onChange(of: accessoryManager.connectionStatus) {
-            // Only navigate if user pressed start AND connected now
             if startSessionPressed && accessoryManager.connectionStatus == "Connected" {
                 showSessionFlow = true
-                startSessionPressed = false  // reset flag
+                startSessionPressed = false
+                
+                // Delay BLE command to ensure characteristic is ready
+                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                    if accessoryManager.peripheralConnected {
+                        accessoryManager.sendScreenCommand("connected")
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
+                            accessoryManager.sendScreenCommand("recording")
+                        }
+                    } else {
+                        print("⚠️ Peripheral not ready yet, skipping screen command")
+                    }
+                }
             }
         }
     }

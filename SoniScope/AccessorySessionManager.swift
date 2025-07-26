@@ -5,27 +5,31 @@ import SwiftUI
 import Observation
 
 @Observable
-final class AccessorySessionManager: NSObject {
-    // State Properties
+final class AccessorySessionManager: NSObject, ObservableObject {
+    // State
     var rawAudio: String?
     var peripheralConnected = false
     var connectionStatus = "Disconnected"
     var showPairingError = false
     
-    // BLE Properties
+    // BLE
     private var currentAccessory: ASAccessory?
     private var session = ASAccessorySession()
     private var centralManager: CBCentralManager?
     private var peripheral: CBPeripheral?
     private var audioCharacteristic: CBCharacteristic?
-    
-    // UUID Configuration
-    private static let serviceUUID = CBUUID(string: "180A")
+    private var screenCharacteristic: CBCharacteristic?  // New
+
+    // UUIDs
+    private static let audioServiceUUID = CBUUID(string: "180A")
+    private static let screenServiceUUID = CBUUID(string: "12345678-1234-1234-1234-1234567890ab")
+
     private static let audioCharUUID = CBUUID(string: "2A57")
-    
+    private static let screenCharUUID = CBUUID(string: "abcd1234-5678-90ab-cdef-1234567890ab")
+
     private static let soniScopeItem: ASPickerDisplayItem = {
         let descriptor = ASDiscoveryDescriptor()
-        descriptor.bluetoothServiceUUID = serviceUUID
+        descriptor.bluetoothServiceUUID = screenServiceUUID  // Key service for filtering
         return ASPickerDisplayItem(
             name: "SoniScope",
             productImage: UIImage(systemName: "waveform")!,
@@ -48,12 +52,12 @@ final class AccessorySessionManager: NSObject {
             }
         }
     }
-    
+
     func disconnect() {
         guard let peripheral else { return }
         centralManager?.cancelPeripheralConnection(peripheral)
     }
-    
+
     private func handleSessionEvent(event: ASAccessoryEvent) {
         DispatchQueue.main.async {
             switch event.eventType {
@@ -69,11 +73,11 @@ final class AccessorySessionManager: NSObject {
             }
         }
     }
-    
+
     private func setupAccessory(_ accessory: ASAccessory) {
         currentAccessory = accessory
         connectionStatus = "Setting up..."
-        
+
         if centralManager == nil {
             centralManager = CBCentralManager(
                 delegate: self,
@@ -82,16 +86,18 @@ final class AccessorySessionManager: NSObject {
             )
         }
     }
-    
+
     private func cleanupConnection() {
         peripheralConnected = false
         connectionStatus = "Disconnected"
         peripheral = nil
         audioCharacteristic = nil
+        screenCharacteristic = nil
     }
 }
 
-// MARK: - BLE Delegates
+// MARK: - CBCentralManagerDelegate
+
 extension AccessorySessionManager: CBCentralManagerDelegate {
     func centralManagerDidUpdateState(_ central: CBCentralManager) {
         switch central.state {
@@ -112,67 +118,81 @@ extension AccessorySessionManager: CBCentralManagerDelegate {
             connectionStatus = "Bluetooth Unavailable"
         }
     }
-    
+
     func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
         peripheralConnected = true
         connectionStatus = "Discovering Services..."
-        peripheral.discoverServices([Self.serviceUUID])
+        peripheral.discoverServices([Self.audioServiceUUID, Self.screenServiceUUID])
     }
-    
+
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         cleanupConnection()
     }
 }
 
+// MARK: - CBPeripheralDelegate
+
 extension AccessorySessionManager: CBPeripheralDelegate {
     func peripheral(_ peripheral: CBPeripheral, didDiscoverServices error: Error?) {
         guard let services = peripheral.services else { return }
-        services.forEach {
-            if $0.uuid == Self.serviceUUID {
-                connectionStatus = "Discovering Characteristics..."
-                peripheral.discoverCharacteristics([Self.audioCharUUID], for: $0)
+
+        for service in services {
+            if service.uuid == Self.audioServiceUUID {
+                peripheral.discoverCharacteristics([Self.audioCharUUID], for: service)
+            } else if service.uuid == Self.screenServiceUUID {
+                peripheral.discoverCharacteristics([Self.screenCharUUID], for: service)
             }
         }
     }
-    
+
     func peripheral(_ peripheral: CBPeripheral, didDiscoverCharacteristicsFor service: CBService, error: Error?) {
         guard let characteristics = service.characteristics else { return }
-        
-        characteristics.forEach {
-            if $0.uuid == Self.audioCharUUID {
-                audioCharacteristic = $0
-                peripheral.setNotifyValue(true, for: $0)
+
+        for characteristic in characteristics {
+            if characteristic.uuid == Self.audioCharUUID {
+                audioCharacteristic = characteristic
+                peripheral.setNotifyValue(true, for: characteristic)
+                connectionStatus = "Receiving Audio..."
+            } else if characteristic.uuid == Self.screenCharUUID {
+                screenCharacteristic = characteristic
+                print("✅ Screen characteristic discovered!")
+                // Only mark connection as "Connected" once both characteristics are discovered
                 connectionStatus = "Connected"
             }
         }
     }
-    
+
+
     func peripheral(_ peripheral: CBPeripheral, didUpdateValueFor characteristic: CBCharacteristic, error: Error?) {
         guard characteristic.uuid == Self.audioCharUUID,
               let data = characteristic.value else { return }
-        
+
         let hexString = data.map { String(format: "%02X", $0) }.joined()
         DispatchQueue.main.async {
             self.rawAudio = hexString
         }
     }
-    
 }
 
+// MARK: - Send Screen Command
+
 extension AccessorySessionManager {
-    func sendBLECommand(_ command: String) {
-        guard let characteristic = self.audioCharacteristic,
-              let peripheral = self.peripheral else {
-            print("❌ Cannot send command: Not connected or characteristic unavailable")
+    func sendScreenCommand(_ command: String) {
+        print("🔧 Attempting to send command: \(command)")
+        print("  ↪️ Peripheral: \(String(describing: peripheral))")
+        print("  ↪️ Screen Char: \(String(describing: screenCharacteristic))")
+        print("  ↪️ Central State: \(String(describing: centralManager?.state.rawValue))")
+        
+        guard let characteristic = self.screenCharacteristic,
+              let peripheral = self.peripheral,
+              peripheral.state == .connected,
+              centralManager?.state == .poweredOn,
+              let data = command.data(using: .utf8) else {
+            print("❌ Conditions not met. Skipping BLE write.")
             return
         }
-
-        guard let data = command.data(using: .utf8) else {
-            print("❌ Invalid command string encoding")
-            return
-        }
-
+        
+        print("✅ Writing BLE screen command to device")
         peripheral.writeValue(data, for: characteristic, type: .withResponse)
-        print("✅ Sent BLE command: \(command)")
     }
 }

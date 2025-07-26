@@ -7,6 +7,7 @@
 
 import Foundation
 import CoreData
+import CoreML
 
 class SessionManager: ObservableObject {
     // Use the shared Core Data context
@@ -19,14 +20,28 @@ class SessionManager: ObservableObject {
     func createAndSaveSession(
         name: String = "Untitled",
         diagnosis: String = "",
-        audioPath: String = "",
+        audioPath: String = ""
     ) {
         let session = SessionEntity(context: context)
         session.id = UUID()
         session.name = name
-        session.diagnosis = diagnosis
         session.audioPath = audioPath
         session.timestamp = Date()
+
+        // Run model if audioPath is provided
+        if let url = URL(string: audioPath), FileManager.default.fileExists(atPath: url.path) {
+            let processor = AudioPreprocessor()
+            if let features = processor.extractFeatures(from: url) {
+                let predictedDiagnosis = runModel(with: features)
+                session.diagnosis = predictedDiagnosis
+                print("🎯 Predicted diagnosis: \(predictedDiagnosis)")
+            } else {
+                session.diagnosis = "Feature extraction failed"
+                print("❌ Feature extraction failed for \(audioPath)")
+            }
+        } else {
+            session.diagnosis = diagnosis.isEmpty ? "No audio provided" : diagnosis
+        }
 
         do {
             try context.save()
@@ -59,5 +74,47 @@ class SessionManager: ObservableObject {
             print("❌ Failed to fetch sessions: \(error.localizedDescription)")
             return []
         }
+    }
+
+    /// Run Core ML model on feature array
+    func runModel(with featureArray: [Double]) -> String {
+        guard featureArray.count == 168 else {
+            return "Invalid feature array size"
+        }
+
+        do {
+            let mlArray = try MLMultiArray(shape: [1, 168, 1], dataType: .float32)
+            for i in 0..<168 {
+                mlArray[[0, i, 0] as [NSNumber]] = NSNumber(value: featureArray[i])
+            }
+
+            let model = try custom_model(configuration: MLModelConfiguration())
+            let input = custom_modelInput(conv1d_input: mlArray)
+            let prediction = try model.prediction(input: input)
+
+            let index = argmax(prediction.Identity)
+            let labelMap = [
+                0: "COPD", 1: "Healthy", 2: "URTI",
+                3: "Bronchiectasis", 4: "Pneumonia",
+                5: "Bronchiolitis", 6: "Asthma", 7: "LRTI"
+            ]
+            return labelMap[index] ?? "Unknown"
+        } catch {
+            return "Prediction failed: \(error.localizedDescription)"
+        }
+    }
+
+    /// Helper to get the index of the highest score
+    func argmax(_ array: MLMultiArray) -> Int {
+        var maxIndex = 0
+        var maxValue = array[0].doubleValue
+        for i in 1..<array.count {
+            let val = array[i].doubleValue
+            if val > maxValue {
+                maxValue = val
+                maxIndex = i
+            }
+        }
+        return maxIndex
     }
 }
