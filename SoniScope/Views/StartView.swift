@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct StartView: View {
-    @Bindable var accessoryManager: AccessorySessionManager
+    @EnvironmentObject var accessoryManager: AccessorySessionManager
     @State private var showSessionFlow = false
     @State private var startSessionPressed = false
     
@@ -20,11 +20,6 @@ struct StartView: View {
                     startSessionPressed = true  // User pressed button to start pairing
                     accessoryManager.presentPicker()
                 } else {
-                    // Already connected, send commands and proceed
-                    accessoryManager.sendScreenCommand("connected")
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                        accessoryManager.sendScreenCommand("recording")
-                    }
                     showSessionFlow = true
                 }
             }) {
@@ -63,25 +58,29 @@ struct StartView: View {
         }
         .background(Color.black)
         .ignoresSafeArea()
-        .fullScreenCover(isPresented: $showSessionFlow) {
-            SessionFlowView(accessoryManager: accessoryManager)
+        .fullScreenCover(isPresented: $showSessionFlow, onDismiss: {
+            accessoryManager.sendScreenCommand("home")
+        }) {
+            SessionFlowView()
+        }
+        .onAppear {
+            print("Start View loaded")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                accessoryManager.sendScreenCommand("home")
+            }
+        }
+        .onDisappear {
+            startSessionPressed = false
         }
         .onChange(of: accessoryManager.connectionStatus) {
-            if startSessionPressed && accessoryManager.connectionStatus == "Connected" {
-                showSessionFlow = true
-                startSessionPressed = false
-                
-                // Delay BLE command to ensure characteristic is ready
-                DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                    if accessoryManager.peripheralConnected {
-                        accessoryManager.sendScreenCommand("connected")
+            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                if startSessionPressed && accessoryManager.connectionStatus == "Connected" {
+                    print("Connected display")
+                    accessoryManager.sendScreenCommand("connected")
+                    
+                    showSessionFlow = true
+                    startSessionPressed = false
                         
-                        DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                            accessoryManager.sendScreenCommand("recording")
-                        }
-                    } else {
-                        print("⚠️ Peripheral not ready yet, skipping screen command")
-                    }
                 }
             }
         }
@@ -89,5 +88,6 @@ struct StartView: View {
 }
 
 #Preview {
-    StartView(accessoryManager: AccessorySessionManager())
+    StartView()
+        .environmentObject(AccessorySessionManager())
 }

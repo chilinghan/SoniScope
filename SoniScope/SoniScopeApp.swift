@@ -26,14 +26,16 @@ struct SoniScopeApp: App {
 
     // ✅ SessionManager and HealthDataManager must both be StateObjects
     @StateObject private var sessionManager = SessionManager()
-    @StateObject private var healthManager = HealthDataManager() // ✅ Added this line
+    @StateObject private var healthManager = HealthDataManager()
+    @StateObject private var accessoryManager = AccessorySessionManager()
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, context)
                 .environmentObject(sessionManager)
-                .environmentObject(healthManager) // ✅ Now initialized properly
+                .environmentObject(healthManager)
+                .environmentObject(accessoryManager)
                 .preferredColorScheme(.dark)
 
         }

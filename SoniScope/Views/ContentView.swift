@@ -23,6 +23,7 @@ struct ContentView: View {
     let processor = AudioPreprocessor()
 
     @State private var predictedLabel: String = "Waiting for prediction..."
+    @EnvironmentObject var accessoryManager: AccessorySessionManager
     
     // Label map for your disease classes
     let labelMap: [Int: String] = [
@@ -40,7 +41,7 @@ struct ContentView: View {
     
     var body: some View {
         TabView (selection: $selectedTab) {
-            StartView(accessoryManager: AccessorySessionManager())
+            StartView()
                 .tabItem {
                     Image(.orangelungs)
                         .renderingMode(.template)
@@ -179,4 +180,6 @@ struct ContentView: View {
 
 #Preview {
     ContentView()
+        .environmentObject(AccessorySessionManager())
+    
 }

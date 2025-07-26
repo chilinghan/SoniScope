@@ -2,10 +2,9 @@ import SwiftUI
 
 struct SessionFlowView: View {
     @EnvironmentObject var sessionManager: SessionManager
-    @Bindable var accessoryManager: AccessorySessionManager  // 🔧 Add this line
 
     enum Step {
-        case session1, session2, session3, recording, analyzing, success, results
+        case session1, session2, session3, recording, success, analyzing, results
     }
 
     @State private var step: Step = .session1
@@ -50,21 +49,20 @@ struct SessionFlowView: View {
                     buttonText: "Recording in Progress...",
                     isChest: false,
                     onNext: {
-                        accessoryManager.sendScreenCommand("complete")  // 🟢 Show "Complete" screen
-                        step = .analyzing
+                        step = .success
                     },
-                )
-
-            case .analyzing:
-                AnalyzingView(
-                    onNext: { step = .success }
                 )
 
             case .success:
                 RecordingSuccess(
                     onNext: { _ in
-                        step = .results
+                        step = .analyzing
                     }
+                )
+                
+            case .analyzing:
+                AnalyzingView(
+                    onNext: { step = .results }
                 )
 
             case .results:

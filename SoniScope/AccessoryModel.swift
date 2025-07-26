@@ -25,7 +25,7 @@ enum AccessoryModel {
     
     var serviceUUID: CBUUID {
         switch self {
-            case .soniScope: CBUUID(string: "")
+            case .soniScope: CBUUID(string: "93ae16d8-749c-4f7c-846c-dd4776f76676")
         }
     }
     

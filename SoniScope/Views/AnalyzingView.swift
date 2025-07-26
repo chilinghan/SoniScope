@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct AnalyzingView: View {
+    @EnvironmentObject var accessoryManager: AccessorySessionManager
+    
     @State private var progress: CGFloat = 0.0
     @State private var recordingTime: Int = 0
     @State private var isRecording = true

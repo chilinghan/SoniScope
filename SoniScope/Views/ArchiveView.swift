@@ -9,6 +9,7 @@ import SwiftUI
 import CoreData
 
 struct ArchiveView: View {
+    @EnvironmentObject private var accessoryManager: AccessorySessionManager
     @State private var selectedDate = Date()
 
     @State private var selectedSession: SessionEntity? = nil
@@ -64,11 +65,14 @@ struct ArchiveView: View {
                 
                 Spacer()
             }
+            .onAppear {
+                accessoryManager.sendScreenCommand("home")
+            }
             .background(.black)
             .ignoresSafeArea()
 
         }
-        }
+    }
     
 }
 
