@@ -5,7 +5,7 @@
 
 import SwiftUI
 import UIKit
-import CoreData // ✅ REQUIRED for NSManagedObjectContext
+import CoreData
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication, supportedInterfaceOrientationsFor window: UIWindow?) -> UIInterfaceOrientationMask {
@@ -20,19 +20,22 @@ struct SoniScopeApp: App {
 
     let persistenceController = PersistenceController.shared
 
-    // ✅ Setup context first
     var context: NSManagedObjectContext {
         persistenceController.container.viewContext
     }
 
-    // ✅ Properly initialize SessionManager using StateObject + wrappedValue
+    // ✅ SessionManager and HealthDataManager must both be StateObjects
     @StateObject private var sessionManager = SessionManager()
+    @StateObject private var healthManager = HealthDataManager() // ✅ Added this line
 
     var body: some Scene {
         WindowGroup {
             ContentView()
                 .environment(\.managedObjectContext, context)
                 .environmentObject(sessionManager)
+                .environmentObject(healthManager) // ✅ Now initialized properly
+                .preferredColorScheme(.dark)
+
         }
     }
 }

@@ -9,10 +9,14 @@
 import SwiftUI
 import CoreML
 
-enum Tab {
-    case home
+enum TabTypes {
     case archive
     case start
+}
+
+public extension Color {
+    static let soniscopeOrange = Color(red: 0.99, green: 0.52, blue: 0.0)
+    static let soniscopeBlue = Color(red: 0.56, green: 0.79, blue: 0.9)
 }
 
 struct ContentView: View {
@@ -32,31 +36,44 @@ struct ContentView: View {
         7: "LRTI"
     ]
     
-    @State private var selectedTab: Tab = .home
+    @State private var selectedTab: TabTypes = .start
     
     var body: some View {
-        ZStack(alignment: .bottom) {
-            // Native TabView for managing navigation
-            TabView (selection: $selectedTab) {
-                StartView(accessoryManager: AccessorySessionManager())
-                    .tag(Tab.home)
-                ArchiveView()
-                    .tag(Tab.archive)
-            }
+        TabView (selection: $selectedTab) {
+            StartView(accessoryManager: AccessorySessionManager())
+                .tabItem {
+                    Image("orangelungs")
+                        .renderingMode(.template)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24) // Custom size here
+                    Text("Home")
+                }
+
+            ArchiveView()
+                .tabItem {
+                    Image(systemName: "archivebox")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 24, height: 24)
+                    Text("Archive")
+                }
+        }
+        .tint(.soniscopeOrange)
             
             // Custom tab bar overlaid at the bottom
-            VStack(spacing: 6) {
-                HStack(spacing: 80) {
-                    tabItem(image: .orangelungs, label: "Home", tab: .home)
-                    tabItem(image: .archive, label: "Archive", tab: .archive)
-                }
-            }
-            .frame(width: UIScreen.main.bounds.size.width, height: 77)
-            .cornerRadius(16)
-            .background(Color(red: 0.07, green: 0.07, blue: 0.07))
-            .padding(.horizontal, 16)
-            .padding(.bottom, 0)
-        }
+//            VStack(spacing: 6) {
+//                HStack(spacing: 80) {
+//                    tabItem(image: .orangelungs, label: "Home", tab: .home)
+//                    tabItem(image: .archive, label: "Archive", tab: .archive)
+//                }
+//            }
+//            .frame(width: UIScreen.main.bounds.size.width, height: 77)
+//            .cornerRadius(16)
+//            .background(Color(red: 0.07, green: 0.07, blue: 0.07))
+//            .padding(.horizontal, 16)
+//            .padding(.bottom, 0)
+        
+        
 //        VStack(spacing: 20) {
 //            Text("Prediction Result")
 //                .font(.title)
@@ -87,8 +104,9 @@ struct ContentView: View {
 //        }
 //        .padding()
     }
+
     
-    func tabItem(image: ImageResource, label: String, tab: Tab) -> some View {
+    func tabItem(image: ImageResource, label: String, tab: TabTypes) -> some View {
         VStack(spacing: 4) {
             ZStack {
                 Color.clear
@@ -111,12 +129,6 @@ struct ContentView: View {
         .onTapGesture {
             selectedTab = tab
         }
-    }
-    
-    func safeAreaBottom() -> CGFloat {
-        UIApplication.shared.connectedScenes
-            .compactMap { ($0 as? UIWindowScene)?.keyWindow }
-            .first?.safeAreaInsets.bottom ?? 0
     }
 
         

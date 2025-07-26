@@ -30,10 +30,9 @@ struct ArchiveView: View {
             VStack {
                 // Top bar
                 HeaderView(title: "Logs")
-
+                
                 CustomCalendarView(selectedDate: $selectedDate)
-                    .padding()
-
+                
                 HStack {
                     Text("Recent Sessions")
                         .font(.system(size: 20, weight: .semibold))
@@ -42,7 +41,7 @@ struct ArchiveView: View {
                         .padding(.top)
                     Spacer()
                 }
-
+                
                 if filteredSessions.isEmpty {
                     Text("No sessions on this date.")
                         .foregroundColor(.gray)
@@ -51,23 +50,26 @@ struct ArchiveView: View {
                     ScrollView {
                         LazyVStack(spacing: 12) {
                             ForEach(filteredSessions) { session in
-                                NavigationLink(destination: SessionSummary(session: session)) {
+                                NavigationLink(destination: ResultsView(session: session)) {
                                     SessionRow(session: session)
                                 }
                                 .buttonStyle(PlainButtonStyle())
                                 .padding(.horizontal)
                             }
                         }
-                        .padding(.bottom, 120)
+                        .padding(.bottom, 100)
                     }
-                    .frame(maxHeight: 300)
+                    .frame(maxHeight: 400)
                 }
+                
+                Spacer()
             }
-            .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height, alignment: .top)
-            .background(Color.black)
+            .background(.black)
             .ignoresSafeArea()
+
         }
-    }
+        }
+    
 }
 
 #Preview {

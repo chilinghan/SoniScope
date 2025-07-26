@@ -20,14 +20,12 @@ class SessionManager: ObservableObject {
         name: String = "Untitled",
         diagnosis: String = "",
         audioPath: String = "",
-        notes: String = ""
     ) {
         let session = SessionEntity(context: context)
         session.id = UUID()
         session.name = name
         session.diagnosis = diagnosis
         session.audioPath = audioPath
-        session.notes = notes
         session.timestamp = Date()
 
         do {

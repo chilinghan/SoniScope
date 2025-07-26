@@ -62,7 +62,7 @@ struct CustomCalendarView: View {
             LazyVGrid(columns: gridItems, spacing: 10) {
                 ForEach(generateDatesForMonth(), id: \.self) { date in
                     dateCell(for: date)
-                        .frame(height: 40)
+                        .frame(height: 30)
                 }
             }
             .padding(.horizontal, 25)

@@ -54,10 +54,8 @@ struct StartView: View {
 
             Spacer(minLength: 200)
         }
-        .frame(width: UIScreen.main.bounds.size.width, height: UIScreen.main.bounds.size.height, alignment: .top)
         .background(Color.black)
         .ignoresSafeArea()
-
         .fullScreenCover(isPresented: $showSessionFlow) {
             SessionFlowView()
         }
@@ -68,7 +66,6 @@ struct StartView: View {
                 startSessionPressed = false  // reset flag
             }
         }
-        .navigationBarBackButtonHidden(true)
     }
 }
 
