@@ -156,4 +156,23 @@ extension AccessorySessionManager: CBPeripheralDelegate {
             self.rawAudio = hexString
         }
     }
+    
+}
+
+extension AccessorySessionManager {
+    func sendBLECommand(_ command: String) {
+        guard let characteristic = self.audioCharacteristic,
+              let peripheral = self.peripheral else {
+            print("❌ Cannot send command: Not connected or characteristic unavailable")
+            return
+        }
+
+        guard let data = command.data(using: .utf8) else {
+            print("❌ Invalid command string encoding")
+            return
+        }
+
+        peripheral.writeValue(data, for: characteristic, type: .withResponse)
+        print("✅ Sent BLE command: \(command)")
+    }
 }
