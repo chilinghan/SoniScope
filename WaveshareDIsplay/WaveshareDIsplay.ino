@@ -16,13 +16,14 @@ using namespace esp_panel::board;
 #define SCREEN_SERVICE_UUID        "12345678-1234-1234-1234-1234567890ab"
 #define SCREEN_CHARACTERISTIC_UUID "abcd1234-5678-90ab-cdef-1234567890ab"
 
-#define AUDIO_SERVICE_UUID         "180A"  // Could be custom
-#define AUDIO_CHARACTERISTIC_UUID  "2A57"  // Custom/placeholder UUID for audio
+#define AUDIO_SERVICE_UUID         "180A"
+#define AUDIO_CHARACTERISTIC_UUID  "2A57"
 
 // BLE globals
 BLEServer* pServer = nullptr;
 BLECharacteristic* screenCharacteristic = nullptr;
 BLECharacteristic* audioCharacteristic = nullptr;
+BLE2902* audioDescriptor = nullptr;  // Track notification subscription
 
 // LCD panel board object
 Board* board = nullptr;
@@ -74,7 +75,8 @@ void setupBLE() {
     AUDIO_CHARACTERISTIC_UUID,
     BLECharacteristic::PROPERTY_NOTIFY
   );
-  audioCharacteristic->addDescriptor(new BLE2902());
+  audioDescriptor = new BLE2902();
+  audioCharacteristic->addDescriptor(audioDescriptor);
   audioService->start();
 
   // Advertise both services
@@ -110,14 +112,15 @@ void setup() {
   setupBLE();
 
   assert(board->begin());
-  board->getLCD()->invertColor(true);   
+  board->getLCD()->invertColor(true);  // Invert color if needed
+
   Serial.println("Initializing LVGL");
   lvgl_port_init(board->getLCD(), board->getTouch());
 
   Serial.println("Loading UI");
   lvgl_port_lock(-1);
-  ui_init();                 // Initialize all SquareLine UI screens
-  lv_scr_load(ui_Home);     // Default screen at startup
+  ui_init();               // Initialize all SquareLine screens
+  lv_scr_load(ui_Home);    // Set default screen
   lvgl_port_unlock();
 }
 
@@ -125,11 +128,10 @@ void setup() {
 void loop() {
   static unsigned long lastSend = 0;
 
-  // Simulated audio stream
-  if (millis() - lastSend > 100) {  // Every 100ms
+  if (millis() - lastSend > 100) {
     lastSend = millis();
 
-    if (audioCharacteristic->getSubscribed()) {
+    if (audioDescriptor && audioDescriptor->getNotifications()) {
       uint16_t sample = analogRead(A0);  // Simulated microphone input
       uint8_t audioData[2] = {
         highByte(sample),
@@ -140,5 +142,5 @@ void loop() {
     }
   }
 
-  delay(5);  // Let LVGL run
+  delay(5);  // Let LVGL process
 }

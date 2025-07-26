@@ -3,16 +3,16 @@
 // LVGL version: 8.3.11
 // Project name: SquareLine_Project
 
-#ifndef UI_SCREEN2_H
-#define UI_SCREEN2_H
+#ifndef UI_COMPLETE_H
+#define UI_COMPLETE_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// SCREEN: ui_Screen2
-extern void ui_Screen2_screen_init(void);
-extern void ui_Screen2_screen_destroy(void);
+// SCREEN: ui_Complete
+extern void ui_Complete_screen_init(void);
+extern void ui_Complete_screen_destroy(void);
 extern void ui_event_Complete( lv_event_t * e);
 extern lv_obj_t *ui_Complete;
 extern lv_obj_t *ui_Image2;

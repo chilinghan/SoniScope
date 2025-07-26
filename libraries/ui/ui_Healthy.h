@@ -3,16 +3,16 @@
 // LVGL version: 8.3.11
 // Project name: SquareLine_Project
 
-#ifndef UI_SCREEN5_H
-#define UI_SCREEN5_H
+#ifndef UI_HEALTHY_H
+#define UI_HEALTHY_H
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-// SCREEN: ui_Screen5
-extern void ui_Screen5_screen_init(void);
-extern void ui_Screen5_screen_destroy(void);
+// SCREEN: ui_Healthy
+extern void ui_Healthy_screen_init(void);
+extern void ui_Healthy_screen_destroy(void);
 extern void ui_event_Healthy( lv_event_t * e);
 extern lv_obj_t *ui_Healthy;
 extern lv_obj_t *ui_TextArea4;

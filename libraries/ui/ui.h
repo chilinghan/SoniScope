@@ -27,11 +27,11 @@ extern "C" {
 
 ///////////////////// SCREENS ////////////////////
 #include "ui_Home.h"
-#include "ui_Screen2.h"
-#include "ui_Screen3.h"
-#include "ui_Screen4.h"
-#include "ui_Screen5.h"
-#include "ui_Screen6.h"
+#include "ui_Complete.h"
+#include "ui_Connected.h"
+#include "ui_Recording.h"
+#include "ui_Healthy.h"
+#include "ui_Abnormal.h"
 
 ///////////////////// VARIABLES ////////////////////
 
