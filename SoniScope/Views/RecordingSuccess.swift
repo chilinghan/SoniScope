@@ -26,14 +26,12 @@ struct RecordingSuccess: View {
         .ignoresSafeArea()
         .onAppear {
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-                accessoryManager.sendScreenCommand("complete")
-                sessionManager.createAndSaveSession()
+                let savedURL = accessoryManager.getSavedWAVFileURL()
 
-                var savedURL: URL? = nil
-                let buffer = accessoryManager.audioBuffer.getBuffer()
-                if !buffer.isEmpty {
-                    savedURL = AudioSaver.shared.savePCMAsWav(pcmData: buffer)
-                }
+                accessoryManager.sendScreenCommand("complete")
+                accessoryManager.stopRecordingToWAV()
+
+                sessionManager.createAndSaveSession()
 
                 if let session = sessionManager.currentSession {
                     if let url = savedURL {

@@ -22,8 +22,8 @@ struct SessionView: View {
             } else {
                 RecordingView(onNext: onNext).frame(width: 339, height: 412)
                     .onAppear {
-                        accessoryManager.audioBuffer.clearBuffer()
                         accessoryManager.sendScreenCommand("recording")
+                        accessoryManager.startRecordingToWAV()
                     }
             }
 

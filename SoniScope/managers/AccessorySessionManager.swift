@@ -11,7 +11,7 @@ final class AccessorySessionManager: NSObject, ObservableObject {
     var peripheralConnected = false
     var connectionStatus = "Disconnected"
     var showPairingError = false
-    var audioBuffer: AudioBufferManager = AudioBufferManager()
+    var wavWriter: WAVWriter?
 
     // BLE
     private var currentAccessory: ASAccessory?
@@ -179,7 +179,7 @@ extension AccessorySessionManager: CBPeripheralDelegate {
         guard characteristic.uuid == Self.audioCharUUID,
               let data = characteristic.value else { return }
         
-        audioBuffer.appendAudioData(data)
+        wavWriter?.appendPCMData(data)
         
         let hexString = data.map { String(format: "%02X", $0) }.joined()
         DispatchQueue.main.async {
@@ -191,6 +191,25 @@ extension AccessorySessionManager: CBPeripheralDelegate {
 // MARK: - Send Screen Command
 
 extension AccessorySessionManager {
+    static func timestamp() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyyMMdd-HHmmss"
+        return formatter.string(from: Date())
+    }
+    
+    func startRecordingToWAV() {
+        wavWriter = WAVWriter(filename: "soniscope-\(Self.timestamp()).wav")
+    }
+
+    func stopRecordingToWAV() {
+        wavWriter?.finalize()
+        wavWriter = nil
+    }
+    
+    func getSavedWAVFileURL() -> URL? {
+        return wavWriter?.getFileURL()
+    }
+    
     func sendScreenCommand(_ command: String) {
         print("🔧 Attempting to send command: \(command)")
         print("  ↪️ Peripheral: \(String(describing: peripheral))")

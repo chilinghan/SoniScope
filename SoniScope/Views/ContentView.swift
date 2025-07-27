@@ -15,9 +15,9 @@ public extension Color {
 }
 
 public struct AudioConstants {
-    static let sampleRate = 16000
-    static let channels = 1
-    static let bitsPerSample = 16
+    static let sampleRate: UInt32 = 16000
+    static let channels: UInt16 = 1
+    static let bitsPerSample: UInt16 = 16
 }
 
 struct ContentView: View {
