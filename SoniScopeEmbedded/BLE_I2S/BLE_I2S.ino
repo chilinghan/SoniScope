@@ -11,14 +11,11 @@ BLECharacteristic* pAudioStreamCharacteristic = nullptr;
 
 bool deviceConnected = false;
 
-I2SClass I2S;
+I2SClass i2s;
 
 #define I2S_WS 44  // LRCK (yellow)
 #define I2S_SCK 43 // BCLK (orange)
 #define I2S_DIN 12 // Data In (SD)
-
-// Audio buffer
-char audioBuffer[256];  // Size depends on BLE MTU and latency
 
 class MyServerCallbacks: public BLEServerCallbacks {
   void onConnect(BLEServer* pServer) {
@@ -34,6 +31,7 @@ class MyServerCallbacks: public BLEServerCallbacks {
 
 void InitBLE() {
   BLEDevice::init("ESP32-AudioDevice");
+  BLEDevice::setMTU(200);
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
@@ -54,12 +52,13 @@ void InitBLE() {
 }
 
 void InitI2S() {
-  if (!I2S.begin(I2S_MODE_STD, 44100, I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_MONO)) {
+  i2s.setPins(I2S_SCK, I2S_WS, -1, I2S_DIN);
+  i2s.setTimeout(1000);
+
+  if (!i2s.begin(I2S_MODE_STD, 44100, I2S_DATA_BIT_WIDTH_32BIT, I2S_SLOT_MODE_MONO)) {
     Serial.println("Failed to initialize I2S");
     while (true);
   }
-
-  I2S.setPins(I2S_SCK, I2S_WS, -1, I2S_DIN);
 
   Serial.println("I2S initialized");
 }
@@ -68,31 +67,38 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
   InitBLE();
+  // pinMode(I2S_DIN, OUTPUT);
+  // pinMode(I2S_SCK, OUTPUT);
+  // pinMode(I2S_WS, OUTPUT);
   InitI2S();
 }
 
 void loop() {
-  size_t bytesRead = I2S.readBytes(audioBuffer, sizeof(audioBuffer));
+  // Audio buffer
+  char audioBuffer[256];
+  size_t bytesRead = i2s.readBytes(audioBuffer, sizeof(audioBuffer));
+  
+  size_t sampleCount = bytesRead / 4; // number of samples = bytesRead / bytes per sample (4)
+  int16_t sampleBuffer[sampleCount];
 
-  if (bytesRead == 0) {
-    Serial.println("No data read from mic!");
-  } else {
-    Serial.print("Bytes read: ");
-    Serial.println(bytesRead);
-    for (int i = 0; i < 8; i++) {
-      Serial.print((uint8_t)audioBuffer[i]);
-      Serial.print(" ");
+  Serial.printf("Read %u bytes\n", bytesRead);
+
+  if (bytesRead > 0) {
+    int32_t *samples = (int32_t *)audioBuffer;
+    for (size_t i = 0; i < sampleCount; ++i) {
+      int16_t audio = samples[i] >> 14;  // adjust shift as needed
+      sampleBuffer[i] = audio;
+      Serial.println(sampleBuffer[i]);
     }
-     Serial.println();
+    
+    if (deviceConnected) {
+
+      pAudioStreamCharacteristic->setValue((uint8_t*)sampleBuffer, sampleCount * sizeof(int16_t));
+      pAudioStreamCharacteristic->notify();
+    }
   }
 
-  Serial.println(pServer->getConnectedCount());
-  if (deviceConnected) {
-    // if (bytesRead > 0) {
-    //   pAudioStreamCharacteristic->setValue(audioBuffer, bytesRead);
-    //   pAudioStreamCharacteristic->notify();
-    // }
-  }
+  delay(500);
 
-  delay(200); // Let BLE buffer breathe
 }
+

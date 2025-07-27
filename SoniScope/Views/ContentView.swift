@@ -9,14 +9,15 @@
 import SwiftUI
 import CoreML
 
-enum TabTypes {
-    case archive
-    case start
-}
-
 public extension Color {
     static let soniscopeOrange = Color(red: 0.99, green: 0.52, blue: 0.0)
     static let soniscopeBlue = Color(red: 0.56, green: 0.79, blue: 0.9)
+}
+
+public struct AudioConstants {
+    static let sampleRate = 16000
+    static let channels = 1
+    static let bitsPerSample = 16
 }
 
 struct ContentView: View {
@@ -36,11 +37,9 @@ struct ContentView: View {
         6: "Asthma",
         7: "LRTI"
     ]
-    
-    @State private var selectedTab: TabTypes = .start
-    
+        
     var body: some View {
-        TabView (selection: $selectedTab) {
+        TabView {
             StartView()
                 .tabItem {
                     Image(.orangelungs)
@@ -105,33 +104,6 @@ struct ContentView: View {
 //        }
 //        .padding()
     }
-
-    
-    func tabItem(image: ImageResource, label: String, tab: TabTypes) -> some View {
-        VStack(spacing: 4) {
-            ZStack {
-                Color.clear
-                    .frame(width: 56, height: 45) // Fixed space for every image
-                
-                Image(image)
-                    .resizable()
-                    .renderingMode(.template)
-                    .scaledToFit()
-                    .frame(width: selectedTab == tab ? 56 : 45,
-                           height: selectedTab == tab ? 45 : 30)
-                    .foregroundColor(selectedTab == tab ? .orange : Color(red: 0.52, green: 0.52, blue: 0.53))
-            }
-            
-            Text(label)
-                .font(.system(size: 11, weight: .medium))
-                .foregroundColor(selectedTab == tab ? .orange : Color(red: 0.52, green: 0.52, blue: 0.53))
-        }
-        .padding(.bottom, 10)
-        .onTapGesture {
-            selectedTab = tab
-        }
-    }
-
         
     func runModel(with featureArray: [Double]) {
         guard featureArray.count == 168 else {

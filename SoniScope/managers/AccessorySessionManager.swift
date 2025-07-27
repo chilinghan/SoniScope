@@ -42,11 +42,6 @@ final class AccessorySessionManager: NSObject, ObservableObject {
     
     func presentPicker() {
         connectionStatus = "Searching..."
-//        if session == nil {
-//            session = ASAccessorySession(accessoryIdentifier: "YourAccessoryID")
-//            session?.delegate = self
-//        }
-        
         session.showPicker(for: [Self.soniScopeItem]) { error in
             if let error {
                 self.connectionStatus = "Pairing Failed"
@@ -96,8 +91,6 @@ final class AccessorySessionManager: NSObject, ObservableObject {
         peripheral = nil
         audioCharacteristic = nil
         screenCharacteristic = nil
-        session.invalidate()
-        session = nil
     }
 }
 
@@ -132,6 +125,22 @@ extension AccessorySessionManager: CBCentralManagerDelegate {
 
     func centralManager(_ central: CBCentralManager, didDisconnectPeripheral peripheral: CBPeripheral, error: Error?) {
         cleanupConnection()
+        
+        // Attempt to reconnect after delay
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            guard let peripheralID = self.currentAccessory?.bluetoothIdentifier else { return }
+            let peripherals = central.retrievePeripherals(withIdentifiers: [peripheralID])
+            if let knownPeripheral = peripherals.first {
+                self.peripheral = knownPeripheral
+                knownPeripheral.delegate = self
+                central.connect(knownPeripheral)
+                self.connectionStatus = "Reconnecting..."
+            } else {
+                // Optionally, start scanning here if retrievePeripherals fails
+                self.connectionStatus = "Searching for peripheral..."
+                // central.scanForPeripherals(withServices: [AccessoryModel.soniScope.serviceUUID], options: nil)
+            }
+        }
     }
 }
 

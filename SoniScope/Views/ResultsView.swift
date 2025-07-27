@@ -152,6 +152,7 @@ struct ResultsView: View {
         }
 
         let fileURL = URL(fileURLWithPath: path)
+        print(path, fileURL)
         do {
             audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
             audioDuration = audioPlayer?.duration ?? 0

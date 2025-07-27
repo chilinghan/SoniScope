@@ -31,9 +31,8 @@ struct RecordingSuccess: View {
 
                 var savedURL: URL? = nil
                 let buffer = accessoryManager.audioBuffer.getBuffer()
-                print(buffer)
                 if !buffer.isEmpty {
-                    savedURL = AudioSaver.shared.savePCMAsWav(pcmData: buffer, sampleRate: 44100, channels: 1)
+                    savedURL = AudioSaver.shared.savePCMAsWav(pcmData: buffer)
                 }
 
                 if let session = sessionManager.currentSession {

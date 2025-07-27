@@ -10,13 +10,15 @@ class AudioBufferManager {
     private var buffer = Data()
     private let maxBufferSize: Int
 
-    init(sampleRate: Int = 44100, bytesPerSample: Int = 2, channels: Int = 1, durationSeconds: Int = 20) {
+    init(sampleRate: Int = AudioConstants.sampleRate, bytesPerSample: Int = AudioConstants.bitsPerSample / 8, channels: Int = AudioConstants.channels, durationSeconds: Int = 20) {
         self.maxBufferSize = sampleRate * bytesPerSample * channels * durationSeconds
     }
 
     func appendAudioData(_ data: Data) {
+        print(data)
         buffer.append(data)
         if buffer.count > maxBufferSize {
+            print("REMOVING DATA")
             // Remove oldest data to keep buffer size at max
             buffer.removeFirst(buffer.count - maxBufferSize)
         }

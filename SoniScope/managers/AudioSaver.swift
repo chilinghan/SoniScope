@@ -3,8 +3,7 @@ import Foundation
 class AudioSaver {
     static let shared = AudioSaver()
 
-    func savePCMAsWav(pcmData: Data, sampleRate: Int, channels: Int) -> URL? {
-        let bitsPerSample = 16
+    func savePCMAsWav(pcmData: Data, sampleRate: Int = AudioConstants.sampleRate, bitsPerSample: Int = AudioConstants.bitsPerSample, channels: Int = AudioConstants.channels) -> URL? {
         let byteRate = sampleRate * channels * bitsPerSample / 8
         let blockAlign = channels * bitsPerSample / 8
         let dataSize = pcmData.count
@@ -29,7 +28,9 @@ class AudioSaver {
         let wavData = header + pcmData
 
         let filename = "soniscope-\(Self.timestamp()).wav"
-        let fileURL = FileManager.default.temporaryDirectory.appendingPathComponent(filename)
+        
+        let documentsDirectory = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first!
+        let fileURL = documentsDirectory.appendingPathComponent(filename)
 
         do {
             try wavData.write(to: fileURL)
