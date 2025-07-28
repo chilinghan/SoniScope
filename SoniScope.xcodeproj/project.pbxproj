@@ -13,7 +13,6 @@
 		C5D731FF2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731FA2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav */; };
 		C5D732002E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731FB2E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav */; };
 		C5D732492E2ED03000E49590 /* PlainPocketFFT in Frameworks */ = {isa = PBXBuildFile; productRef = C5D732482E2ED03000E49590 /* PlainPocketFFT */; };
-		C5D737F02E3571CA00E49590 /* .gitignore in Resources */ = {isa = PBXBuildFile; fileRef = C5D737EF2E3571CA00E49590 /* .gitignore */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -39,7 +38,6 @@
 		C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 116_1b2_Pl_sc_Meditron.wav; sourceTree = "<group>"; };
 		C5D731FA2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 123_1b1_Al_sc_Meditron.wav; sourceTree = "<group>"; };
 		C5D731FB2E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 144_1b1_Tc_sc_Meditron.wav; sourceTree = "<group>"; };
-		C5D737EF2E3571CA00E49590 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		C5FFFD962E25E008000431FB /* SoniScope.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SoniScope.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDA32E25E00A000431FB /* SoniScopeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C5FFFDAD2E25E00A000431FB /* SoniScopeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SoniScopeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -112,7 +110,6 @@
 		C5FFFD8D2E25E008000431FB = {
 			isa = PBXGroup;
 			children = (
-				C5D737EF2E3571CA00E49590 /* .gitignore */,
 				C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */,
 				C5D731F82E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav */,
 				C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */,
@@ -265,7 +262,6 @@
 				C5D731FE2E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav in Resources */,
 				C5D731FF2E2EB19500E49590 /* 123_1b1_Al_sc_Meditron.wav in Resources */,
 				C5D732002E2EB19500E49590 /* 144_1b1_Tc_sc_Meditron.wav in Resources */,
-				C5D737F02E3571CA00E49590 /* .gitignore in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -454,7 +450,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your health data to personalize your profile.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SoniScope collects your health data to provide personalization and improve your experience. Your data remains private and secure.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -486,7 +482,7 @@
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SoniScope/Info.plist;
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app reads your health data to personalize your profile.";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "SoniScope collects your health data to provide personalization and improve your experience. Your data remains private and secure.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

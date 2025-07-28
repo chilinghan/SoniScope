@@ -1,15 +1,16 @@
 import SwiftUI
 
 struct HealthDetailCardView: View {
-    @ObservedObject var healthData: HealthDataManager
-
+    @EnvironmentObject var healthManager: HealthDataManager
+    @EnvironmentObject var userManager: UserManager
+    
     private var views: [AnyView] {
         [
-            // infoRow(title: "First Name", value: healthData.firstName)
-            // infoRow(title: "Last Name", value: healthData.lastName)
-            AnyView(infoRow(title: "Date of Birth", value: healthData.dateOfBirth)),
-            AnyView(infoRow(title: "Sex", value: healthData.biologicalSex)),
-            AnyView(infoRow(title: "Blood Type", value: healthData.bloodType))
+            AnyView(infoRow(title: "First Name", value: userManager.fetchUserNameParts().firstName ?? "User")),
+            AnyView(infoRow(title: "Last Name", value: userManager.fetchUserNameParts().lastName ?? "")),
+            AnyView(infoRow(title: "Date of Birth", value: healthManager.dateOfBirth)),
+            AnyView(infoRow(title: "Sex", value: healthManager.biologicalSex)),
+            AnyView(infoRow(title: "Blood Type", value: healthManager.bloodType))
         ]
     }
     

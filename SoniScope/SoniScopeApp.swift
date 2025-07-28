@@ -16,8 +16,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct SoniScopeApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
-    @AppStorage("isSignedIn") var isSignedIn: Bool = false
-
+    @State private var isLoggedIn: Bool = false
+    
     let persistenceController = PersistenceController.shared
 
     var context: NSManagedObjectContext {
@@ -26,18 +26,31 @@ struct SoniScopeApp: App {
 
     // ✅ SessionManager and HealthDataManager must both be StateObjects
     @StateObject private var sessionManager = SessionManager()
+    @StateObject private var userManager = UserManager()
     @StateObject private var healthManager = HealthDataManager()
     @StateObject private var accessoryManager = AccessorySessionManager()
 
     var body: some Scene {
+            
         WindowGroup {
-            ContentView()
-                .environment(\.managedObjectContext, context)
-                .environmentObject(sessionManager)
-                .environmentObject(healthManager)
-                .environmentObject(accessoryManager)
-                .preferredColorScheme(.dark)
+            if !isLoggedIn {
+                LoginView(isLoggedIn: $isLoggedIn)
+                    .environmentObject(userManager)
+            }
+            else {
+                ContentView()
+                    .environment(\.managedObjectContext, context)
+                    .environmentObject(sessionManager)
+                    .environmentObject(healthManager)
+                    .environmentObject(accessoryManager)
+                    .environmentObject(userManager)
+                    .preferredColorScheme(.dark)
+            }
+
 
         }
     }
 }
+
+
+

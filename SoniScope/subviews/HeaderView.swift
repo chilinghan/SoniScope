@@ -10,7 +10,9 @@ import SwiftUI
 
 struct HeaderView: View {
     let title: String
-    @ObservedObject var healthData = HealthDataManager()
+    @EnvironmentObject var healthManager: HealthDataManager
+    @EnvironmentObject var userManager: UserManager
+
     @State private var showHealthCard = false
     
     private var formattedDate: String {
@@ -45,7 +47,8 @@ struct HeaderView: View {
         .padding(.horizontal)
         .padding(.top, 80)
         .sheet(isPresented: $showHealthCard) {
-            HealthDetailCardView(healthData: healthData)
+            HealthDetailCardView()
+                .environmentObject(userManager)
                 .presentationDetents([.fraction(0.75)])
                 .presentationDragIndicator(.visible)
         }

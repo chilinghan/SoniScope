@@ -45,6 +45,7 @@ bool sleeping = false;
 bool wasOnHome = false;
 
 const uint32_t sampleRate = 16000;
+const unsigned long sendInterval = 8;
 
 void stopBLE();
 void restartBLE();
@@ -92,7 +93,7 @@ class MyServerCallbacks : public BLEServerCallbacks {
 // === BLE Setup ===
 void setupBLE() {
   BLEDevice::init("SoniScope");
-  BLEDevice::setMTU(300);
+  BLEDevice::setMTU(512);
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
@@ -186,6 +187,7 @@ void setup() {
   lastTouchTime = millis();
 }
 
+unsigned long lastSendTime = 0;
 void loop() {
   bool nowOnHome = isHomeScreenActive();
   if (nowOnHome && !wasOnHome) {
@@ -200,15 +202,19 @@ void loop() {
     sleeping = true;
   }
 
+  const int vOFF = 15000;
+  const size_t bufferSize = 256;
+  const int packetDurationMs = (bufferSize * 1000) / sampleRate;  // ~16ms
+
   if (!sleeping && deviceConnected && audioDescriptor->getNotifications() && lv_scr_act() == ui_Recording) {
-    const int vOFF = 15000;
-    const size_t bufferSize = 256;
+    unsigned long now = millis();
+    if (now - lastSendTime >= sendInterval) {
+      lastSendTime = now;
     char audioBuffer[bufferSize];
     size_t bytesRead = i2s.readBytes(audioBuffer, bufferSize);
 
     if (bytesRead > 0) {
       size_t sampleCount = bytesRead / 4;
-      const int packetDurationMs = (bufferSize * 1000) / sampleRate;  // ~16ms
 
       uint16_t sampleBuffer[sampleCount];
       int32_t* samples = (int32_t*)audioBuffer;
@@ -216,14 +222,16 @@ void loop() {
       for (size_t i = 0; i < sampleCount; ++i) {
         int32_t raw = samples[i];
         raw >>= 14;
-        Serial.println(raw);
+        // Serial.println(raw);
         raw += vOFF;
         raw = constrain(raw, 0, 30000);
         sampleBuffer[i] = (uint16_t)raw;
-        Serial.println(sampleBuffer[i]);
+        // Serial.println(sampleBuffer[i]);
       }
+      Serial.println(sampleCount * sizeof(uint16_t));
       audioCharacteristic->setValue((uint8_t*)sampleBuffer, sampleCount * sizeof(uint16_t));
       audioCharacteristic->notify();
+    }
     }
   }
 
@@ -238,5 +246,5 @@ void loop() {
   }
   lvgl_port_unlock();
 
-  delay(5);
+  delay(8);
 }

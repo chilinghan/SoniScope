@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SessionFlowView: View {
     @EnvironmentObject var sessionManager: SessionManager
-
+    
     enum Step {
         case session1, session2, session3, recording, success, analyzing, results
     }

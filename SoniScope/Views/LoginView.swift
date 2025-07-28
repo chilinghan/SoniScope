@@ -15,11 +15,12 @@
 
 import SwiftUI
 import AuthenticationServices
+import CoreData
 
 struct LoginView: View {
-    @AppStorage("isSignedIn") var isSignedIn: Bool = false
-    let coordinator = SignInWithAppleCoordinator()
-    
+    @Binding var isLoggedIn: Bool
+    @EnvironmentObject var userManager: UserManager
+        
     var body: some View {
 
         ZStack {
@@ -69,22 +70,26 @@ struct LoginView: View {
                 SignInWithAppleButton(
                        .signIn,
                        onRequest: { request in
-                              request.requestedScopes = [.fullName, .email]
+                              request.requestedScopes = [.fullName]
                           },
-                          onCompletion: { result in
-                              switch result {
-                              case .success(let authResults):
-                                  // ✅ Process auth result
-                                  coordinator.authorizationController(
-                                      controller: ASAuthorizationController(authorizationRequests: []),
-                                      didCompleteWithAuthorization: authResults
-                                  )
-                                  // ✅ Set login state
-                                  isSignedIn = true
-                              case .failure(let error):
-                                  print("❌ Sign in with Apple failed: \(error.localizedDescription)")
-                              }
-                          }
+                       onCompletion: { result in
+                               switch result {
+                               case .success(let authResults):
+                                   if let appleIDCredential = authResults.credential as? ASAuthorizationAppleIDCredential {
+                                       if let fullName = appleIDCredential.fullName {
+                                           let firstName = fullName.givenName ?? ""
+                                           let lastName = fullName.familyName ?? ""
+                                           
+                                           if !(firstName.isEmpty || lastName.isEmpty) {
+                                               userManager.saveUserName(firstname: firstName, lastname: lastName)
+                                           }
+                                       }
+                                       isLoggedIn = true
+                                   }
+                               case .failure(let error):
+                                   print("❌ Sign in with Apple failed: \(error.localizedDescription)")
+                               }
+                           }
                    )
                    .signInWithAppleButtonStyle(.white)
                    .frame(width: 267, height: 54)
@@ -102,5 +107,5 @@ struct LoginView: View {
 }
 
 #Preview {
-    LoginView()
+    LoginView(isLoggedIn: .constant(true))
 }

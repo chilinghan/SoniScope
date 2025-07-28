@@ -28,20 +28,29 @@ class HealthDataManager: ObservableObject {
             HKObjectType.characteristicType(forIdentifier: .biologicalSex)!,
             HKObjectType.characteristicType(forIdentifier: .bloodType)!
         ]
-        
-        healthStore.requestAuthorization(toShare: nil, read: readTypes) { success, error in
+        print(readTypes)
+        print("Requesting...")
+        healthStore.requestAuthorization(toShare: [], read: readTypes) { success, error in
+            print("Authorization callback hit")
             if success {
                 DispatchQueue.main.async {
+                    print("LOAD")
                     self.loadProfile()
                 }
             } else {
                 print("HealthKit authorization failed: \(error?.localizedDescription ?? "Unknown error")")
             }
         }
+        
+        for type in readTypes {
+            let status = healthStore.authorizationStatus(for: type)
+            print("Authorization status for \(type.identifier): \(status.rawValue)")
+        }
     }
     
     private func loadProfile() {
         do {
+            print(healthStore.authorizationStatus(for: HKObjectType.characteristicType(forIdentifier: .dateOfBirth)!))
             let dob = try healthStore.dateOfBirthComponents()
             let sex = try healthStore.biologicalSex().biologicalSex
             let blood = try healthStore.bloodType().bloodType

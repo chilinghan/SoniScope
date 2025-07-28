@@ -18,7 +18,7 @@ class SessionManager: ObservableObject {
 
     /// Create and save a new session
     func createAndSaveSession(
-        name: String = "Untitled",
+        name: String = UserDefaults.standard.string(forKey: "userFirstName") ?? "User" + " Session",
         diagnosis: String = "",
         audioPath: String = ""
     ) {
