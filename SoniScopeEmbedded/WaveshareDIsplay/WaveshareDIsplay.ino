@@ -45,7 +45,6 @@ bool sleeping = false;
 bool wasOnHome = false;
 
 const uint32_t sampleRate = 16000;
-const unsigned long sendInterval = 8;
 
 void stopBLE();
 void restartBLE();
@@ -93,7 +92,7 @@ class MyServerCallbacks : public BLEServerCallbacks {
 // === BLE Setup ===
 void setupBLE() {
   BLEDevice::init("SoniScope");
-  BLEDevice::setMTU(512);
+  BLEDevice::setMTU(300);
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
@@ -187,7 +186,6 @@ void setup() {
   lastTouchTime = millis();
 }
 
-unsigned long lastSendTime = 0;
 void loop() {
   bool nowOnHome = isHomeScreenActive();
   if (nowOnHome && !wasOnHome) {
@@ -202,38 +200,30 @@ void loop() {
     sleeping = true;
   }
 
-  const int vOFF = 15000;
-  const size_t bufferSize = 256;
-  const int packetDurationMs = (bufferSize * 1000) / sampleRate;  // ~16ms
-
   if (!sleeping && deviceConnected && audioDescriptor->getNotifications() && lv_scr_act() == ui_Recording) {
-    unsigned long now = millis();
-    if (now - lastSendTime >= sendInterval) {
-      lastSendTime = now;
-    char audioBuffer[bufferSize];
-    size_t bytesRead = i2s.readBytes(audioBuffer, bufferSize);
+    const int vOFF = 15000;
+    const size_t bufferSize = 128; // Smaller buffer for more frequent reads
+    uint16_t sampleBuffer[bufferSize];
+    size_t sampleIndex = 0;
 
-    if (bytesRead > 0) {
-      size_t sampleCount = bytesRead / 4;
+    while (sampleIndex < bufferSize) {
+      int32_t sample = i2s.read();
+      i2s.read(); // discard second channel in stereo
 
-      uint16_t sampleBuffer[sampleCount];
-      int32_t* samples = (int32_t*)audioBuffer;
-
-      for (size_t i = 0; i < sampleCount; ++i) {
-        int32_t raw = samples[i];
-        raw >>= 14;
-        // Serial.println(raw);
-        raw += vOFF;
-        raw = constrain(raw, 0, 30000);
-        sampleBuffer[i] = (uint16_t)raw;
-        // Serial.println(sampleBuffer[i]);
+      if (sample != -1) {
+        sample >>= 14;           // convert to ~18-bit signed
+        sample += vOFF;          // shift to positive range
+        sample = constrain(sample, 0, 30000);
+        sampleBuffer[sampleIndex++] = (uint16_t)sample;
+        Serial.println(sample);
       }
-      Serial.println(sampleCount * sizeof(uint16_t));
-      audioCharacteristic->setValue((uint8_t*)sampleBuffer, sampleCount * sizeof(uint16_t));
-      audioCharacteristic->notify();
     }
-    }
-  }
+
+    // Send the buffer over BLE
+    audioCharacteristic->setValue((uint8_t*)sampleBuffer, sampleIndex * sizeof(uint16_t));
+    audioCharacteristic->notify();
+}
+
 
   lvgl_port_lock(-1);
   lv_indev_t* indev = lv_indev_get_next(nullptr);
@@ -246,5 +236,5 @@ void loop() {
   }
   lvgl_port_unlock();
 
-  delay(8);
+  delay(5);
 }
