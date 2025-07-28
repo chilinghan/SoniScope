@@ -91,7 +91,13 @@ struct ResultsView: View {
                     ProgressBar(progress: CGFloat(currentTime / max(audioDuration, 0.01)))
 
                     HStack {
-                        Button(action: playAudio) {
+                        Button(action: {
+                            if isPlaying {
+                                stopAudio()
+                            } else {
+                                playAudio()
+                            }
+                        }) {
                             Image(systemName: isPlaying ? "pause.circle" : "play.circle")
                                 .font(.system(size: 24))
                                 .foregroundColor(Color(red: 0.99, green: 0.52, blue: 0))
@@ -194,6 +200,15 @@ struct ResultsView: View {
         } catch {
             print("⚠️ Could not play audio: \(error)")
         }
+    }
+    
+    private func stopAudio() {
+        audioPlayer?.stop()
+        audioPlayer = nil
+        timer?.invalidate()
+        timer = nil
+        isPlaying = false
+        currentTime = 0
     }
 
 

@@ -12,6 +12,8 @@ class WAVWriter {
 
     init?(filename: String) {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        print(">>>")
+        print(docs)
         fileURL = docs.appendingPathComponent(filename)
 
         // Remove existing file if it exists
@@ -33,8 +35,6 @@ class WAVWriter {
     private func writeWAVHeader() {
         var header = Data()
         
-        let wavSampleSize = UInt32(duration) * ((sampleRate * (UInt32(bitsPerSample) / 8)) * UInt32(numChannels))
-
         header.append("RIFF".data(using: .ascii)!)
         header.append(UInt32(0).littleEndianData) // Placeholder for final file size
         header.append("WAVE".data(using: .ascii)!)

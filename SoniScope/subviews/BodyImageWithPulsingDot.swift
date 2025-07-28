@@ -10,16 +10,28 @@ import SwiftUI
 
 struct BodyImageWithPulsingDot: View {
     @State private var pulse = false
+    @EnvironmentObject var healthManager: HealthDataManager
 
     var body: some View {
         ZStack {
             // Background image clipped inside a rounded rectangle frame
-            Image(.bodyLowRes)
+            if healthManager.biologicalSex == "Female" {
+                Image(.femaleLowRes)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
                 .frame(width: 450, height: 470)
                 .clipped()
                 .cornerRadius(12)
+            }
+            else {
+                Image(.bodyLowRes)
+                .resizable()
+                .aspectRatio(contentMode: .fill)
+                .frame(width: 450, height: 470)
+                .clipped()
+                .cornerRadius(12)
+            }
+                
 
             // Pulsing Dot (e.g., placement indicator)
             ZStack {

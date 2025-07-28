@@ -50,8 +50,6 @@ class AudioPreprocessor {
             let mfccMean = mfccs.map { $0.mean() }
             let melMean = mel.map { $0.mean() }
             
-            print(mfccMean)
-            print(melMean)
             let combined = mfccMean + melMean  // Shape: [168]
             let input = combined // .map { [$0] }  // Shape: [[Double]] (168, 1)
             

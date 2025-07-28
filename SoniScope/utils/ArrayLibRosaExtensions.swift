@@ -59,7 +59,6 @@ public extension Array where Iterator.Element: FloatingPoint {
         let logSpec = self.map {ten * (Swift.max(amin, $0) / ref).logarithm10()}
         
         let maximum = maxVal ?? logSpec.max() ?? Element(0)
-        print(maxVal, maximum)
         return logSpec.map { Swift.max($0, maximum - topDB) }
     }
 }

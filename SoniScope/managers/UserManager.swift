@@ -37,7 +37,6 @@ class UserManager: ObservableObject {
 
         do {
             if let user = try context.fetch(request).first {
-                print(user.firstname, user.lastname)
                 return (user.firstname, user.lastname)
             }
         } catch {
