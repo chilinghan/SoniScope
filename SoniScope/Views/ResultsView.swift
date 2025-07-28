@@ -44,13 +44,22 @@ struct ResultsView: View {
 
                 // Diagnosis
                 VStack(alignment: .leading, spacing: 8) {
-                    Label(session.diagnosis ?? "Unknown", systemImage: "checkmark.circle.fill")
-                        .font(.system(size: 18, weight: .medium))
-                        .foregroundColor(.white)
+                    Label {
+                        Text(session.diagnosis ?? "Unknown")
+                            .font(.system(size: 18, weight: .medium))
+                    } icon: {
+                        Image(systemName: session.diagnosis == "Healthy" ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
+                    }
+                    .foregroundColor(session.diagnosis == "Healthy" ? .white : .yellow)
 
-                    Text("This recording does not show signs of lung disease. SoniScope cannot provide a formal diagnosis.")
-                        .font(.system(size: 16))
-                        .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
+                    Text(session.diagnosis == "Healthy"
+                         ? "This recording does not show signs of lung disease. SoniScope cannot provide a formal diagnosis."
+                         : "This recording shows signs of lung disease. SoniScope cannot provide a formal diagnosis.")
+                    .font(.system(size: 16))
+                    .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
+                    .multilineTextAlignment(.leading)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+
                 }
                 .padding()
                 .background(Color(red: 0.11, green: 0.11, blue: 0.12))
