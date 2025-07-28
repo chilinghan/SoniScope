@@ -18,13 +18,13 @@ class SessionManager: ObservableObject {
 
     /// Create and save a new session
     func createAndSaveSession(
-        name: String = UserDefaults.standard.string(forKey: "userFirstName") ?? "User" + " Session",
+        name: String,
         diagnosis: String = "No Audio Provided",
         audioPath: String = ""
     ) {
         let session = SessionEntity(context: context)
         session.id = UUID()
-        session.name = name
+        session.name = name + " Session"
         session.audioPath = audioPath
         session.timestamp = Date()
 

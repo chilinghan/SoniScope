@@ -2,6 +2,7 @@ import SwiftUI
 
 struct RecordingSuccess: View {
     @EnvironmentObject var sessionManager: SessionManager
+    @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var accessoryManager: AccessorySessionManager
 
     var onNext: (SessionEntity) -> Void
@@ -31,7 +32,7 @@ struct RecordingSuccess: View {
                 accessoryManager.sendScreenCommand("complete")
                 accessoryManager.stopRecordingToWAV()
 
-                sessionManager.createAndSaveSession()
+                sessionManager.createAndSaveSession(name: (userManager.fetchUserNameParts().firstName ?? "User") + " " + (userManager.fetchUserNameParts().lastName ?? ""))
 
                 if let session = sessionManager.currentSession {
                     if let url = savedURL {

@@ -2,8 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSHealthShareUsageDescription</key>
-	<string>SoniScope collects your health data to provide personalization and improve your experience. Your data remains private and secure.</string>
 	<key>NSAccessorySetupBluetoothServices</key>
 	<array>
 		<string>93AE16D8-749C-4F7C-846C-DD4776F76676</string>
