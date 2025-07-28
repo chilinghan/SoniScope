@@ -19,7 +19,7 @@ class SessionManager: ObservableObject {
     /// Create and save a new session
     func createAndSaveSession(
         name: String = "Untitled",
-        diagnosis: String = "",
+        diagnosis: String = "No Audio Provided",
         audioPath: String = ""
     ) {
         let session = SessionEntity(context: context)
@@ -28,20 +28,6 @@ class SessionManager: ObservableObject {
         session.audioPath = audioPath
         session.timestamp = Date()
 
-        // Run model if audioPath is provided
-        if let url = URL(string: audioPath), FileManager.default.fileExists(atPath: url.path) {
-            let processor = AudioPreprocessor()
-            if let features = processor.extractFeatures(from: url) {
-                let predictedDiagnosis = runModel(with: features)
-                session.diagnosis = predictedDiagnosis
-                print("🎯 Predicted diagnosis: \(predictedDiagnosis)")
-            } else {
-                session.diagnosis = "Feature extraction failed"
-                print("❌ Feature extraction failed for \(audioPath)")
-            }
-        } else {
-            session.diagnosis = diagnosis.isEmpty ? "No audio provided" : diagnosis
-        }
 
         do {
             try context.save()
