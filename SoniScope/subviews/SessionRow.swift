@@ -28,13 +28,19 @@ func formattedTime(_ date: Date?) -> String {
 struct SessionRow: View {
     let session: SessionEntity
 
+    var indicatorColor: Color {
+        session.diagnosis == "Healthy"
+        ? Color(red: 0.56, green: 0.79, blue: 0.9)
+        : .yellow
+    }
+
     var body: some View {
         HStack {
             VStack(alignment: .leading) {
                 HStack {
                     ZStack {}
                         .frame(width: 4, height: 24)
-                        .background(Color(red: 0.56, green: 0.79, blue: 0.9))
+                        .background(indicatorColor)
                         .cornerRadius(100)
 
                     Text(session.name ?? "Untitled")

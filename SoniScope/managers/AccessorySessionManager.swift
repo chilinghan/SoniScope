@@ -186,6 +186,13 @@ extension AccessorySessionManager: CBPeripheralDelegate {
             self.rawAudio = hexString
         }
     }
+    
+    func peripheral(_ peripheral: CBPeripheral, didDisconnectPeripheral error: Error?) {
+        print("🔌 Peripheral disconnected")
+        connectionStatus = "Disconnected"
+        peripheralConnected = false
+    }
+
 }
 
 // MARK: - Send Screen Command
