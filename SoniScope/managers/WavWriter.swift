@@ -13,10 +13,15 @@ class WAVWriter {
         let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
         fileURL = docs.appendingPathComponent(filename)
 
-        do {
-            FileManager.default.createFile(atPath: fileURL.path, contents: nil)
-            fileHandle = try FileHandle(forWritingTo: fileURL)
+        // Remove existing file if it exists
+        if FileManager.default.fileExists(atPath: fileURL.path) {
+            try? FileManager.default.removeItem(at: fileURL)
+        }
 
+        FileManager.default.createFile(atPath: fileURL.path, contents: nil)
+
+        do {
+            fileHandle = try FileHandle(forWritingTo: fileURL)
             writeWAVHeader()
         } catch {
             print("❌ Could not create WAV file: \(error)")
@@ -28,10 +33,10 @@ class WAVWriter {
         var header = Data()
 
         header.append("RIFF".data(using: .ascii)!)
-        header.append(UInt32(0).littleEndianData) // Placeholder for file size
+        header.append(UInt32(0).littleEndianData) // Placeholder for final file size
         header.append("WAVE".data(using: .ascii)!)
         header.append("fmt ".data(using: .ascii)!)
-        header.append(UInt32(16).littleEndianData) // Subchunk1Size (PCM)
+        header.append(UInt32(16).littleEndianData) // PCM header size
         header.append(UInt16(1).littleEndianData)  // AudioFormat = PCM
         header.append(numChannels.littleEndianData)
         header.append(sampleRate.littleEndianData)
@@ -44,7 +49,7 @@ class WAVWriter {
         header.append(bitsPerSample.littleEndianData)
 
         header.append("data".data(using: .ascii)!)
-        header.append(UInt32(0).littleEndianData) // Placeholder for data chunk size
+        header.append(UInt32(0).littleEndianData) // Placeholder for data size
 
         fileHandle?.write(header)
     }
@@ -78,11 +83,19 @@ class WAVWriter {
         let fileSize = 36 + totalBytesWritten
         let dataChunkSize = totalBytesWritten
 
-        try? handle.seek(toOffset: 4)
-        handle.write(fileSize.littleEndianData)
-        try? handle.seek(toOffset: 40)
-        handle.write(dataChunkSize.littleEndianData)
-        try? handle.close()
+        do {
+            try handle.seek(toOffset: 4)
+            handle.write(fileSize.littleEndianData)
+
+            try handle.seek(toOffset: 40)
+            handle.write(dataChunkSize.littleEndianData)
+
+            try handle.close()
+        } catch {
+            print("❌ Failed to finalize WAV file: \(error)")
+        }
+
+        fileHandle = nil
     }
 
     func getFileURL() -> URL {
@@ -92,6 +105,6 @@ class WAVWriter {
 
 private extension FixedWidthInteger {
     var littleEndianData: Data {
-        withUnsafeBytes(of: self.littleEndian, { Data($0) })
+        withUnsafeBytes(of: self.littleEndian) { Data($0) }
     }
 }

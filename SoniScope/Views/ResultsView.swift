@@ -9,6 +9,7 @@ struct ResultsView: View {
     @Environment(\.managedObjectContext) private var viewContext
     @EnvironmentObject var sessionManager: SessionManager
     @EnvironmentObject var healthManager: HealthDataManager
+    @EnvironmentObject var accessoryManager: AccessorySessionManager
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SessionEntity.timestamp, ascending: false)],
@@ -124,6 +125,13 @@ struct ResultsView: View {
         .navigationBarBackButtonHidden()
         .navigationTitle("Results")
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            if session.diagnosis == "Healthy" {
+                accessoryManager.sendScreenCommand("healthy")
+            } else {
+                accessoryManager.sendScreenCommand("abnormal")
+            }
+        }
         .toolbar {
             // Back Button
             ToolbarItem(placement: .navigationBarLeading) {

@@ -41,7 +41,7 @@ struct RecordingSuccess: View {
                         // Extract features and run model
                         Task {
                             let preprocessor = AudioPreprocessor()
-                            if let features = try? preprocessor.extractFeatures(from: url),
+                            if let features = try? preprocessor.extractFeatures(from: url), //Bundle.main.url(forResource: "144_1b1_Tc_sc_Meditron", withExtension: "wav")!),
                                let prediction = try? PredictionHelper.runModel(with: features) {
                                 session.diagnosis = prediction
                                 print("✅ Prediction: \(prediction)")
