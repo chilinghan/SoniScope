@@ -24,7 +24,7 @@ class WAVWriter {
         }
     }
 
-    func writeWAVHeader() {
+    private func writeWAVHeader() {
         var header = Data()
 
         header.append("RIFF".data(using: .ascii)!)
@@ -35,21 +35,41 @@ class WAVWriter {
         header.append(UInt16(1).littleEndianData)  // AudioFormat = PCM
         header.append(numChannels.littleEndianData)
         header.append(sampleRate.littleEndianData)
+
         let byteRate = sampleRate * UInt32(numChannels) * UInt32(bitsPerSample / 8)
-        header.append(byteRate.littleEndianData)
         let blockAlign = UInt16(numChannels * bitsPerSample / 8)
+
+        header.append(byteRate.littleEndianData)
         header.append(blockAlign.littleEndianData)
         header.append(bitsPerSample.littleEndianData)
+
         header.append("data".data(using: .ascii)!)
         header.append(UInt32(0).littleEndianData) // Placeholder for data chunk size
 
         fileHandle?.write(header)
     }
 
-    func appendPCMData(_ data: Data) {
-        print(data)
-        fileHandle?.write(data)
-        totalBytesWritten += UInt32(data.count)
+    func appendPCMData(_ data: Data, vOFF: Int32 = 15000) {
+        let sampleCount = data.count / 2
+        var signedSamples = Data(capacity: data.count)
+
+        for i in 0..<sampleCount {
+            let offset = i * 2
+            let sampleUInt16 = data.withUnsafeBytes { ptr -> UInt16 in
+                ptr.load(fromByteOffset: offset, as: UInt16.self)
+            }
+
+            let rawSigned = Int32(sampleUInt16) - vOFF
+            let clamped = min(max(rawSigned, Int32(Int16.min)), Int32(Int16.max))
+            var sampleLE = Int16(clamped).littleEndian
+
+            withUnsafeBytes(of: &sampleLE) { bytes in
+                signedSamples.append(contentsOf: bytes)
+            }
+        }
+
+        fileHandle?.write(signedSamples)
+        totalBytesWritten += UInt32(signedSamples.count)
     }
 
     func finalize() {

@@ -3,7 +3,7 @@ import SwiftUI
 struct RecordingSuccess: View {
     @EnvironmentObject var sessionManager: SessionManager
     @EnvironmentObject var accessoryManager: AccessorySessionManager
-    
+
     var onNext: (SessionEntity) -> Void
 
     var body: some View {
@@ -37,15 +37,33 @@ struct RecordingSuccess: View {
                     if let url = savedURL {
                         session.audioPath = url.path // Use `.path` not `.absoluteString` for local files
                         print("✅ Audio saved at: \(url.lastPathComponent)")
+
+                        Task {
+                            let preprocessor = AudioPreprocessor()
+                            do {
+                                guard let features = try preprocessor.extractFeatures(from: url) else {
+                                    print("❌ Failed to extract features from audio")
+                                    onNext(session)
+                                    return
+                                }
+
+                                let prediction = try PredictionHelper.runModel(with: features)
+                                session.diagnosis = prediction
+                                print("✅ ML Prediction: \(prediction)")
+                                onNext(session)
+                            } catch {
+                                print("❌ Error during model prediction: \(error.localizedDescription)")
+                                onNext(session)
+                            }
+                        }
                     } else {
                         print("⚠️ No audio data or failed to save")
+                        onNext(session)
                     }
-                    onNext(session)
                 } else {
                     print("❌ No current session available")
                 }
             }
         }
-
     }
 }

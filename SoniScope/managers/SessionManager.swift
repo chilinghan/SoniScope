@@ -117,4 +117,14 @@ class SessionManager: ObservableObject {
         }
         return maxIndex
     }
+    
+    func saveSessionChanges() {
+        do {
+            try context.save()
+            print("💾 Session changes saved")
+        } catch {
+            print("❌ Failed to save session changes: \(error)")
+        }
+    }
+
 }

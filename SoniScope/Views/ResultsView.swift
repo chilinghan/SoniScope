@@ -152,11 +152,15 @@ struct ResultsView: View {
         }
 
         let fileURL = URL(fileURLWithPath: path)
+        
         do {
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, options: [.duckOthers])
+            try AVAudioSession.sharedInstance().setActive(true)
+
             audioPlayer = try AVAudioPlayer(contentsOf: fileURL)
-            let audioFile = try AVAudioFile(forReading: fileURL)
-            print(audioFile.fileFormat)
-            
+            audioPlayer?.prepareToPlay()
+            audioPlayer?.volume = 1.0  // Ensure volume is max
+
             audioDuration = audioPlayer?.duration ?? 0
             audioPlayer?.play()
             isPlaying = true
@@ -174,6 +178,7 @@ struct ResultsView: View {
             print("⚠️ Could not play audio: \(error)")
         }
     }
+
 
     private func formatTime(_ time: TimeInterval) -> String {
         let minutes = Int(time) / 60
