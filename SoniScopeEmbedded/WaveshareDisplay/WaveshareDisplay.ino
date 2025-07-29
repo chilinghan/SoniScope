@@ -210,13 +210,23 @@ void loop() {
       int32_t sample = i2s.read();
       i2s.read(); // discard second channel in stereo
 
+      // if (sample != -1) {
+      //   sample >>= 14;           // convert to ~18-bit signed
+      //   sample += vOFF;          // shift to positive range
+      //   sample = constrain(sample, 0, 30000);
+      //   sampleBuffer[sampleIndex++] = (uint16_t)sample;
+      //   Serial.println(sample);
+      // }
+
       if (sample != -1) {
-        sample >>= 14;           // convert to ~18-bit signed
-        sample += vOFF;          // shift to positive range
-        sample = constrain(sample, 0, 30000);
-        sampleBuffer[sampleIndex++] = (uint16_t)sample;
+        sample = (sample >> 8) & 0xFFFFFF; // strip LSB if needed
+        sample -= (sample & 0x800000) ? 0x1000000 : 0; // sign extend if negative
+        sample = sample >> 8; // compress to ~16 bits
+        sample = constrain(sample + 32768, 0, 65535);
+        sampleBuffer[sampleIndex++] = (uint16_t)(sample);
         Serial.println(sample);
       }
+
     }
 
     // Send the buffer over BLE

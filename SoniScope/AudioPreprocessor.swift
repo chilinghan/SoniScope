@@ -18,6 +18,7 @@ class AudioPreprocessor {
             let file = try AVAudioFile(forReading: url)
             let format = file.processingFormat
             let frameCount = AVAudioFrameCount(file.length)
+            print(format)
                         
             guard let originalBuffer = AVAudioPCMBuffer(pcmFormat: format, frameCapacity: frameCount) else {
                 print("❌ Failed to allocate buffer")
@@ -26,7 +27,6 @@ class AudioPreprocessor {
             try file.read(into: originalBuffer)
             
             let audioSamples = convertToDoubleArray(buffer: originalBuffer)
-            print(audioSamples.last)
             
             let nFFT = 2048
             let hopLength = 512

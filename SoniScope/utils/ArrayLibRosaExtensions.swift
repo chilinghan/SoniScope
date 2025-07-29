@@ -95,8 +95,6 @@ public extension Array where Element == Double {
         let globalMaxDb = 10 * log10(globalMax)
         let S = melSpectrogram.map { $0.powerToDB(maxVal: globalMaxDb) }
         
-        print(S.flatMap{$0}.max(), S.flatMap{$0}.min())
-
         let floatMatrix = S.map { $0.map { Float($0) } }        
         let resultArray = self.computeDCT(matrix: floatMatrix, nCoeffs: nMFCC)
         

@@ -57,7 +57,7 @@ class WAVWriter {
         fileHandle?.write(header)
     }
 
-    func appendPCMData(_ data: Data, vOFF: Int32 = 15000) {
+    func appendPCMData(_ data: Data, vOFF: Int32 = 32768) {
         let sampleCount = data.count / 2
         var signedSamples = Data(capacity: data.count)
 

@@ -35,6 +35,7 @@ class PredictionHelper {
             let input = custom_modelInput(conv1d_input: mlArray)
             let prediction = try model.prediction(input: input)
 
+            print(prediction.Identity)
             let index = argmax(prediction.Identity)
             return labelMap[index] ?? "Unknown"
 

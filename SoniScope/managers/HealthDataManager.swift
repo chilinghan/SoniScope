@@ -34,7 +34,6 @@ class HealthDataManager: ObservableObject {
             print("Authorization callback hit")
             if success {
                 DispatchQueue.main.async {
-                    print("LOAD")
                     self.loadProfile()
                 }
             } else {
