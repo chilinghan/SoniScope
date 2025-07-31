@@ -45,6 +45,11 @@ struct SoniScopeApp: App {
                     .environmentObject(accessoryManager)
                     .environmentObject(userManager)
                     .preferredColorScheme(.dark)
+                    .onAppear {
+                        sessionManager.createFakeSession(diagnosis: "COPD", date: Calendar.current.date(from: DateComponents(year: 2025, month: 7, day: 1))!)
+                        sessionManager.createFakeSession(diagnosis: "URTI", date: Calendar.current.date(from: DateComponents(year: 2025, month: 6, day: 30))!)
+                        sessionManager.createFakeSession(diagnosis: "Bronchiectasis", date: Calendar.current.date(from: DateComponents(year: 2025, month: 6, day: 30))!)
+                    }
             }
 
 

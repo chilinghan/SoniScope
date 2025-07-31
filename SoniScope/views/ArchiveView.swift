@@ -13,6 +13,7 @@ struct ArchiveView: View {
     @State private var selectedDate = Date()
 
     @State private var selectedSession: SessionEntity? = nil
+    @State private var visibleSessionIDs: Set<NSManagedObjectID> = []
 
     @FetchRequest(
         sortDescriptors: [NSSortDescriptor(keyPath: \SessionEntity.timestamp, ascending: false)],
@@ -49,14 +50,22 @@ struct ArchiveView: View {
                         .padding(.vertical, 30)
                 } else {
                     ScrollView {
-                        LazyVStack(spacing: 12) {
+                        VStack(spacing: 12) {
                             ForEach(filteredSessions) { session in
-                                NavigationLink(destination: ResultsView(session: session)) {
-                                    SessionRow(session: session)
+                                if visibleSessionIDs.contains(session.objectID) {
+                                    NavigationLink(destination: ResultsView(session: session)) {
+                                        SessionRow(
+                                            session: session,
+                                            indicatorColor: (session.diagnosis ?? "Healthy") == "Healthy"
+                                                ? Color.soniscopeBlue
+                                                : .yellow
+                                        )
+                                    }
+                                    .buttonStyle(PlainButtonStyle())
+                                    .padding(.horizontal)
                                 }
-                                .buttonStyle(PlainButtonStyle())
-                                .padding(.horizontal)
                             }
+
                         }
                         .padding(.bottom, 100)
                     }
@@ -67,10 +76,22 @@ struct ArchiveView: View {
             }
             .onAppear {
                 accessoryManager.sendScreenCommand("home")
+                populateVisible()
+            }
+            .onChange(of: filteredSessions) {
+                populateVisible()
             }
             .background(.black)
             .ignoresSafeArea()
 
+        }
+    }
+    
+    func populateVisible() {
+        for (index, session) in filteredSessions.enumerated() {
+            DispatchQueue.main.asyncAfter(deadline: .now() + Double(index) * 0.05) {
+                    _ = visibleSessionIDs.insert(session.objectID)
+            }
         }
     }
     

@@ -27,12 +27,7 @@ func formattedTime(_ date: Date?) -> String {
 
 struct SessionRow: View {
     let session: SessionEntity
-
-    var indicatorColor: Color {
-        session.diagnosis == "Healthy"
-        ? Color(red: 0.56, green: 0.79, blue: 0.9)
-        : .yellow
-    }
+    let indicatorColor: Color
 
     var body: some View {
         HStack {
@@ -75,6 +70,9 @@ struct SessionRow: View {
                 }
             }
             Spacer()
+        }
+        .onAppear {
+            print(indicatorColor)
         }
         .padding()
         .background(Color(red: 0.11, green: 0.11, blue: 0.12))

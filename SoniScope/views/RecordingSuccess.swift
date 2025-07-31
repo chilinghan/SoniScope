@@ -5,7 +5,7 @@ struct RecordingSuccess: View {
     @EnvironmentObject var userManager: UserManager
     @EnvironmentObject var accessoryManager: AccessorySessionManager
 
-    var onNext: (SessionEntity) -> Void
+    var onNext: () -> Void
 
     var body: some View {
         VStack {
@@ -32,7 +32,13 @@ struct RecordingSuccess: View {
                 accessoryManager.sendScreenCommand("complete")
                 accessoryManager.stopRecordingToWAV()
 
-                sessionManager.createAndSaveSession(name: (userManager.fetchUserNameParts().firstName ?? "User") + " " + (userManager.fetchUserNameParts().lastName ?? ""))
+                let nameParts = userManager.fetchUserNameParts()
+                let firstName = nameParts.firstName ?? "User"
+                let lastName = nameParts.lastName
+
+                let fullName = lastName?.isEmpty == false ? "\(firstName) \(lastName!)" : firstName
+
+                sessionManager.createAndSaveSession(name: fullName)
 
                 if let session = sessionManager.currentSession {
                     if let url = savedURL {
@@ -42,8 +48,9 @@ struct RecordingSuccess: View {
                         // Extract features and run model
                         Task {
                             let preprocessor = AudioPreprocessor()
-                            if let features = try? preprocessor.extractFeatures(from: url), //Bundle.main.url(forResource: "144_1b1_Tc_sc_Meditron", withExtension: "wav")!),
-                               let prediction = try? PredictionHelper.runModel(with: features) {
+                            if let features = preprocessor.extractFeatures(from: url) //Bundle.main.url(forResource: "144_1b1_Tc_sc_Meditron", withExtension: "wav")!),
+                            {
+                                let prediction = PredictionHelper.runModel(with: features)
                                 session.diagnosis = prediction
                                 print("✅ Prediction: \(prediction)")
                             } else {
@@ -51,15 +58,14 @@ struct RecordingSuccess: View {
                                 print("❌ Failed to run model or extract features")
                             }
 
-                            // 🔥 SAVE after modifying Core Data
                             do {
                                 try sessionManager.context.save()
-                                print("✅ Core Data saved with updated info")
+                                print("💾 Session changes saved")
                             } catch {
-                                print("❌ Failed to save Core Data: \(error)")
+                                print("❌ Failed to save session changes: \(error)")
                             }
-
-                            onNext(session)
+                            
+                            onNext()
                         }
                     } else {
                         print("⚠️ No audio data or failed to save")

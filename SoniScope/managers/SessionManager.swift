@@ -61,7 +61,43 @@ class SessionManager: ObservableObject {
         }
     }
     
-    func saveSessionChanges() {
+    func createFakeSession(
+        diagnosis: String,
+        name: String = "Chiling Han Session",
+        date: Date
+    ) {
+        let startOfDay = Calendar.current.startOfDay(for: date)
+        guard let endOfDay = Calendar.current.date(byAdding: .day, value: 1, to: startOfDay) else {
+            print("❌ Could not calculate end of day")
+            return
+        }
+
+        // Check for existing session with same name on that date
+        let request: NSFetchRequest<SessionEntity> = SessionEntity.fetchRequest()
+        request.predicate = NSCompoundPredicate(andPredicateWithSubpredicates: [
+            NSPredicate(format: "diagnosis == %@", diagnosis),
+            NSPredicate(format: "timestamp >= %@ AND timestamp < %@", startOfDay as NSDate, endOfDay as NSDate)
+        ])
+
+        do {
+            let matches = try context.fetch(request)
+            if !matches.isEmpty {
+                print("⚠️ A session named '\(name)' already exists on that date. Skipping.")
+                return
+            }
+        } catch {
+            print("❌ Error checking for existing sessions: \(error)")
+            return
+        }
+
+        // Create and save the new session
+        let fakeSession = SessionEntity(context: context)
+        fakeSession.id = UUID()
+        fakeSession.name = name
+        fakeSession.audioPath = Bundle.main.path(forResource: "115_1b1_Ar_sc_Meditron", ofType: "wav")
+        fakeSession.diagnosis = diagnosis
+        fakeSession.timestamp = date
+
         do {
             try context.save()
             print("💾 Session changes saved")
@@ -69,5 +105,7 @@ class SessionManager: ObservableObject {
             print("❌ Failed to save session changes: \(error)")
         }
     }
+
+
 
 }

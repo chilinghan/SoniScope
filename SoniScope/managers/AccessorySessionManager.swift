@@ -30,7 +30,7 @@ final class AccessorySessionManager: NSObject, ObservableObject {
         descriptor.bluetoothServiceUUID = AccessoryModel.soniScope.serviceUUID  // Key service for filtering
         return ASPickerDisplayItem(
             name: "SoniScope",
-            productImage: UIImage(systemName: "waveform")!,
+            productImage: AccessoryModel.soniScope.accessoryImage,
             descriptor: descriptor
         )
     }()

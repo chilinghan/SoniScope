@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C598C9032E3AE5EE00A6C537 /* soniscope.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = C598C9022E3AE5EE00A6C537 /* soniscope.mlpackage */; };
+		C598C9072E3B465C00A6C537 /* custom_model.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = C598C9062E3B465C00A6C537 /* custom_model.mlpackage */; };
+		C598C9092E3B466200A6C537 /* soniscope2.mlpackage in Sources */ = {isa = PBXBuildFile; fileRef = C598C9082E3B466200A6C537 /* soniscope2.mlpackage */; };
 		C5D731FC2E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731F82E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav */; };
 		C5D731FD2E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */; };
 		C5D731FE2E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav in Resources */ = {isa = PBXBuildFile; fileRef = C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */; };
@@ -33,6 +36,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C598C9022E3AE5EE00A6C537 /* soniscope.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = soniscope.mlpackage; sourceTree = "<group>"; };
+		C598C9062E3B465C00A6C537 /* custom_model.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = custom_model.mlpackage; sourceTree = "<group>"; };
+		C598C9082E3B466200A6C537 /* soniscope2.mlpackage */ = {isa = PBXFileReference; lastKnownFileType = folder.mlpackage; path = soniscope2.mlpackage; sourceTree = "<group>"; };
 		C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 107_2b3_Tc_mc_AKGC417L.wav; sourceTree = "<group>"; };
 		C5D731F82E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 115_1b1_Ar_sc_Meditron.wav; sourceTree = "<group>"; };
 		C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = 116_1b2_Pl_sc_Meditron.wav; sourceTree = "<group>"; };
@@ -110,6 +116,9 @@
 		C5FFFD8D2E25E008000431FB = {
 			isa = PBXGroup;
 			children = (
+				C598C9022E3AE5EE00A6C537 /* soniscope.mlpackage */,
+				C598C9082E3B466200A6C537 /* soniscope2.mlpackage */,
+				C598C9062E3B465C00A6C537 /* custom_model.mlpackage */,
 				C5D731F72E2EB19500E49590 /* 107_2b3_Tc_mc_AKGC417L.wav */,
 				C5D731F82E2EB19500E49590 /* 115_1b1_Ar_sc_Meditron.wav */,
 				C5D731F92E2EB19500E49590 /* 116_1b2_Pl_sc_Meditron.wav */,
@@ -286,6 +295,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C598C9072E3B465C00A6C537 /* custom_model.mlpackage in Sources */,
+				C598C9032E3AE5EE00A6C537 /* soniscope.mlpackage in Sources */,
+				C598C9092E3B466200A6C537 /* soniscope2.mlpackage in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

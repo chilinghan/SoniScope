@@ -92,7 +92,7 @@ class MyServerCallbacks : public BLEServerCallbacks {
 // === BLE Setup ===
 void setupBLE() {
   BLEDevice::init("SoniScope");
-  BLEDevice::setMTU(300);
+  BLEDevice::setMTU(350);
   pServer = BLEDevice::createServer();
   pServer->setCallbacks(new MyServerCallbacks());
 
@@ -193,7 +193,7 @@ void loop() {
   }
   wasOnHome = nowOnHome;
 
-  if (!sleeping && nowOnHome && millis() - lastTouchTime > sleepTimeout) {
+  if (!sleeping && nowOnHome && !deviceConnected && millis() - lastTouchTime > sleepTimeout) {
     Serial.println("Dimming screen and disabling BLE");
     analogWrite(BACKLIGHT_PIN, 10);
     stopBLE();
@@ -201,7 +201,6 @@ void loop() {
   }
 
   if (!sleeping && deviceConnected && audioDescriptor->getNotifications() && lv_scr_act() == ui_Recording) {
-    const int vOFF = 15000;
     const size_t bufferSize = 128; // Smaller buffer for more frequent reads
     uint16_t sampleBuffer[bufferSize];
     size_t sampleIndex = 0;
@@ -209,14 +208,6 @@ void loop() {
     while (sampleIndex < bufferSize) {
       int32_t sample = i2s.read();
       i2s.read(); // discard second channel in stereo
-
-      // if (sample != -1) {
-      //   sample >>= 14;           // convert to ~18-bit signed
-      //   sample += vOFF;          // shift to positive range
-      //   sample = constrain(sample, 0, 30000);
-      //   sampleBuffer[sampleIndex++] = (uint16_t)sample;
-      //   Serial.println(sample);
-      // }
 
       if (sample != -1) {
         sample = (sample >> 8) & 0xFFFFFF; // strip LSB if needed
@@ -246,5 +237,5 @@ void loop() {
   }
   lvgl_port_unlock();
 
-  delay(5);
+  delay(9);
 }

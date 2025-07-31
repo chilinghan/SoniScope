@@ -53,9 +53,13 @@ struct ResultsView: View {
                     }
                     .foregroundColor(session.diagnosis == "Healthy" ? .white : .yellow)
 
-                    Text(session.diagnosis == "Healthy"
-                         ? "This recording does not show signs of lung disease. SoniScope cannot provide a formal diagnosis."
-                         : "This recording shows signs of lung disease. SoniScope cannot provide a formal diagnosis.")
+                    Text(
+                        session.diagnosis == "Unknown"
+                        ? "This recording cannot determine if you have lung disease. SoniScope cannot provide a formal diagnosis."
+                        : session.diagnosis == "Healthy"
+                            ? "This recording does not show signs of lung disease. SoniScope cannot provide a formal diagnosis."
+                            : "This recording shows signs of lung disease. SoniScope cannot provide a formal diagnosis."
+                    )
                     .font(.system(size: 16))
                     .foregroundColor(Color(red: 0.55, green: 0.55, blue: 0.58))
                     .multilineTextAlignment(.leading)

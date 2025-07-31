@@ -55,14 +55,16 @@ struct SessionFlowView: View {
 
             case .success:
                 RecordingSuccess(
-                    onNext: { _ in
+                    onNext: {
                         step = .analyzing
                     }
                 )
                 
             case .analyzing:
                 AnalyzingView(
-                    onNext: { step = .results }
+                    onNext: {
+                        step = .results
+                    }
                 )
 
             case .results:
