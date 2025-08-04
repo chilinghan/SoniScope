@@ -3,6 +3,7 @@
 #include <lvgl.h>
 #include "lvgl_v8_port.h"
 #include "ui.h"  // Exported from SquareLine
+#include "PWR_Key.h"
 
 #include <BLEDevice.h>
 #include <BLEServer.h>
@@ -165,6 +166,8 @@ void setup() {
   Serial.begin(115200);
   delay(1000);
 
+  PWR_Init();
+
   pinMode(BACKLIGHT_PIN, OUTPUT);
   analogWrite(BACKLIGHT_PIN, 255);
 
@@ -186,7 +189,7 @@ void setup() {
   lastTouchTime = millis();
 }
 
-void loop() {
+void loop() {  
   bool nowOnHome = isHomeScreenActive();
   if (nowOnHome && !wasOnHome) {
     lastTouchTime = millis();
